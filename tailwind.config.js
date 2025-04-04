@@ -10,11 +10,16 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'],
+      },
+
       colors: {
        primary: '#070A0F',
-       secondaty: '#E9E2CD',
+       secondary: '#E9E2CD',
        blue: '#19203C',
        third: '#2D596D',
+       white: '#FFFFFF'
       },
     },
   },

@@ -1,4 +1,5 @@
 import { HeroUIProvider } from "@heroui/react"
+import AppRoutes from './App.routes.jsx'
 
 /**
  * @component
@@ -7,7 +8,7 @@ import { HeroUIProvider } from "@heroui/react"
 function App() {
   return (
     <HeroUIProvider>
-    Hello Ecologistic 
+        <AppRoutes />
     </HeroUIProvider>
   )
 }
