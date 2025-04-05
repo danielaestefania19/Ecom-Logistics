@@ -68,11 +68,9 @@ const Navbar = () => {
           </NavbarBrand>
         </NavbarItem>
         <NavbarContent className="hidden sm:flex gap-4" justify="start">
-        <NavbarItem>
           <NavbarBrand>
             <img src={LogoPrincipal2} alt="Logo" className="h-12 w-auto" />
           </NavbarBrand>
-        </NavbarItem>
           <div className="flex gap-x-6 ml-auto">
             {menuItems.map((item, i) => (
               <NavbarItem key={i} isActive={item === "Home"}>

@@ -1,5 +1,5 @@
 import Hero from './Hero.jsx';
-
+import Services from './Services.jsx';
 
 /**
  * Main component for the homepage.
@@ -15,6 +15,7 @@ function Home() {
   return (
     <>
       <Hero /> 
+      <Services /> 
     </>
   );
 }

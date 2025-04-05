@@ -49,3 +49,28 @@ body {
   color: transparent;
   animation: text-gradient 3s linear infinite;
 }
+
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    background: #070A0F;
+  }
+  ::-webkit-scrollbar-track {
+    background: #070A0F;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2D596D;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2D596D;
+  }
+}
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #070A0F #2D596D;
+  }
+}
