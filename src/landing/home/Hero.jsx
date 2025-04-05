@@ -1,31 +1,50 @@
 import { Button } from "@heroui/react";
-import ImageHero from "../../assets/ImageHero.avif"; // reemplaza con tu imagen
+import ImageHero from "../../assets/ImageHero.avif";
 
 const Hero = () => {
   return (
-    <div className="relative h-[70vh] w-full flex items-center text-white bg-[#070A0F] overflow-hidden">
+    <div className="relative w-full h-[70vh] flex flex-col md:flex-row text-white bg-[#070A0F] overflow-hidden">
       
-      {/* Texto a la izquierda */}
-      <div className="relative z-10 w-full md:w-1/2 p-8 md:p-24 font-montserrat">
-        <h1 className="text-4xl md:text-6xl font-bold mb-2">Logistics Solutions for</h1>
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-4">E-Commerce Sellers</h1>
+{/* Texto */}
+<div className="relative z-10 w-full md:w-1/2 p-8 
+                md:pl-36 md:pr-10 
+                lg:pl-48 lg:pr-20 
+                xl:pl-60 xl:pr-28 
+                md:py-24 font-montserrat flex-1 
+md:flex md:flex-col md:justify-center md:items-start">
 
-        <p className="text-md md:text-lg font-light">
-          Preparation, Warehousing, LTL, and 3PL
-        </p>
-        <p className="text-md md:text-lg font-medium">
-          Center for Amazon FBA and TikTok Shop
-        </p>
 
-        <Button
-          radius="lg"
-          className="mt-6 text-[#070A0F] bg-white hover:bg-gray-100 font-semibold"
-        >
-          Get Started
-        </Button>
-      </div>
+<h1 className="text-4xl md:text-6xl font-semibold mb-2">
+  Logistics <span className="text-third">Solutions</span> for
+</h1>
+  <h1 className="text-4xl md:text-6xl font-semibold mb-9">E-Commerce Sellers</h1>
 
-      {/* Imagen de fondo con difuminado - visible solo en md+ */}
+  <p className="text-xl md:text-3xl font-light w-full">
+    Preparation, Warehousing, LTL, and 3PL
+  </p>
+  <p className="text-xl md:text-3xl font-light w-full mb-6">
+    Center for Amazon FBA and TikTok Shop
+  </p>
+
+  <div className="flex gap-4 ml-4">
+  <Button
+    radius="full"
+    className="px-6 py-6 text-lg  md:text-xl  text-white bg-third hover:bg-gray-100 font-semibold"
+  >
+    Get Started
+  </Button>
+  <Button
+    radius="full"
+    className="px-8 py-6 text-lg  md:text-xl  text-third bg-white hover:bg-gray-100 font-semibold"
+  >
+    Open App
+  </Button>
+</div>
+
+</div>
+
+
+      {/* Imagen en desktop con degradado (background) */}
       <div
         className="absolute top-0 right-0 h-full w-1/2 hidden md:block"
         style={{
@@ -34,6 +53,17 @@ const Hero = () => {
           backgroundPosition: "center",
         }}
       />
+
+      {/* Imagen en mobile con overlay */}
+      <div className="relative block md:hidden w-full h-1/2 flex-1">
+        <img
+          src={ImageHero}
+          alt="Hero"
+          className="w-full h-full object-cover"
+        />
+        {/* Overlay con gradiente encima de la imagen */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070A0F] via-[#070A0F]/70 to-transparent" />
+      </div>
     </div>
   );
 };
