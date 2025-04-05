@@ -1,5 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from './landing/home/Home';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './landing/home/Home.jsx';
+import Navbar from './landing/home/Navbar.jsx';
+import NotFound from './landing/NotFound.jsx'; 
 
 /**
  * Main routing configuration for the application.
@@ -12,9 +14,14 @@ import Home from './landing/home/Home';
  */
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
+    <div>
+      {/* Solo renderiza Navbar si no estamos en la ruta NotFound */}
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<><Navbar /><Home /></>} />
+        <Route path="*" element={<NotFound />} /> 
+      </Routes>
+    </div>
   );
 }
 

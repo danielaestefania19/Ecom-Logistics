@@ -20,7 +20,7 @@ export default {
        blue: '#19203C',
        third: '#2D596D',
        white: '#FFFFFF'
-      },
+      }
     },
   },
   darkMode: "class",

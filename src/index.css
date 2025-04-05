@@ -19,3 +19,33 @@ body {
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --heroui-divider: 0 0% 100%; 
+  --heroui-divider-opacity: 0.15; 
+}
+
+.border-divider {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--heroui-divider) / var(--heroui-divider-opacity, var(--tw-border-opacity)));
+  border-width: 1px; 
+}
+
+
+@keyframes text-gradient {
+  0% {
+    background-position: 0%;
+  }
+  50% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
+  }
+}
+
+.animate-text-gradient {
+  background-size: 200%;
+  background-clip: text;
+  color: transparent;
+  animation: text-gradient 3s linear infinite;
+}

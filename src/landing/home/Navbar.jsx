@@ -1,27 +1,31 @@
+import React from 'react';
 import {
-  Navbar,
+  Navbar as HerouiNavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Link,
   NavbarMenuToggle,
-  NavbarMenu,
+  NavbarMenu as HerouiNavbarMenu,
   NavbarMenuItem,
   useNavbarContext,
 } from "@heroui/react";
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom'; // Usamos Link de react-router-dom
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
+import Banner from "./Banner.jsx";
 
 const menuItems = ["Home", "About us", "Services", "Pricing", "Contact"];
 
-function NavbarMenuWithCloseButton() {
+function NavbarMenu() {
   const { setIsMenuOpen } = useNavbarContext();
+  const location = useLocation();
 
   return (
-    <NavbarMenu className="bg-primary text-white">
+    <HerouiNavbarMenu className="bg-primary text-white">
       <div className="flex justify-end px-4 pt-4">
         <button
           onClick={() => setIsMenuOpen(false)}
-          className="text-white text-2xl font-bold focus:outline-none"
+          className="text-white text-3xl font-bold focus:outline-none hover:text-gray-300"
           aria-label="Cerrar menú"
         >
           ×
@@ -30,54 +34,71 @@ function NavbarMenuWithCloseButton() {
       {menuItems.map((item, index) => (
         <NavbarMenuItem key={`${item}-${index}`}>
           <Link
-            className="w-full text-white"
-            color={
-              index === 2
-                ? "warning"
-                : index === menuItems.length - 1
-                ? "danger"
-                : "foreground"
-            }
-            href="#"
+            as={ReactRouterLink}
+            to={`/${item.toLowerCase().replace(' ', '')}`}
+            className={`w-full text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
+                ? item === "Home" ? "text-third" : "text-white"
+                : "text-white"
+              }`}
             size="lg"
           >
             {item}
           </Link>
         </NavbarMenuItem>
       ))}
-    </NavbarMenu>
+    </HerouiNavbarMenu>
   );
 }
 
-export default function App() {
+const Navbar = () => {
+  const location = useLocation();
   return (
-    <Navbar
-      disableAnimation
-      isBordered
-      position="static"
-      className="bg-primary text-white px-8 h-20 mt-[68px]"
-    >
-      <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle />
-      </NavbarContent>
-      <NavbarContent className="sm:hidden pr-3" justify="center">
-        <NavbarBrand className="flex items-center">
-          <img src={LogoPrincipal2} alt="Logo" className="h-16 w-auto" />
-        </NavbarBrand>
-      </NavbarContent>
-      <NavbarContent className="hidden sm:flex gap-10 ml-auto justify-end">
-        <NavbarBrand>
-          <img src={LogoPrincipal2} alt="Logo" className="h-16 w-auto" />
-        </NavbarBrand>
-        {menuItems.map((item, i) => (
-          <NavbarItem key={i} isActive={item === "Home"}>
-            <Link href="#" className="text-white">
-              {item}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-      <NavbarMenuWithCloseButton />
-    </Navbar>
+    <div>
+      <Banner />
+      <HerouiNavbar
+        position="static"
+        className="bg-primary text-white px-8 h-20"
+      >
+        <NavbarContent className="sm:hidden" justify="start">
+          <NavbarMenuToggle />
+        </NavbarContent>
+        <NavbarItem className="sm:hidden">
+          <NavbarBrand>
+            <img src={LogoPrincipal2} alt="Logo" className="h-8 w-auto" />
+          </NavbarBrand>
+        </NavbarItem>
+        <NavbarContent className="hidden sm:flex gap-4" justify="start">
+        <NavbarItem>
+          <NavbarBrand>
+            <img src={LogoPrincipal2} alt="Logo" className="h-12 w-auto" />
+          </NavbarBrand>
+        </NavbarItem>
+          <div className="flex gap-x-6 ml-auto">
+            {menuItems.map((item, i) => (
+              <NavbarItem key={i} isActive={item === "Home"}>
+                <Link
+                  as={ReactRouterLink}
+                  to={`/${item.toLowerCase().replace(' ', '')}`}
+                  className={
+                    `text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
+                      ? item === "Home"
+                        ? "text-third"
+                        : "text-white"
+                      : "text-white"
+                    }`
+                  }
+                >
+                  {item}
+                </Link>
+              </NavbarItem>
+            ))}
+          </div>
+        </NavbarContent>
+
+        <NavbarMenu />
+      </HerouiNavbar>
+    </div>
   );
 }
+
+export default Navbar;

@@ -1,6 +1,5 @@
-import Navbar from './Navbar.jsx';
-//import Hero from './Hero.jsx';
-import Banner from './Banner.jsx';
+import Hero from './Hero.jsx';
+
 
 /**
  * Main component for the homepage.
@@ -15,9 +14,7 @@ import Banner from './Banner.jsx';
 function Home() {
   return (
     <>
-      <Banner/>
-      <Navbar />
-      {/* <Hero /> */}
+      <Hero /> 
     </>
   );
 }

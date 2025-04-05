@@ -4,7 +4,7 @@ Button
 
 const Hero = () => {
     return (
-      <div className="bg-primary w-full top-10 text-white h-[70vh] flex items-center justify-start">
+      <div className="bg-primary w-full top-0 text-white h-[70vh] flex items-center justify-start">
         <div className="relative z-10 text-left w-1/2 p-24 font-montserrat">
           <h1 className="text-6xl font-bold mb-2">Logistics Solutions for</h1>
           <h1 className="text-6xl font-extrabold mb-4">E-Commerce Sellers</h1>
