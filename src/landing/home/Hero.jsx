@@ -60,7 +60,7 @@ const Hero = () => {
     alt="Hero"
     className="w-full h-auto object-cover"
   />
-  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary" />
+  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
 
 </div>
 
