@@ -54,13 +54,14 @@ const Hero = () => {
           backgroundPosition: "center",
         }}        
       />
-  <div className="w-full h-full md:hidden relative">
+ <div className="w-full h-full md:hidden relative">
   <img
     src={ImageHero}
     alt="Hero"
     className="w-full h-auto object-cover"
   />
-  <div className="absolute inset-0 bg-gradient-to-t from-[#070A0F]/50 to-transparent" />
+  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
+
 </div>
 
     </div>
