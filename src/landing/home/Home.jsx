@@ -1,6 +1,8 @@
 import Hero from './Hero.jsx';
 import Services from './Services.jsx';
 import BrandLogos from './BrandLogos.jsx'
+import VideoSection from './VideoSection.jsx';
+import WhyEcom from './WhyEcom.jsx';
 
 /**
  * Main component for the homepage.
@@ -18,6 +20,8 @@ function Home() {
       <Hero /> 
       <Services /> 
       <BrandLogos/>
+      <VideoSection/>
+      <WhyEcom/>
     </>
   );
 }
