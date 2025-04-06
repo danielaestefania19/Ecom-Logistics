@@ -64,8 +64,8 @@ const Services = () => {
           <Card className="bg-white p-6 h-80 flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
 
             <CardHeader className="flex gap-3 items-center">
-              <Image src={camion} width={40} height={40} alt="ELT Logistics" className="rounded-md" />
-              <p className="text-lg font-semibold">ELT Logistics</p>
+              <Image src={camion} width={40} height={40} alt="LTL" className="rounded-md" />
+              <p className="text-lg font-semibold">Amazon Partner Courier (LTL)</p>
             </CardHeader>
             <CardBody className="text-gray-700 text-[16px]">
               We provide comprehensive logistics and transportation services, including freight coordination, route optimization, and last-mile delivery to ensure efficiency and reliability at every stage.
