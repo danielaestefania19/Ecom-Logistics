@@ -3,6 +3,7 @@ import Services from './Services.jsx';
 import BrandLogos from './BrandLogos.jsx'
 import VideoSection from './VideoSection.jsx';
 import WhyEcom from './WhyEcom.jsx';
+import ContactUs from './ContacUs.jsx';
 
 /**
  * Main component for the homepage.
@@ -22,6 +23,7 @@ function Home() {
       <BrandLogos/>
       <VideoSection/>
       <WhyEcom/>
+      <ContactUs/>
     </>
   );
 }
