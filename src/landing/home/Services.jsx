@@ -86,7 +86,7 @@ const Services = () => {
           </Card>
           <Card  className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
-              <Image src={tiktok} width={40} height={40} alt="TikTok Shop 3PL" className="rounded-md" />
+              <Image src={tiktok} width={35} height={35} alt="TikTok Shop 3PL" className="rounded-md" />
               <p className="text-lg font-semibold">TikTok Shop (3PL)</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
