@@ -12,12 +12,12 @@ const ContactUs = () => {
                 <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="mb-1 font-medium text-gray-800">Name:</label>
-<Input
-  label="Name"
-  placeholder="E.g. Juan Diego"
-  variant="flat" // o "bordered"
-  className="bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-/>
+                        <Input
+                            label="Name"
+                            placeholder="E.g. Juan Diego"
+                            variant="flat" // o "bordered"
+                            className="bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+                        />
 
 
 
@@ -32,15 +32,15 @@ const ContactUs = () => {
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Email Address:</label>
                         <Input
-  type="email"
-  variant="flat"
-  label="Email Address"
-  defaultValue="junior@heroui.com"
-  classNames={{
-    base: "bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black",
-  }}
-  className="max-w-xs"
-/>
+                            type="email"
+                            variant="flat"
+                            label="Email Address"
+                            defaultValue="junior@heroui.com"
+                            classNames={{
+                                base: "bg-white border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black",
+                            }}
+                            className="max-w-xs"
+                        />
 
                     </div>
                     <div>
