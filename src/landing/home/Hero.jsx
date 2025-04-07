@@ -3,9 +3,9 @@ import ImageHero from "../../assets/ImageHero.jpg";
 
 const Hero = () => {
   return (
-<div className="relative w-full min-h-[70vh] flex flex-col md:flex-row text-white bg-primary overflow-hidden">
+    <div className="relative w-full min-h-[70vh] flex flex-col md:flex-row text-white bg-primary overflow-hidden">
       <div
-      className="relative z-10 w-full md:w-1/2 p-8 md:pl-28 md:pr-10 lg:pl-36 lg:pr-20 xl:pl-48 xl:pr-28 md:py-24 font-montserrat flex-1 md:flex md:flex-col md:justify-center md:items-start text-center md:text-left"
+        className="relative z-10 w-full md:w-1/2 p-8 md:pl-28 md:pr-10 lg:pl-36 lg:pr-20 xl:pl-48 xl:pr-28 md:py-24 font-montserrat flex-1 md:flex md:flex-col md:justify-center md:items-start text-center md:text-left"
       >
         <h1 className="text-4xl md:text-6xl font-semibold mb-2">
           Logistics <span className="text-third">Solutions</span> for
@@ -52,17 +52,17 @@ const Hero = () => {
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
-        }}        
+        }}
       />
- <div className="w-full h-full md:hidden relative">
-  <img
-    src={ImageHero}
-    alt="Hero"
-    className="w-full h-auto object-cover"
-  />
-  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
+      <div className="w-full h-full md:hidden relative">
+        <img
+          src={ImageHero}
+          alt="Hero"
+          className="w-full h-auto object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
 
-</div>
+      </div>
 
     </div>
   );
