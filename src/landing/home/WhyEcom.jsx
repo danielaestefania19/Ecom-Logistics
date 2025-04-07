@@ -34,8 +34,10 @@ const WhyEcom = () => {
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
-                          At Ecom Logistics, we have 5 years of experience in the logistics industry. Our trained team is here to offer you advice and support at every stage of the process, from the initial pricing inquiry to the completion of your order, ensuring a smooth and hassle-free experience.       </CardBody>
-                        <CardFooter>
+                        Save More with the Leading LTL and Prep Rates in Northern California
+                        Increase your margins with Ecom Logistics' exceptional pricing. Our LTL and prep rates are the most competitive in Northern California, tailored for e-commerce sellers' needs. With our affordable options, you'll save on every shipment without sacrificing quality.      
+                        </CardBody>
+                       <CardFooter>
                             <a
                                 href="#"
                                 className="text-sm text-third hover:underline font-semibold inline-flex items-center"
@@ -58,8 +60,8 @@ const WhyEcom = () => {
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
-                        Save More with the Leading LTL and Prep Rates in Northern California
-                        Increase your margins with Ecom Logistics' exceptional pricing. Our LTL and prep rates are the most competitive in Northern California, tailored for e-commerce sellers' needs. With our affordable options, you'll save on every shipment without sacrificing quality.      </CardBody>
+                        At Ecom Logistics, we have 5 years of experience in the logistics industry. Our trained team is here to offer you advice and support at every stage of the process, from the initial pricing inquiry to the completion of your order, ensuring a smooth and hassle-free experience.      
+                        </CardBody>
                         <CardFooter>
                             <a
                                 href="#"
