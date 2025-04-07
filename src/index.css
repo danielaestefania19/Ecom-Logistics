@@ -74,15 +74,3 @@ body {
     scrollbar-color: #070A0F #2D596D;
   }
 }
-
-.custom-toast-success {
-  background: white !important;
-  border-left: 6px solid #2D596D;
-  color: #2D596D !important;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.custom-toast-success .Toastify__toast-icon {
-  color: #2D596D !important;
-}

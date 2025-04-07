@@ -27,10 +27,10 @@ const WhyEcom = () => {
                             <Image
                                 src={top}
                                 alt="Top LTL and Prep Rates"
-                                className="w-20 h-20 rounded-md mb-1 object-cover aspect-square"
-                            />
+                                className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
+                                />
                             <p className="text-2xl font-semibold text-primary">
-                                Top LTL & Prep Rates
+                               1# LTL & Prep Rates
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
@@ -53,7 +53,7 @@ const WhyEcom = () => {
                             <Image
                                 src={support}
                                 alt="Customer Support and Advisors"
-                                className="w-20 h-20 rounded-md mb-1 object-cover aspect-square"
+                                className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
                             />
                             <p className="text-2xl font-semibold text-primary">
                                 Expert Support & Advisors
@@ -78,8 +78,8 @@ const WhyEcom = () => {
                             <Image
                                 src={competitive}
                                 alt="Efficiency Guaranteed"
-                                className="w-16 h-16 rounded-md mb-3 object-cover aspect-square"
-                            />
+                                className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
+                                />
                             <p className="text-2xl font-semibold text-primary">
                              Efficiency Guaranteed
                             </p>

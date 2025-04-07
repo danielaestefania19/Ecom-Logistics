@@ -1,6 +1,6 @@
 import Hero from './Hero.jsx';
 import Services from './Services.jsx';
-import BrandLogos from './BrandLogos.jsx'
+import Discount from './Discount.jsx';
 import VideoSection from './VideoSection.jsx';
 import WhyEcom from './WhyEcom.jsx';
 import ContactUs from './ContacUs.jsx';
@@ -20,7 +20,7 @@ function Home() {
     <>
       <Hero /> 
       <Services /> 
-      <BrandLogos/>
+      <Discount/>
       <VideoSection/>
       <WhyEcom/>
       <ContactUs/>

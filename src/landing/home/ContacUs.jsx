@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { Button } from "@heroui/react";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { Button, addToast } from "@heroui/react";
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +22,7 @@ const ContactUs = () => {
         e.preventDefault();
         const { name, phone, email, address, message } = formData;
         const newErrors = {};
-
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!name.trim()) {
             newErrors.name = "Name is required";
             setErrors(newErrors);
@@ -41,32 +39,27 @@ const ContactUs = () => {
             newErrors.email = "Email is required";
             setErrors(newErrors);
             return;
+        } else if (!emailRegex.test(email)) {
+            newErrors.email = "Email format is invalid";
+            setErrors(newErrors);
+            return;
         }
+        
         if (!address.trim()) {
             newErrors.address = "Address is required";
             setErrors(newErrors);
             return;
         }
-
         if (!message.trim()) {
             newErrors.message = "Message is required";
             setErrors(newErrors);
             return;
         }
-
-        toast("¡Mensaje enviado con éxito!", {
-            className: "custom-toast-success",
-            icon: "✔️",
-            position: "top-right",
-            autoClose: 3000,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
+        addToast({
+            title: "Submitted Successfully",
+            description: "Thanks for reaching out! We'll get back to you shortly.",
+            color: "primary",
           });
-          
-          
-
-        // Limpiar formulario
         setFormData({
             name: "",
             phone: "",
@@ -74,7 +67,6 @@ const ContactUs = () => {
             address: "",
             message: ""
         });
-
         setErrors({});
     };
 
@@ -87,7 +79,6 @@ const ContactUs = () => {
                 </p>
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Name */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Name:</label>
                         <input
@@ -100,8 +91,6 @@ const ContactUs = () => {
                         />
                         {errors.name && <p className="text-third text-sm mt-1">{errors.name}</p>}
                     </div>
-
-                    {/* Phone */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Phone:</label>
                         <input
@@ -114,8 +103,6 @@ const ContactUs = () => {
                         />
                         {errors.phone && <p className="text-third text-sm mt-1">{errors.phone}</p>}
                     </div>
-
-                    {/* Email */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Email Address:</label>
                         <input
@@ -128,8 +115,6 @@ const ContactUs = () => {
                         />
                         {errors.email && <p className="text-third text-sm mt-1">{errors.email}</p>}
                     </div>
-
-                    {/* Address */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Address:</label>
                         <input
@@ -142,8 +127,6 @@ const ContactUs = () => {
                         />
                          {errors.address && <p className="text-third text-sm mt-1">{errors.address}</p>}
                     </div>
-
-                    {/* Message */}
                     <div className="md:col-span-2">
                         <label className="block mb-1 font-medium text-gray-800">Message:</label>
                         <textarea
@@ -155,8 +138,6 @@ const ContactUs = () => {
                         />
                         {errors.message && <p className="text-third text-sm mt-1">{errors.message}</p>}
                     </div>
-
-                    {/* Submit */}
                     <div className="md:col-span-2 flex justify-center mt-2">
                         <Button
                             radius="full"
@@ -167,9 +148,6 @@ const ContactUs = () => {
                         </Button>
                     </div>
                 </form>
-
-                {/* Toast container */}
-                <ToastContainer />
             </div>
         </section>
     );
