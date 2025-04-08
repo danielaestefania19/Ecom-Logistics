@@ -4,6 +4,8 @@ import Discount from './Discount.jsx';
 import VideoSection from './VideoSection.jsx';
 import WhyEcom from './WhyEcom.jsx';
 import ContactUs from './ContacUs.jsx';
+import CustomerFeedback from './Feedback.jsx';
+import CoverageMap from './CoverageMap.jsx';
 
 /**
  * Main component for the homepage.
@@ -24,6 +26,8 @@ function Home() {
       <VideoSection/>
       <WhyEcom/>
       <ContactUs/>
+      <CustomerFeedback/>
+      <CoverageMap/>
     </>
   );
 }

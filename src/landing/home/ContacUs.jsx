@@ -71,14 +71,15 @@ const ContactUs = () => {
     };
 
     return (
-        <section className="w-full bg-primary py-16 px-4 md:px-0 flex justify-center">
-            <div className="bg-white rounded-2xl max-w-6xl w-full px-20 py-12 shadow-md">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-2">Contact Us</h2>
-                <p className="text-center text-gray-500 mb-8 max-w-md mx-auto text-sm">
+        <section className="w-full bg-primary py-16 px-4 flex justify-center">
+            <div className="bg-white rounded-2xl w-full max-w-6xl px-4 sm:px-6 md:px-8 lg:px-20 py-12 shadow-md">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2">Contact Us</h2>
+                <p className="text-center text-gray-500 mb-8 max-w-xl mx-auto text-sm sm:text-base">
                     We would like to hear from you! Fill out your contact information below. When we receive your inquiry, we will contact you as soon as possible.
                 </p>
 
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Name */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Name:</label>
                         <input
@@ -87,10 +88,12 @@ const ContactUs = () => {
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="E.g. Juan Diego"
-                            className="w-full h-[55px] border border-black p-3 rounded-xl"
+                            className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
-                        {errors.name && <p className="text-third text-sm mt-1">{errors.name}</p>}
+                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
+
+                    {/* Phone */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Phone:</label>
                         <input
@@ -99,10 +102,12 @@ const ContactUs = () => {
                             value={formData.phone}
                             onChange={handleChange}
                             placeholder="Ej: +1 12345678"
-                            className="w-full h-[55px] border border-black p-3 rounded-xl"
+                            className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
-                        {errors.phone && <p className="text-third text-sm mt-1">{errors.phone}</p>}
+                        {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
+
+                    {/* Email */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Email Address:</label>
                         <input
@@ -111,10 +116,12 @@ const ContactUs = () => {
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="E.g. juandiego@gmail.com"
-                            className="w-full h-[55px] border border-black p-3 rounded-xl"
+                            className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
-                        {errors.email && <p className="text-third text-sm mt-1">{errors.email}</p>}
+                        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
+
+                    {/* Address */}
                     <div>
                         <label className="block mb-1 font-medium text-gray-800">Address:</label>
                         <input
@@ -123,10 +130,12 @@ const ContactUs = () => {
                             value={formData.address}
                             onChange={handleChange}
                             placeholder="Ej: 25509 Industrial Blvd..."
-                            className="w-full h-[55px] border border-black p-3 rounded-xl"
+                            className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
-                         {errors.address && <p className="text-third text-sm mt-1">{errors.address}</p>}
+                        {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
                     </div>
+
+                    {/* Message */}
                     <div className="md:col-span-2">
                         <label className="block mb-1 font-medium text-gray-800">Message:</label>
                         <textarea
@@ -136,12 +145,14 @@ const ContactUs = () => {
                             placeholder="Any additional information..."
                             className="w-full rounded-md min-h-[120px] border border-black p-3"
                         />
-                        {errors.message && <p className="text-third text-sm mt-1">{errors.message}</p>}
+                        {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                     </div>
-                    <div className="md:col-span-2 flex justify-center mt-2">
+
+                    {/* Submit */}
+                    <div className="md:col-span-2 flex justify-center mt-4">
                         <Button
                             radius="full"
-                            className="px-10 py-6 rounded-full bg-blue text-white font-semibold text-lg md:text-xl hover:bg-black"
+                            className="w-full sm:w-auto px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl bg-blue text-white font-semibold hover:bg-black"
                             type="submit"
                         >
                             Submit →
@@ -151,6 +162,6 @@ const ContactUs = () => {
             </div>
         </section>
     );
-};
+};    
 
 export default ContactUs;

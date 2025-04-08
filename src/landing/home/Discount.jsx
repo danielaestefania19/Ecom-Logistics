@@ -1,4 +1,5 @@
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, CardHeader, Image } from "@heroui/react";
+import entregagratis from '../../assets/entregagratis.png'
 
 const Discount = () => {
   return (
@@ -13,13 +14,20 @@ const Discount = () => {
               and losing time?
             </span>
           </div>
-          <Card className="bg-white px-24 rounded-xl shadow-md text-center">
-            <CardBody>
-              <p className="text-primary text-lg font-bold">
-                Free daily LTL Pickup
-              </p>
-              <p className="text-gray-500 text-sm">In the Bay Area</p>
-            </CardBody>
+          <Card className="bg-white px-12 rounded-xl shadow-md text-center">
+            <CardHeader className="flex gap-1">
+              <Image
+                alt="heroui logo"
+                height={40}
+                radius="sm"
+                src={entregagratis}
+                width={40}
+              />
+              <div className="flex flex-col">
+                <p className="text-primary text-lg font-bold">Free daily LTL Pickup</p>
+                <p className="text-gray-500 text-sm">In the Bay Area</p>
+              </div>
+            </CardHeader>
           </Card>
         </div>
       </div>
