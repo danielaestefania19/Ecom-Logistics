@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Plus, Minus } from 'lucide-react';
+import { Accordion, AccordionItem } from "@heroui/react";
 
 const faqData = [
   {
@@ -22,15 +21,8 @@ const faqData = [
 ];
 
 export default function FAQ() {
-  const [activeIndex, setActiveIndex] = useState(0); 
-
-  const toggle = (index) => {
-    setActiveIndex(index === activeIndex ? null : index);
-  };
-
   return (
     <div className="flex flex-col lg:flex-row justify-between items-start px-2 py-16 max-w-7xl mx-auto gap-32">
-      {/* Left side */}
       <div className="lg:w-1/3">
         <h2 className="text-3xl font-bold text-slate-900">Frequently asked questions</h2>
         <p className="text-slate-500 mt-4">
@@ -40,29 +32,18 @@ export default function FAQ() {
           Get Started
         </button>
       </div>
-
-      {/* Right side */}
       <div className="lg:w-2/4 space-y-4">
-        {faqData.map((faq, index) => (
-          <div key={index} className="border rounded-md shadow-sm">
-            <button
-              onClick={() => toggle(index)}
-              className="w-full flex justify-between items-center p-4 text-left focus:outline-none"
+        <Accordion variant="splitted" defaultExpandedKeys={["0"]}>
+          {faqData.map((faq, index) => (
+            <AccordionItem
+              key={index.toString()}
+              aria-label={`FAQ ${index + 1}`}
+              title={faq.question}
             >
-              <span className="text-slate-900 font-medium">{faq.question}</span>
-              {activeIndex === index ? (
-                <Minus className="w-5 h-5 text-slate-900" />
-              ) : (
-                <Plus className="w-5 h-5 text-slate-900" />
-              )}
-            </button>
-            {activeIndex === index && (
-              <div className="px-4 pb-4 text-slate-500">
-                {faq.answer}
-              </div>
-            )}
-          </div>
-        ))}
+              <p className="text-slate-500">{faq.answer}</p>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
     </div>
   );
