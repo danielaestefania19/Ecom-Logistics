@@ -136,14 +136,14 @@ export default function CustomerFeedback() {
             <button
               onClick={prev}
               disabled={currentIndex === 0}
-              className="w-10 h-10 flex items-center justify-center border border-blue rounded-full hover:bg-gray-100 disabled:opacity-30"
+              className="w-10 h-10 flex items-center justify-center border border-blue rounded-full hover:bg-white-100 disabled:opacity-30"
             >
               <ArrowLeftIcon className="w-5 h-5 text-gray-700" />
             </button>
             <button
               onClick={next}
               disabled={currentIndex >= maxIndex}
-              className="w-10 h-10 flex items-center justify-center bg-blue text-white rounded-full hover:bg-gray-100 disabled:opacity-30"
+              className="w-10 h-10 flex items-center justify-center bg-blue text-white rounded-full hover:bg-white-100 disabled:opacity-30"
             >
               <ArrowRightIcon className="w-5 h-5" />
             </button>
