@@ -28,9 +28,12 @@ export default function FAQ() {
         <p className="text-slate-500 mt-4">
           Amet minim mollit non deserunt ullamco est sit aliqua dolor.
         </p>
-        <button className="mt-6 px-6 py-3 bg-slate-900 text-white font-semibold rounded-full">
-          Get Started
-        </button>
+        <Button
+            radius="full"
+            className="px-6 py-6 text-lg md:text-xl text-white bg-blue hover:bg-white-100 font-semibold mt-8"
+          >
+           Get Started
+        </Button>
       </div>
       <div className="lg:w-2/4 space-y-4">
         <Accordion variant="splitted" defaultExpandedKeys={["0"]}>
