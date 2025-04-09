@@ -155,7 +155,7 @@ const ContactUs = () => {
                             className="w-full sm:w-auto px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl bg-blue text-white font-semibold"
                             type="submit"
                         >
-                            Submit →
+                            Submit
                         </Button>
                     </div>
                 </form>
