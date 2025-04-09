@@ -6,6 +6,8 @@ import WhyEcom from './WhyEcom.jsx';
 import ContactUs from './ContacUs.jsx';
 import CustomerFeedback from './Feedback.jsx';
 import CoverageMap from './CoverageMap.jsx';
+import FAQ from './FAQ.jsx';
+import Footer from './Footer.jsx';
 
 /**
  * Main component for the homepage.
@@ -28,6 +30,8 @@ function Home() {
       <ContactUs/>
       <CustomerFeedback/>
       <CoverageMap/>
+      <FAQ/>
+      <Footer/>
     </>
   );
 }
