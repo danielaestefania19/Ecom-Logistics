@@ -152,7 +152,7 @@ const ContactUs = () => {
                     <div className="md:col-span-2 flex justify-center mt-4">
                         <Button
                             radius="full"
-                            className="w-full sm:w-auto px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl bg-blue text-white font-semibold hover:bg-black"
+                            className="w-full sm:w-auto px-10 py-4 sm:py-5 text-base sm:text-lg md:text-xl bg-blue text-white font-semibold"
                             type="submit"
                         >
                             Submit →
