@@ -30,9 +30,12 @@ const CoverageMap = () => {
               Amet minim mollit non deserunt ullamco est sit aliqua dolor velit officia est do
               amet sint. Velit officia duis enim do amet sint.
             </p>
-            <button className="bg-third hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-full transition">
-              View coverage area
-            </button>
+               <Button
+               radius="full"
+               className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
+          >
+           View coverage area
+          </Button>
           </div>
         </div>
       </div>
