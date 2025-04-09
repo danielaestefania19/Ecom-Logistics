@@ -1,4 +1,5 @@
 import { Accordion, AccordionItem } from "@heroui/react";
+import { Button } from "@heroui/react";
 
 const faqData = [
   {
