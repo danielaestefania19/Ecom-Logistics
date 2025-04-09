@@ -1,5 +1,6 @@
 import React from 'react';
 import map from '../../assets/map.png'
+import { Button } from "@heroui/react";
 
 const CoverageMap = () => {
   return (
@@ -30,7 +31,7 @@ const CoverageMap = () => {
               Amet minim mollit non deserunt ullamco est sit aliqua dolor velit officia est do
               amet sint. Velit officia duis enim do amet sint.
             </p>
-               <Button
+           <Button
                radius="full"
                className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
           >
