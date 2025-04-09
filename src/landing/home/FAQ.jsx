@@ -23,20 +23,30 @@ const faqData = [
 
 export default function FAQ() {
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-start px-2 py-16 max-w-7xl mx-auto gap-32">
-      <div className="lg:w-1/3">
-        <h2 className="text-3xl font-bold text-slate-900">Frequently asked questions</h2>
+
+
+    
+    <div className="min-h-[500px] py-20 px-4 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-32">
+      
+      {/* Columna izquierda */}
+      <div className="lg:w-2/4 w-full text-center lg:text-left">
+        
+        <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
+          Frequently asked questions
+        </h2>
         <p className="text-slate-500 mt-4">
           Amet minim mollit non deserunt ullamco est sit aliqua dolor.
         </p>
         <Button
-            radius="full"
-            className="px-6 py-6 text-lg md:text-xl text-white bg-blue hover:bg-white-100 font-semibold mt-8"
-          >
-           Get Started
+          radius="full"
+          className="px-6 py-6 text-lg md:text-xl text-white bg-blue hover:bg-white-100 font-semibold mt-8 mx-auto lg:mx-0"
+        >
+          Get Started
         </Button>
       </div>
-      <div className="lg:w-2/4 space-y-4">
+
+      {/* Columna derecha */}
+      <div className="lg:w-2/4 w-full space-y-4">
         <Accordion variant="splitted" defaultExpandedKeys={["0"]}>
           {faqData.map((faq, index) => (
             <AccordionItem
