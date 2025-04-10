@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 
 const reviews = [
@@ -42,23 +42,37 @@ const reviews = [
 export default function CustomerFeedback() {
   const containerRef = useRef(null)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const cardWidth = 384 // px (~96 Tailwind units)
+  const [maxIndex, setMaxIndex] = useState(reviews.length - 1)
 
-  const maxIndex = reviews.length - 3
+  const cardWidth = 384 + 24 // ancho de card + gap (24px)
 
-  const scrollToIndex = (index) => {
+  const scrollToIndex = useCallback((index) => {
     const container = containerRef.current
     if (container) {
       container.scrollTo({
-        left: index * (cardWidth + 24), // 24px = gap-x-6
+        left: index * cardWidth,
         behavior: 'smooth',
       })
     }
-  }
+  }, [cardWidth])
 
   useEffect(() => {
     scrollToIndex(currentIndex)
-  }, [currentIndex])
+  }, [currentIndex, scrollToIndex])
+
+  useEffect(() => {
+    const updateMaxIndex = () => {
+      const container = containerRef.current
+      if (!container) return
+      const visibleWidth = container.offsetWidth
+      const visibleCards = Math.floor(visibleWidth / cardWidth)
+      setMaxIndex(reviews.length - visibleCards)
+    }
+
+    updateMaxIndex()
+    window.addEventListener('resize', updateMaxIndex)
+    return () => window.removeEventListener('resize', updateMaxIndex)
+  }, [cardWidth])
 
   const next = () => {
     if (currentIndex < maxIndex) setCurrentIndex(currentIndex + 1)
@@ -70,19 +84,18 @@ export default function CustomerFeedback() {
 
   return (
     <section className="bg-white py-16">
-      <div className="max-w-7xl mx-auto px-16">
+      <div className="max-w-[1350px] mx-auto px-4 sm:px-8 md:px-16">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12">
-          
           <div className="w-full lg:w-2/3">
             <h1 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
               Customer Feedback:
             </h1>
-            <h1 className="tracking-tight font-normal text-primary text-4xl lg:text-5xl bg-clip-text">
-              The Proof of Our 
+            <h1 className="tracking-tight font-normal text-primary text-4xl lg:text-5xl">
+              The Proof of Our
             </h1>
-            <h1 className="tracking-tight font-normal text-primary text-4xl lg:text-5xl bg-clip-text">
-               Moving Excellence
+            <h1 className="tracking-tight font-normal text-primary text-4xl lg:text-5xl">
+              Moving Excellence
             </h1>
           </div>
           <div className="flex flex-col items-end text-right">
@@ -131,19 +144,19 @@ export default function CustomerFeedback() {
             ))}
           </div>
 
-          {/* Flechas */}
+          {/* Navigation arrows */}
           <div className="mt-10 flex justify-end gap-4">
             <button
               onClick={prev}
               disabled={currentIndex === 0}
-              className="w-10 h-10 flex items-center justify-center border border-blue rounded-full hover:bg-white-100 disabled:opacity-30"
+              className="w-10 h-10 flex items-center justify-center border border-blue rounded-full hover:bg-white disabled:opacity-30"
             >
               <ArrowLeftIcon className="w-5 h-5 text-gray-700" />
             </button>
             <button
               onClick={next}
               disabled={currentIndex >= maxIndex}
-              className="w-10 h-10 flex items-center justify-center bg-blue text-white rounded-full hover:bg-white-100 disabled:opacity-30"
+              className="w-10 h-10 flex items-center justify-center bg-blue text-white rounded-full hover:bg-blue-600 disabled:opacity-30"
             >
               <ArrowRightIcon className="w-5 h-5" />
             </button>

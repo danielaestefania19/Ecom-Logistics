@@ -1,6 +1,7 @@
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.png';
+import tiktokicono from '../../assets/tiktokicono.png'
 
 export default function Footer() {
   return (
@@ -46,6 +47,7 @@ export default function Footer() {
             <div className="flex justify-center md:justify-start gap-4 mt-2">
               <img src={facebook} alt="Facebook" className="h-8" />
               <img src={instagram} alt="Instagram" className="h-8" />
+              <img src={tiktokicono} alt="Instagram" className="h-8" />
             </div>
           </div>
         </div>
