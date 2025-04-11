@@ -18,7 +18,7 @@ export default function Footer() {
 
       {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-end">
-      <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start sm:justify-between justify-end text-right sm:text-left">
+    <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start justify-start text-left sm:justify-between sm:text-left" >
       {/* Information */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Information</h4>
@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Social */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Find us</h4>
-            <div className="flex justify-center md:justify-start gap-4 mt-2">
+            <div className="flex justify-start gap-4 mt-2">
               <img src={facebook} alt="Facebook" className="h-8" />
               <img src={instagram} alt="Instagram" className="h-8" />
               <img src={tiktokicono} alt="Instagram" className="h-8" />
