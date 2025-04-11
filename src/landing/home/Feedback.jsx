@@ -50,7 +50,7 @@ export default function CustomerFeedback() {
   const [canScrollNext, setCanScrollNext] = useState(true)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
 
-  const cardWidth = 370 + 15 
+  const cardWidth = 350 + 2
 
   const checkScrollPosition = () => {
     const container = containerRef.current
@@ -60,7 +60,7 @@ export default function CustomerFeedback() {
     const maxScrollLeft = container.scrollWidth - container.clientWidth
 
     setCanScrollPrev(scrollLeft > 0)
-    setCanScrollNext(scrollLeft < maxScrollLeft - 1) // -1 to handle float precision
+    setCanScrollNext(scrollLeft < maxScrollLeft - 1) 
   }
 
   const scrollBy = (direction) => {
@@ -122,13 +122,13 @@ export default function CustomerFeedback() {
         <div className="mt-12 relative">
           <div
             ref={containerRef}
-            className="flex overflow-hidden gap-4 scroll-smooth"
+            className="flex overflow-hidden gap-2 scroll-smooth"
             style={{ scrollBehavior: 'smooth' }}
           >
             {reviews.map((review) => (
               <div
                 key={review.id}
-                className="min-w-[370px] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
+                className="min-w-[350px] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
