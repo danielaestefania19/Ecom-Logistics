@@ -91,7 +91,7 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={tiktok} alt="TikTok Shop 3PL" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">3PL fulfillment for Amazon and TikTok Shop</p>
+              <p className="text-lg font-semibold">TikTok Shop 3PL</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
               Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence—from product launches and PPC marketing to logistics and shipping.   

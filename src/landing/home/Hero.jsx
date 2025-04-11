@@ -15,10 +15,10 @@ const Hero = () => {
         </h1>
 
         <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">
-          Preparation, Warehousing, LTL, and 3PL
+        Prep Center, Amazon Partner Currier (LTL & FTL), 
         </p>
         <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">
-          Center for Amazon FBA and TikTok Shop
+        3PL fulfillment for Amazon and TikTok Shop.
         </p>
         <div  className="flex gap-4 justify-center md:justify-start">
         <a href="#contact">

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect} from 'react'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 
 const reviews = [
@@ -47,46 +47,50 @@ const reviews = [
 
 export default function CustomerFeedback() {
   const containerRef = useRef(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [maxIndex, setMaxIndex] = useState(reviews.length - 1)
+  const [canScrollNext, setCanScrollNext] = useState(true)
+  const [canScrollPrev, setCanScrollPrev] = useState(false)
 
-  const cardWidth = 384 + 24 // ancho de card + gap (24px)
+  const cardWidth = 384 + 24 // Card width + gap
 
-  const scrollToIndex = useCallback((index) => {
+  const checkScrollPosition = () => {
     const container = containerRef.current
-    if (container) {
-      container.scrollTo({
-        left: index * cardWidth,
-        behavior: 'smooth',
-      })
-    }
-  }, [cardWidth])
+    if (!container) return
 
-  useEffect(() => {
-    scrollToIndex(currentIndex)
-  }, [currentIndex, scrollToIndex])
+    const scrollLeft = container.scrollLeft
+    const maxScrollLeft = container.scrollWidth - container.clientWidth
 
-  useEffect(() => {
-    const updateMaxIndex = () => {
-      const container = containerRef.current
-      if (!container) return
-      const visibleWidth = container.offsetWidth
-      const visibleCards = Math.floor(visibleWidth / cardWidth)
-      setMaxIndex(reviews.length - visibleCards)
-    }
-
-    updateMaxIndex()
-    window.addEventListener('resize', updateMaxIndex)
-    return () => window.removeEventListener('resize', updateMaxIndex)
-  }, [cardWidth])
-
-  const next = () => {
-    if (currentIndex < maxIndex) setCurrentIndex(currentIndex + 1)
+    setCanScrollPrev(scrollLeft > 0)
+    setCanScrollNext(scrollLeft < maxScrollLeft - 1) // -1 to handle float precision
   }
 
-  const prev = () => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1)
+  const scrollBy = (direction) => {
+    const container = containerRef.current
+    if (!container) return
+    const scrollAmount = direction === 'next' ? cardWidth : -cardWidth
+
+    container.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth',
+    })
   }
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      checkScrollPosition()
+    }
+
+    checkScrollPosition()
+    container.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', checkScrollPosition)
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', checkScrollPosition)
+    }
+  }, [])
 
   return (
     <section className="bg-white py-16">
@@ -118,10 +122,10 @@ export default function CustomerFeedback() {
         <div className="mt-12 relative">
           <div
             ref={containerRef}
-            className="flex overflow-hidden gap-6"
+            className="flex overflow-hidden gap-6 scroll-smooth"
             style={{ scrollBehavior: 'smooth' }}
           >
-            {reviews.map((review, index) => (
+            {reviews.map((review) => (
               <div
                 key={review.id}
                 className="min-w-[384px] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
@@ -137,9 +141,6 @@ export default function CustomerFeedback() {
                       <p className="text-sm font-semibold text-third">{review.name}</p>
                     </div>
                   </div>
-                  <span className="text-sm text-gray-400 font-medium">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                 </div>
 
                 <div className="mt-4">
@@ -150,27 +151,24 @@ export default function CustomerFeedback() {
                 </div>
                 <hr className="my-4 border-gray-200" />
                 <div>
-                  <p className="text-xs text-gray-500">
-                    {review.service}
-                  </p>
+                  <p className="text-xs text-gray-500">{review.service}</p>
                 </div>
-
               </div>
             ))}
           </div>
 
-          {/* Navigation arrows */}
+          {/* Navigation */}
           <div className="mt-10 flex justify-end gap-4">
             <button
-              onClick={prev}
-              disabled={currentIndex === 0}
+              onClick={() => scrollBy('prev')}
+              disabled={!canScrollPrev}
               className="w-10 h-10 flex items-center justify-center border border-blue rounded-full hover:bg-white disabled:opacity-30"
             >
               <ArrowLeftIcon className="w-5 h-5 text-gray-700" />
             </button>
             <button
-              onClick={next}
-              disabled={currentIndex >= maxIndex}
+              onClick={() => scrollBy('next')}
+              disabled={!canScrollNext}
               className="w-10 h-10 flex items-center justify-center bg-blue text-white rounded-full hover:bg-blue-600 disabled:opacity-30"
             >
               <ArrowRightIcon className="w-5 h-5" />
