@@ -108,7 +108,7 @@ export default function CustomerFeedback() {
               Moving Excellence
             </h1>
           </div>
-          <div className="flex flex-col items-end text-right">
+          <div className="flex flex-col items-start text-left lg:items-end lg:text-right">
             <p className="text-gray-500 text-sm">Total Reviews</p>
             <p className="text-4xl font-bold text-third">122 K</p>
             <span className="text-sm bg-third text-white px-3 py-1 rounded-full mt-1 mb-1 inline-flex items-center gap-1">

@@ -55,7 +55,7 @@ const Services = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
-              <Image src={camion} alt="LTL" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
+              <Image src={camion} alt="LTL" className="rounded-md bg-white  w-8 h-8 xl:w-10 xl:h-10" />
               <p className="text-lg font-semibold">Amazon Partner Currier (LTL & FTL)</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
