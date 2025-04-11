@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect} from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 
 const reviews = [
@@ -50,8 +50,6 @@ export default function CustomerFeedback() {
   const [canScrollNext, setCanScrollNext] = useState(true)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
 
-  const cardWidth = 350 + 2
-
   const checkScrollPosition = () => {
     const container = containerRef.current
     if (!container) return
@@ -60,12 +58,17 @@ export default function CustomerFeedback() {
     const maxScrollLeft = container.scrollWidth - container.clientWidth
 
     setCanScrollPrev(scrollLeft > 0)
-    setCanScrollNext(scrollLeft < maxScrollLeft - 1) 
+    setCanScrollNext(scrollLeft < maxScrollLeft - 1)
   }
-
   const scrollBy = (direction) => {
     const container = containerRef.current
     if (!container) return
+
+    const card = container.querySelector('.review-card')
+    if (!card) return
+
+    const cardWidth = card.getBoundingClientRect().width + 10 // incluye margen/gap
+
     const scrollAmount = direction === 'next' ? cardWidth : -cardWidth
 
     container.scrollBy({
@@ -73,6 +76,7 @@ export default function CustomerFeedback() {
       behavior: 'smooth',
     })
   }
+
 
   useEffect(() => {
     const container = containerRef.current
@@ -108,7 +112,7 @@ export default function CustomerFeedback() {
               Moving Excellence
             </h1>
           </div>
-          <div className="flex flex-col items-start text-left lg:items-end lg:text-right">
+          <div className="w-full md:w-auto flex flex-col items-end text-right">
             <p className="text-gray-500 text-sm">Total Reviews</p>
             <p className="text-4xl font-bold text-third">122 K</p>
             <span className="text-sm bg-third text-white px-3 py-1 rounded-full mt-1 mb-1 inline-flex items-center gap-1">
@@ -116,19 +120,21 @@ export default function CustomerFeedback() {
             </span>
             <p className="text-xs text-gray-500">Searching for excellence</p>
           </div>
+
         </div>
 
         {/* Carousel */}
         <div className="mt-12 relative">
           <div
             ref={containerRef}
-            className="flex overflow-hidden gap-2 scroll-smooth"
-            style={{ scrollBehavior: 'smooth' }}
+            className="flex overflow-x-auto gap-2 scroll-smooth no-scrollbar py-4"
           >
+
+
             {reviews.map((review) => (
               <div
                 key={review.id}
-                className="min-w-[350px] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
+                className="review-card flex-shrink-0 w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.5rem)] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">

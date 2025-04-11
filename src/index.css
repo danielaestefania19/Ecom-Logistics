@@ -78,3 +78,12 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* styles.css o globals.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+}
