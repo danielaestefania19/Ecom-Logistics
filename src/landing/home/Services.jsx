@@ -34,12 +34,14 @@ const Services = () => {
             </p>
 
             <div className="flex gap-3 justify-center">
-              <Button
-                radius="full"
-                className="px-4 py-2 text-sm md:text-sm text-white bg-blue hover:bg-white-100 font-semibold"
-              >
-                <img src={telefono} alt="Phone Icon" className="w-4 h-4" /> Contact Us
-              </Button>
+              <a href="#contact">
+                <Button
+                  radius="full"
+                  className="px-4 py-2 text-sm md:text-sm text-white bg-blue hover:bg-white-100 font-semibold"
+                >
+                  <img src={telefono} alt="Phone Icon" className="w-4 h-4" /> Contact Us
+                </Button>
+              </a>
               <Button
                 radius="full"
                 className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold">
@@ -54,11 +56,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={camion} alt="LTL" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">Amazon Partner (LTL & FTL)</p>
+              <p className="text-lg font-semibold">Amazon Partner Currier (LTL & FTL)</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              We provide comprehensive logistics and transportation services, including freight coordination, route optimization, and last-mile delivery to ensure efficiency and reliability at every stage.
-            </CardBody>
+              As your logistics partner for LTL and FTL, we offer the most competitive rates in the market along with fast delivery to Amazon Fulfillment Centers—saving you time and money without compromising quality. We help you avoid low inventory fees and keep your stock moving efficiently.   </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
               <div className="absolute left-0 w-2 h-2 bg-gray-200 rounded-full" />
@@ -90,11 +91,11 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={tiktok} alt="TikTok Shop 3PL" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">TikTok Shop (3PL)</p>
+              <p className="text-lg font-semibold">3PL fulfillment for Amazon and TikTok Shop</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              Empower your TikTok Shop with our third-party logistics solutions—covering order fulfillment, packaging, and real-time tracking to help you scale and ship with confidence.
-            </CardBody>
+              Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence—from product launches and PPC marketing to logistics and shipping.   
+              </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
               <div className="absolute left-0 w-2 h-2 bg-gray-200 rounded-full" />
@@ -111,7 +112,7 @@ const Services = () => {
               <p className="text-lg font-semibold">Storage Service</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              Secure and scalable storage facilities with 24/7 surveillance, real-time inventory systems, and custom solutions for seasonal or long-term warehousing needs.
+              Looking for secure storage for your products? Our warehouse has the space you need to keep your inventory safe and organized. Try us out—new customers get 7 days of free storage.
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -129,8 +130,7 @@ const Services = () => {
               <p className="text-lg font-semibold">Local Moving</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              Professional local moving services tailored for residential and commercial clients. We handle everything from packing and loading to delivery with care and precision.
-            </CardBody>
+              We’ve got your local moves covered! If you need to pick up goods from your supplier or make local deliveries in California (LTL or SPD), our fleet and logistics partners make it easy and worry-free.    </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
               <div className="absolute left-0 w-2 h-2 bg-gray-200 rounded-full" />
@@ -147,8 +147,7 @@ const Services = () => {
               <p className="text-lg font-semibold">Brand Management</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              We help e-commerce brands manage their presence across platforms with tailored strategies, performance analytics, and reputation control to drive sustainable growth.
-            </CardBody>
+              Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence—from product launches and PPC marketing to logistics and shipping.     </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
               <div className="absolute left-0 w-2 h-2 bg-gray-200 rounded-full" />

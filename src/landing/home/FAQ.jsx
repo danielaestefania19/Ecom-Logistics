@@ -39,12 +39,14 @@ export default function FAQ() {
         <p className="text-slate-500 mt-4">
           Amet minim mollit non deserunt ullamco est sit aliqua dolor.
         </p>
+        <a href="#contact">
         <Button
           radius="full"
           className="px-6 py-6 text-lg md:text-xl text-white bg-blue hover:bg-white-100 font-semibold mt-8 mx-auto lg:mx-0"
         >
           Get Started
         </Button>
+        </a>
       </div>
 
       {/* Columna derecha */}

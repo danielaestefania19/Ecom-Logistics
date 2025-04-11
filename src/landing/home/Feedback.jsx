@@ -4,40 +4,46 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 const reviews = [
   {
     id: 1,
-    name: 'Sarah Johnson',
+    name: 'Alicia R. – Owner of FitLife Gear',
     image: 'https://randomuser.me/api/portraits/women/44.jpg',
-    text: 'They handled my move with care and professionalism. I’m beyond satisfied with the service!',
+    text: 'Ecom Logistics is a game-changer for our Amazon business. Their prep service is fast and efficient, and their customer service is exceptional. They answered all our questions promptly and ensured that everything was compliant with Amazon’s requirements. We couldn’t be happier!',
     stars: 5,
+    service: 'Prep Center & FBA Shipments',
   },
   {
     id: 2,
-    name: 'Lisa Smith',
+    name: ' Mark T. – Amazon Reseller',
     image: 'https://randomuser.me/api/portraits/women/47.jpg',
-    text: 'Excellent experience from start to finish. Punctual, efficient and polite.',
+    text: 'The LTL shipping service from Ecom Logistics is a lifesaver! Not only do they offer timely and reliable delivery, but they also offer residential pickup, which saves us a ton of time. Their customer service team is always friendly and incredibly helpful. We highly recommend them!',
     stars: 5,
+    service: 'LTL Shipping & Residential Pickup',
   },
   {
     id: 3,
-    name: 'David Parker',
+    name: 'Sophie L. – Private Label Owner',
     image: 'https://randomuser.me/api/portraits/men/45.jpg',
-    text: 'Very smooth move. They even helped me unpack! Highly recommended.',
+    text: 'Ecom Logistics has been a breath of fresh air. Their prep center service is lightning fast, and they make sure everything is perfect before shipping out. They offer the personal touch that many other companies lack. Honestly, it’s hard to find a logistics provider like this in Northern California. Highly recommend!',
     stars: 5,
+    service: 'Prep Center',
   },
   {
     id: 4,
-    name: 'Emily Davis',
+    name: 'Samuel W. – Operations Director at ForFit Sports',
     image: 'https://randomuser.me/api/portraits/women/35.jpg',
-    text: 'Stress-free and efficient. Great team!',
+    text: 'I’ve been using Ecom Logistics for all our LTL shipments, and I couldn’t be more satisfied. Their services are fast, reliable, and hassle-free. The best part is that they handle everything from pick-up to delivery, and they make sure everything is handled with precision. We’ve saved time and money working with them.',
     stars: 5,
+    service: 'LTL Shipping',
   },
   {
     id: 5,
-    name: 'James Lee',
+    name: 'Angel Perez - Amazon Reseller',
     image: 'https://randomuser.me/api/portraits/men/33.jpg',
-    text: 'Affordable, quick, and careful. What more could I ask for?',
+    text: "I've been an Amazon seller for 5 years, and working with Diego from Ecom Logistics has been a game-changer. From the personalized advice they provide to how fast and efficient they are, it's been a tremendous experience. If you're just starting in this business, my recommendation is to use a prep center like theirs and focus on the crucial aspects like securing capital and products",
     stars: 5,
+    service: 'LTL Shipping & Residential Pickup',
   },
 ]
+
 
 export default function CustomerFeedback() {
   const containerRef = useRef(null)
@@ -120,26 +126,35 @@ export default function CustomerFeedback() {
                 key={review.id}
                 className="min-w-[384px] bg-[#F4F4F4] rounded-xl p-6 shadow-sm flex flex-col justify-between"
               >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={review.image}
-                    alt={review.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={review.image}
+                      alt={review.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold text-third">{review.name}</p>
+                    </div>
+                  </div>
                   <span className="text-sm text-gray-400 font-medium">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
+
                 <div className="mt-4">
-                  <div className="flex text-sky-800 text-sm mb-2">
+                  <div className="flex text-third text-sm mb-2">
                     {'★'.repeat(review.stars)}
                   </div>
                   <p className="text-sm text-gray-700">{review.text}</p>
                 </div>
                 <hr className="my-4 border-gray-200" />
-                <p className="text-sm font-semibold text-sky-700">
-                  {review.name}
-                </p>
+                <div>
+                  <p className="text-xs text-gray-500">
+                    {review.service}
+                  </p>
+                </div>
+
               </div>
             ))}
           </div>

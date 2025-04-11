@@ -71,7 +71,8 @@ const ContactUs = () => {
     };
 
     return (
-        <section className="w-full bg-primary py-16 px-4 flex justify-center">
+        
+        <section id="contact" className="w-full bg-primary py-16 px-4 flex justify-center">
             <div className="bg-white rounded-2xl w-full max-w-6xl px-4 sm:px-6 md:px-8 lg:px-20 py-12 shadow-md">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2">Contact Us</h2>
                 <p className="text-center text-gray-500 mb-8 max-w-xl mx-auto text-sm sm:text-base">

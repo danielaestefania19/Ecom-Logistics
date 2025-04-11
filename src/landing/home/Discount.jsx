@@ -18,6 +18,7 @@ const Discount = () => {
           </div>
 
           {/* Card */}
+          <a href="#contact">
           <div className="w-full max-w-sm md:max-w-md px-4 md:px-0">
             <Card className="bg-white px-6 rounded-xl shadow-md text-center">
               <CardHeader className="flex items-center justify-between gap-4 sm:gap-6 w-full flex-nowrap">
@@ -33,6 +34,7 @@ const Discount = () => {
 
             </Card>
           </div>
+          </a>
         </div>
       </div>
     </section>

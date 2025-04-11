@@ -18,8 +18,8 @@ export default function Footer() {
 
       {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-end">
-        <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm justify-between items-start text-center md:text-left">
-          {/* Information */}
+      <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start sm:justify-between justify-end text-right sm:text-left">
+      {/* Information */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Information</h4>
             <ul className="space-y-1">

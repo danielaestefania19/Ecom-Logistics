@@ -20,13 +20,15 @@ const Hero = () => {
         <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">
           Center for Amazon FBA and TikTok Shop
         </p>
-        <div className="flex gap-4 justify-center md:justify-start">
+        <div  className="flex gap-4 justify-center md:justify-start">
+        <a href="#contact">
           <Button
             radius="full"
             className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
           >
             Get Started
           </Button>
+          </a>
           <Button
             radius="full"
             className="px-8 py-6 text-lg md:text-xl text-third bg-white hover:bg-gray-100 font-semibold mt-8"
