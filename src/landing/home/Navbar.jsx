@@ -92,7 +92,7 @@ const Navbar = () => {
                 return (
                   <Dropdown 
                   classNames={{
-                    base: "before:bg-primary", // change arrow background
+                    base: "before:bg-primary", 
                     content:
                       "bg-primary",
                   }}
@@ -111,12 +111,14 @@ const Navbar = () => {
                       </Button>
                     </DropdownTrigger>
                   </NavbarItem>
-                  <DropdownMenu
+                  <DropdownMenu variant='light'
                    itemClasses={{
                     base: [
                       "rounded-md",
                       "text-white",
                       "transition-opacity",
+                      "data-[hover=true]:bg-white-100",
+                      "data-[hover=true]:text-gray-300",
                     ],
                   }}
                     aria-label="Servicios disponibles"

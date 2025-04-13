@@ -1,38 +1,51 @@
 import React from 'react'
 import FastDelivery from '../../assets/FastDelivery.png'
+import Sprinkle from '../../assets/Sprinkle.svg'
 
 export default function FastDeliverySection() {
     return (
-        <section className="bg-white py-32 px-4">
-            <div className="max-w-7xl mx-auto flex justify-center">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-4 w-full">
-                    {/* Texto */}
-                    <div className="w-full lg:w-1/2 flex flex-col justify-center gap-6 text-left lg:items-end lg:text-right">
-                        <h2 className="text-3xl md:text-4xl font-bold text-third">
+        <section
+            className="py-24 px-6 bg-no-repeat bg-cover bg-center"
+            style={{ backgroundImage: `url(${Sprinkle})` }}
+        >
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+
+                {/* Texto con fondo blanco */}
+                <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                    <div className="bg-white  rounded-2xl shadow-xl p-12 text-center lg:text-right flex flex-col gap-4 max-w-xl">
+                        {/* Título principal */}
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-blue leading-tight">
                             No More Low Inventory Fees!
                         </h2>
 
-                        <p className="text-xl md:text-2xl font-semibold text-blue">
-                            Your LTL Shipments Will <br/> Take 2–3 Days
+                        {/* Subtítulo destacado */}
+                        <p className="text-xl md:text-2xl font-semibold text-blue-600 leading-snug">
+                            Optimize Your LTL Shipments to Amazon
                         </p>
 
-                        <p className="text-xl md:text-2xl font-semibold text-blue">
-                            To Arrive at Amazon <br/>Warehouse Once They <br/> Leave Ours
-                        </p>
-
-                        <p className="text-xl md:text-2xl font-semibold text-blue">
-                            We Provide Free Expert Advisory
-                        </p>
+                        {/* Beneficios clave separados */}
+                        <ul className="text-lg md:text-xl text-gray-700 space-y-2 list-none mt-2">
+                            <li className="flex items-center gap-2 justify-center lg:justify-end">
+                                <span className="text-primary font-bold">✓</span> 2–3 Days to Deliver
+                            </li>
+                            <li className="flex items-center gap-2 justify-center lg:justify-end">
+                                <span className="text-primary font-bold">✓</span> Avoid Extra Inventory Fees
+                            </li>
+                            <li className="flex items-center gap-2 justify-center lg:justify-end">
+                                <span className="text-primary font-bold">✓</span> Free Expert Advisory
+                            </li>
+                        </ul>
                     </div>
 
-                    {/* Imagen */}
-                    <div className="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
-                        <img
-                            src={FastDelivery}
-                            alt="LTL Shipment Delivery"
-                            className="rounded-xl shadow-lg w-full max-w-lg"
-                        />
-                    </div>
+                </div>
+
+                {/* Imagen sin fondo */}
+                <div className="w-full lg:w-1/2 flex justify-center">
+                    <img
+                        src={FastDelivery}
+                        alt="LTL Shipment Delivery"
+                        className="rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 w-full max-w-xl"
+                    />
                 </div>
             </div>
         </section>

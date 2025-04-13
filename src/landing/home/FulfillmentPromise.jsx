@@ -3,41 +3,38 @@ import Fulfillment from '../../assets/Fulfillment.png'
 
 export default function FulfillmentPromise() {
     return (
-        <section className="bg-primary py-32 px-4">
-            <div className="max-w-7xl mx-auto flex justify-center">
-                <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-31 w-full">
-                    {/* Imagen */}
-                    <div className="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
-                        <img
-                            src={Fulfillment} // Puedes cambiar esta URL
-                            alt="Fulfillment warehouse"
-                            className="rounded-xl shadow-lg w-full max-w-lg"
-                        />
-                    </div>
-                    {/* Texto */}
-                    <div className="w-full lg:w-1/2 flex flex-col justify-center gap-6 text-left">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white">
-                            Top-Rated Fulfillment Center <br/> on the West Coast
+        <section
+            className="py-24 px-6 bg-primary"
+        >
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+                <div className="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
+                    <img
+                        src={Fulfillment}
+                        alt="Fulfillment warehouse"
+                        className="rounded-xl shadow-lg w-full max-w-xl transition-transform duration-300 hover:scale-105"
+                    />
+                </div>
+                <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
+                    <div className="p-10 text-center lg:text-left flex flex-col gap-6 max-w-xl">
+                        <h2 className="text-2xl md:text-3xl font-bold text-third leading-tight tracking-tight">
+                            Top-Rated Fulfillment Center <br /> on the West Coast
                         </h2>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-3xl font-bold text-white leading-tight">99.9%</span>
+                            <span className="text-base text-white opacity-80">Order Accuracy</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-3xl font-bold text-white leading-tight">99%</span>
+                            <span className="text-base text-white opacity-80">
+                                On-Time Delivery (daily outbound shipments)
+                            </span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <span className="text-3xl font-bold text-white leading-tight">24 - 48 Hrs</span>
+                            <span className="text-base text-white opacity-80">to Prepare Your Products</span>
+                        </div>
 
-                        <p className="text-xl md:text-2xl font-semibold text-third">
-                            99.9% 
-                            <span className="text-xl text-white ml-2">Order Accuracy</span>
-                        </p>
-
-                        <p className="text-xl md:text-2xl font-semibold  text-third">
-                            99% 
-                            <span className="text-xl text-white ml-2"> On-Time Delivery(daily outbound shipments)</span>
-                        </p>
-
-                        <p className="text-xl md:text-2xl font-semibold  text-third">
-                            24 - 48 Hrs 
-                            <span className="text-xl text-white ml-2"> to Prepare Your Products</span>
-                    
-                        </p>
                     </div>
-
-
                 </div>
             </div>
         </section>

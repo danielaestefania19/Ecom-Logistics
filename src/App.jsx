@@ -1,6 +1,9 @@
+import React from 'react'
 import { HeroUIProvider } from "@heroui/react"
-import AppRoutes from './App.routes.jsx'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
+import AppRoutes from './App.routes.jsx'
 
 /**
  * @component
@@ -9,7 +12,8 @@ import AppRoutes from './App.routes.jsx'
 function App() {
   return (
     <HeroUIProvider>
-        <AppRoutes />
+      <AppRoutes />
+      <ToastContainer/>
     </HeroUIProvider>
   )
 }

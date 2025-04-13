@@ -29,9 +29,9 @@ function Home() {
       <FulfillmentPromise />
       <FastDeliverySection/>
       <Discount/>
-      <WhyEcom/>
-      <CoverageMap/>
       <VideoSection/>
+      <CoverageMap/>
+      <WhyEcom/>
       <ContactUs/>
       <Logistics/>
       <Footer/>
