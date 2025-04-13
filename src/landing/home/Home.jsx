@@ -4,11 +4,13 @@ import Discount from './Discount.jsx';
 import VideoSection from './VideoSection.jsx';
 import WhyEcom from './WhyEcom.jsx';
 import ContactUs from './ContacUs.jsx';
-import CustomerFeedback from './Feedback.jsx';
+//import CustomerFeedback from './Feedback.jsx';
 import CoverageMap from './CoverageMap.jsx';
-import FAQ from './FAQ.jsx';
+//import FAQ from './FAQ.jsx';
 import Footer from './Footer.jsx';
-
+import Logistics from './Logistics.jsx';
+import FulfillmentPromise from './FulfillmentPromise.jsx';
+import FastDeliverySection from './FastDeliverySection.jsx';
 /**
  * Main component for the homepage.
  * 
@@ -24,13 +26,14 @@ function Home() {
     <>
       <Hero /> 
       <Services /> 
+      <FulfillmentPromise />
+      <FastDeliverySection/>
       <Discount/>
-      <VideoSection/>
       <WhyEcom/>
-      <ContactUs/>
-      <CustomerFeedback/>
       <CoverageMap/>
-      <FAQ/>
+      <VideoSection/>
+      <ContactUs/>
+      <Logistics/>
       <Footer/>
     </>
   );

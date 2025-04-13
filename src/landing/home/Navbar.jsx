@@ -9,12 +9,28 @@ import {
   NavbarMenu as HerouiNavbarMenu,
   NavbarMenuItem,
   useNavbarContext,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
 } from "@heroui/react";
-import { Link as ReactRouterLink, useLocation } from 'react-router-dom'; // Usamos Link de react-router-dom
+import { ChevronDownIcon } from '@heroicons/react/24/solid';
+import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import Banner from "./Banner.jsx";
 
-const menuItems = ["Home", "About us", "Services", "Pricing", "Contact"];
+const menuItems = ["Home", "Services", "Pricing", "About us"];
+
+const servicesItems = [
+  { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner'},
+  { key: 'FBA', label: 'FBA Prep Center', path: '/prepservices' },
+  { key: 'TikTok', label: 'TikTok Shop 3PL', path: '/TikTok' },
+  { key: 'StorageService', label: 'Storage Service', path: '/Storage Service' },
+  { key: 'LocalMoving', label: 'Local Moving', path: '/Local Moving' },
+  { key: 'BrandManagement', label: 'Brand Management', path: '/Brand Management' },
+];
+
 
 function NavbarMenu() {
   const { setIsMenuOpen } = useNavbarContext();
@@ -52,13 +68,11 @@ function NavbarMenu() {
 
 const Navbar = () => {
   const location = useLocation();
+
   return (
     <div>
       <Banner />
-      <HerouiNavbar
-        position="static"
-        className="bg-primary text-white px-8 h-20"
-      >
+      <HerouiNavbar position="static" className="bg-primary text-white px-8 h-20">
         <NavbarContent className="sm:hidden" justify="start">
           <NavbarMenuToggle />
         </NavbarContent>
@@ -71,25 +85,77 @@ const Navbar = () => {
           <NavbarBrand>
             <img src={LogoPrincipal2} alt="Logo" className="h-12 w-auto" />
           </NavbarBrand>
+
           <div className="flex gap-x-6 ml-auto">
-            {menuItems.map((item, i) => (
-              <NavbarItem key={i} isActive={item === "Home"}>
-                <Link
-                  as={ReactRouterLink}
-                  to={`/${item.toLowerCase().replace(' ', '')}`}
-                  className={
-                    `text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
-                      ? item === "Home"
-                        ? "text-third"
+            {menuItems.map((item, i) => {
+              if (item === "Services") {
+                return (
+                  <Dropdown 
+                  classNames={{
+                    base: "before:bg-primary", // change arrow background
+                    content:
+                      "bg-primary",
+                  }}
+                  key="services">
+                  <NavbarItem>
+                    <DropdownTrigger>
+                      <Button
+                        variant="light"
+                        disableRipple
+                        size='lg'
+                        radius="sm"
+                        className="p-0 bg-transparent text-white hover:text-gray-300 data-[hover=true]:bg-transparent -mt-4"
+                        endContent={<ChevronDownIcon className="w-4 h-4" />}
+                      >
+                        Services
+                      </Button>
+                    </DropdownTrigger>
+                  </NavbarItem>
+                  <DropdownMenu
+                   itemClasses={{
+                    base: [
+                      "rounded-md",
+                      "text-white",
+                      "transition-opacity",
+                    ],
+                  }}
+                    aria-label="Servicios disponibles"
+                    items={servicesItems}
+                  >
+                    {(item) => (
+                      <DropdownItem
+                        key={item.key}
+                        description={item.description}
+                      >
+                        <ReactRouterLink to={item.path} className="w-full block">
+                          {item.label}
+                        </ReactRouterLink>
+                      </DropdownItem>
+                    )}
+                  </DropdownMenu>
+                </Dropdown>
+                
+
+                );
+              }
+
+              return (
+                <NavbarItem key={i} isActive={item === "Home"}>
+                  <Link
+                    as={ReactRouterLink}
+                    to={`/${item.toLowerCase().replace(' ', '')}`}
+                    className={`text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
+                        ? item === "Home"
+                          ? "text-third"
+                          : "text-white"
                         : "text-white"
-                      : "text-white"
-                    }`
-                  }
-                >
-                  {item}
-                </Link>
-              </NavbarItem>
-            ))}
+                      }`}
+                  >
+                    {item}
+                  </Link>
+                </NavbarItem>
+              );
+            })}
           </div>
         </NavbarContent>
 

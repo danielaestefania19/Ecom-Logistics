@@ -32,18 +32,18 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="w-full sm:w-auto">
-            <h4 className="font-semibold mb-3">Contact us</h4>
+            <h4 className="font-semibold mb-3">Contact Us</h4>
             <p className="leading-relaxed">
               25509 Industrial<br />
               Blvd, Hayward CA<br />
               94545 Suite E3<br />
-              341-208-9445
+              +1 341-208-9445
             </p>
           </div>
 
           {/* Social */}
           <div className="w-full sm:w-auto">
-            <h4 className="font-semibold mb-3">Find us</h4>
+            <h4 className="font-semibold mb-3">Find Us</h4>
             <div className="flex justify-start gap-4 mt-2">
               <img src={facebook} alt="Facebook" className="h-8" />
               <img src={instagram} alt="Instagram" className="h-8" />

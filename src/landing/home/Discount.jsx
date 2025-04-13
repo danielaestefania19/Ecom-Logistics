@@ -13,7 +13,7 @@ const Discount = () => {
               Are you overpaying for
             </h2>
             <span className="text-white text-2xl sm:text-3xl font-bold">
-              Fulfillment services and losing time?
+            LTL Services and losing time?
             </span>
           </div>
 
@@ -23,7 +23,7 @@ const Discount = () => {
               <Card
                 isHoverable={true}
                 classNames={{
-                  base: "bg-white px-2 rounded-xl shadow-md text-center hover:bg-black" ,
+                  base: "bg-white px-2 rounded-xl shadow-md text-center" ,
                 }}
               >
                 <CardHeader className="flex items-center justify-between gap-6 sm:gap-6 w-full flex-nowrap">
