@@ -1,18 +1,17 @@
 import React from 'react'
 import FastDelivery from '../../assets/FastDelivery.png'
-import Sprinkle from '../../assets/Sprinkle.svg'
 
 export default function FastDeliverySection() {
     return (
         <section
-            className="py-24 px-6 bg-no-repeat bg-cover bg-center"
-            style={{ backgroundImage: `url(${Sprinkle})` }}
+            className="bg-white py-24 px-6 bg-no-repeat bg-cover bg-center"
+           
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
 
                 {/* Texto con fondo blanco */}
                 <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-                    <div className="bg-white  rounded-2xl shadow-xl p-12 text-center lg:text-right flex flex-col gap-4 max-w-xl">
+                    <div className="bg-white  rounded-2xl shadow-2xl p-12 text-center lg:text-right flex flex-col gap-4 max-w-xl">
                         {/* Título principal */}
                         <h2 className="text-2xl md:text-3xl font-extrabold text-blue leading-tight">
                             No More Low Inventory Fees!
