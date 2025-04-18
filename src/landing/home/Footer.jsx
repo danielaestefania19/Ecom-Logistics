@@ -24,9 +24,8 @@ export default function Footer() {
             <h4 className="font-semibold mb-3">Information</h4>
             <ul className="space-y-1">
               <li><a href="#">Our services</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Track parcel</a></li>
-              <li><a href="#">Calculator</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">About Us</a></li>
             </ul>
           </div>
 

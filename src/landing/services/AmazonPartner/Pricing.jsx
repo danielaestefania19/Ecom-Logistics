@@ -1,62 +1,37 @@
-import {
-  PhoneIcon,
-  TruckIcon,
-  CurrencyDollarIcon,
-  BuildingStorefrontIcon,
-  InboxArrowDownIcon
-} from "@heroicons/react/24/solid";
+import { Button, Card, CardBody, CardHeader, Image } from "@heroui/react";
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
-const steps = [
-  {
-    icon: <PhoneIcon className="w-10 h-10 text-white" />,
-    title: "STEP 1",
-    description: "Contact us to get a free quote and create an account with us!"
-  },
-  {
-    icon: <BuildingStorefrontIcon className="w-10 h-10 text-white" />,
-    title: "STEP 2",
-    description: "Get your LTL or FTL shipment ready, prepare your pallets with our advisory."
-  },
-  {
-    icon: <CurrencyDollarIcon className="w-10 h-10 text-white" />,
-    title: "STEP 3",
-    description: "Coordinate the payment with our dedicated team."
-  },
-  {
-    icon: <TruckIcon className="w-10 h-10 text-white" />,
-    title: "STEP 4",
-    description: "Get in touch with us to arrange a free pickup or delivery in San Francisco and Bay Area."
-  },
-  {
-    icon: <InboxArrowDownIcon className="w-10 h-10 text-white" />,
-    title: "STEP 5",
-    description: "Your merchandise will reach the Amazon fulfillment center within 2 to 3 days from the date of shipment."
-  }
-];
 
-const Pricing = () => (
-  <section className="py-20 px-6 bg-gray-50 font-montserrat">
-    <div className="max-w-7xl mx-auto">
-      <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-10">
-        Steps to Request an LTL or FTL Service
-      </h2>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-        {steps.map((step, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-md p-6 text-center border border-gray-200 hover:shadow-xl transition"
-          >
-            <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-primary">
-              {step.icon}
+const Pricing = () => {
+    return (
+        <section className="bg-primary py-16 px-8">
+            <div className="max-w-7xl mx-auto flex justify-center">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-24 w-full">
+                    {/* Texto */}
+                    <div className="text-center md:text-left px-2 md:px-0">
+                        <h2 className="text-third text-2xl sm:text-3xl font-bold mb-1">
+                            Top Rated LTL Prices
+                        </h2>
+                        <span className="text-white text-2xl sm:text-3xl font-bold">
+                            in Northern California
+                        </span>
+                    </div>
+                    <a href="#contact">
+                        <div className="w-full px-2 md:px-0">
+                            <Button
+                                variant="shadow"
+                                size="lg"
+                                className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
+                                endContent={<ArrowRightIcon className="h-5 w-5 ml-2" />}
+                            >
+                                Check Pricing
+                            </Button>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <h3 className="text-md font-semibold text-primary mb-2">{step.title}</h3>
-            <p className="text-sm text-gray-700 leading-snug">{step.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
+        </section>
+    );
+};
 
 export default Pricing;
