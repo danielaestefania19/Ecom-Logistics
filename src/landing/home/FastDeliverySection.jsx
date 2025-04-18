@@ -11,7 +11,7 @@ export default function FastDeliverySection() {
 
                 {/* Texto con fondo blanco */}
                 <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-                    <div className="bg-white  rounded-2xl shadow-2xl p-12 text-center lg:text-right flex flex-col gap-4 max-w-xl">
+                    <div className="bg-white  rounded-2xl shadow-2xl p-12 text-center lg:text-right flex flex-col gap-4 max-w-xl transition-transform duration-300 hover:scale-105">
                         {/* Título principal */}
                         <h2 className="text-2xl md:text-3xl font-extrabold text-blue leading-tight">
                             No More Low Inventory Fees!
@@ -43,7 +43,7 @@ export default function FastDeliverySection() {
                     <img
                         src={FastDelivery}
                         alt="LTL Shipment Delivery"
-                        className="rounded-2xl shadow-xl transition-transform duration-300 hover:scale-105 w-full max-w-xl"
+                        className="rounded-2xl shadow-xl w-full max-w-xl"
                     />
                 </div>
             </div>

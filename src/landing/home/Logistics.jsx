@@ -3,7 +3,7 @@ import { Button } from "@heroui/react";
 const Logistics = () => {
   return (
     <section className="bg-white py-24 px-4">
-      <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl shadow-xl px-6 sm:px-12 py-16 text-center space-y-6">
+      <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl shadow-xl px-6 sm:px-12 py-16 text-center space-y-6  transition-transform duration-300 hover:scale-105">
         <h2 className="text-third text-2xl sm:text-3xl font-bold">
           Ready to Talk?
         </h2>

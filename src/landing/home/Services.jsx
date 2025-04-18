@@ -154,7 +154,7 @@ const Services = () => {
               <div className="absolute right-0 w-2 h-2 bg-gray-200 rounded-full" />
             </div>
             <CardFooter>
-              <a href="#" className="text-sm text-third hover:underline font-semibold">Learn More</a>
+              <a href="#" className="text-sm text-third hover:underline font-semibold">Coming Soon</a>
             </CardFooter>
           </Card>
         </div>

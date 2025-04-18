@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 
 const CoverageMap = () => {
   return (
-    <section className="bg-primary text-white px-6 py-16 md:py-24">
+    <section className="bg-black text-white px-6 py-16 md:py-24">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
         {/* Mapa de fondo con puntos */}
         <div className="relative w-full md:w-1/2 mb-12 md:mb-0">
@@ -13,11 +13,6 @@ const CoverageMap = () => {
             alt="World Map"
             className="w-full opacity-70"
           />
-          {/* Simulación de marcadores (ejemplo con Tailwind absolute) */}
-          {/* Puedes repetir este div para cada marcador */}
-          <div className="absolute top-[20%] left-[30%]">
-            <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white"></div>
-          </div>
         </div>
 
         {/* Texto y botón */}

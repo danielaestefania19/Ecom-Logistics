@@ -1,61 +1,59 @@
 import { Button } from "@heroui/react";
 import TruckImage from '../../../assets/TruckImage.png';
 
-
 const Header = () => (
   <div className="relative w-full min-h-[80vh] flex flex-col md:flex-row bg-primary text-white overflow-hidden font-montserrat">
-    {/* Contenido de texto */}
-    <div className="relative z-10 w-full md:w-1/2 px-6 sm:px-10 md:px-20 lg:px-32 py-20 flex flex-col justify-center text-center md:text-left">
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight drop-shadow-md">
-        Amazon Partner Carrier <br className="hidden md:block" /> <span className="text-third">LTL & FTL</span>
+    {/* Contenido principal */}
+    <div className="relative z-10 w-full md:w-3/5 px-6 sm:px-10 md:px-20 lg:px-32 py-20 flex flex-col justify-center text-center md:text-left">
+      <h1 className="text-4xl md:text-6xl font-semibold leading-tight mb-6">
+        Amazon Partner Carrier <span className="text-third">LTL & FTL</span>
       </h1>
 
-      <h2 className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-4">
+      <p className="text-xl md:text-2xl font-medium text-white/90 mb-6">
         Your Logistics Partner for Amazon Fulfillment Center Shipments
-      </h2>
+      </p>
 
-      <p className="text-sm md:text-base lg:text-lg text-gray-200 max-w-xl mb-4 mx-auto md:mx-0">
+      <p className="text-base md:text-lg text-white/80 font-light leading-relaxed mb-4">
         We simplify your logistics to Amazon FBA. We handle your LTL and FTL shipments from residential or commercial
         locations across Northern California. We also take care of appointment scheduling and delivery.
       </p>
 
-      <p className="text-blue-400 font-semibold text-base md:text-lg mb-6">
+      <p className="text-base md:text-lg text-white/70 font-light leading-relaxed">
         Plus, we offer some of the best rates and fastest delivery times in the region.
       </p>
 
-      <a href="#contact">
+      <a href="#contact" className=" inline-block">
         <Button
-          radius="md"
-          className="bg-third hover:bg-blue-700 transition text-white px-6 py-3 text-lg font-medium shadow-lg"
+          radius="full"
+          className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
         >
-          Request a Quote
+          Contact Sell
         </Button>
       </a>
     </div>
 
-    {/* Imagen decorativa para desktop */}
+    {/* Imagen con gradiente lateral para escritorio */}
     <div
-  className="absolute top-0 right-0 h-full w-3/5 hidden md:block"
-  style={{
-    backgroundImage: `
-      linear-gradient(
-        to right,
-        rgba(7, 10, 15, 1) 0%,
-        rgba(7, 10, 15, 0.8) 10%,
-        rgba(7, 10, 15, 0.2) 40%,
-        rgba(7, 10, 15, 0) 50%,
-        rgba(7, 10, 15, 0.2) 60%,
-        rgba(7, 10, 15, 0.8) 90%,
-        rgba(7, 10, 15, 1) 100%
-      ),
-      url(${TruckImage})
-    `,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
-/>
-
+      className="absolute top-0 right-0 h-full w-3/5 hidden md:block"
+      style={{
+        backgroundImage: `
+          linear-gradient(
+            to right,
+            rgba(7, 10, 15, 1) 0%,
+            rgba(7, 10, 15, 0.8) 10%,
+            rgba(7, 10, 15, 0.2) 40%,
+            rgba(7, 10, 15, 0) 50%,
+            rgba(7, 10, 15, 0.2) 60%,
+            rgba(7, 10, 15, 0.8) 90%,
+            rgba(7, 10, 15, 1) 100%
+          ),
+          url(${TruckImage})
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    />
 
     {/* Imagen para móviles */}
     <div className="w-full md:hidden relative h-[300px]">

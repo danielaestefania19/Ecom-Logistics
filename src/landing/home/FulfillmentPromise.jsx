@@ -4,18 +4,18 @@ import Fulfillment from '../../assets/Fulfillment.png'
 export default function FulfillmentPromise() {
     return (
         <section
-            className="py-24 px-6 bg-primary"
+            className="py-24 px-6 bg-primary  bg-no-repeat bg-cover bg-center"
         >
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
                 <div className="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
                     <img
                         src={Fulfillment}
                         alt="Fulfillment warehouse"
-                        className="rounded-xl shadow-lg w-full max-w-xl transition-transform duration-300 hover:scale-105"
+                        className="rounded-xl shadow-lg w-full max-w-xl"
                     />
                 </div>
                 <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
-                    <div className="p-10 text-center lg:text-left flex flex-col gap-6 max-w-xl">
+                    <div className="bg-primary/50  rounded-2xl shadow-2xl p-10 text-center lg:text-left flex flex-col gap-6 max-w-xl transition-transform duration-300 hover:scale-105">
                         <h2 className="text-2xl md:text-3xl font-bold text-third leading-tight tracking-tight">
                             Top-Rated Fulfillment Center <br /> on the West Coast
                         </h2>
