@@ -56,13 +56,14 @@ const Header = () => (
     />
 
     {/* Imagen para móviles */}
-    <div className="w-full md:hidden relative h-[300px]">
-      <img
+    <div className="w-full h-full md:hidden relative">
+        <img
         src={TruckImage}
         alt="Truck delivering for Amazon"
-        className="w-full h-full object-cover"
+       className="w-full h-auto object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-primary to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
+
     </div>
   </div>
 );
