@@ -24,13 +24,13 @@ const CoverageMap = () => {
             </h2>
 
             <p className="text-white text-lg mb-4 leading-relaxed">
-              Over <span className="text-third font-semibold">40% of U.S. imports</span> come through <span className="text-white font-bold opacity-90">California</span>, 
+              Over <span className="text-third font-semibold">40% of U.S. imports</span> come through <span className="text-third font-bold opacity-90">California</span>, 
               home to the biggest brands and suppliers. That’s not just trivia, 
               <span className="text-third font-semibold"> it’s your business advantage!</span>
             </p>
 
             <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              Welcome to <span className="text-white font-semibold">California</span>, the core of American logistics.
+              Welcome to <span className="text-third font-semibold">California</span>, the core of American logistics.
             </p>
 
             <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
