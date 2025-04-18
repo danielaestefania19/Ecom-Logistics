@@ -4,7 +4,7 @@ import Navbar from './landing/home/Navbar.jsx';
 import Footer from './landing/home/Footer.jsx';
 import NotFound from './landing/NotFound.jsx'; 
 import AmazonPartner from './landing/services/AmazonPartner/AmazonPartner.jsx'; 
-
+import TikTokShop from './landing/services/TikTokShop/TikTokShop.jsx';
 
 /**
  * Main routing configuration for the application.
@@ -23,6 +23,7 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<><Navbar /><Home /></>} />
         <Route path="/Amazon Partner" element={<> <AmazonPartner /></>}/> 
+        <Route path="/TikTok" element={<> <TikTokShop /></>}/>     
         <Route path="*" element={<NotFound />} /> 
       </Routes>
     </div>

@@ -16,17 +16,17 @@ const Advantages = () => (
             Stop wasting time and avoid extra fees with our reliable freight service!
           </h2>
           <div className="flex flex-col gap-1">
-          <span className="text-3xl font-bold text-white leading-tight">24 - 72 Hrs</span>
-          <span className="text-base text-white opacity-80">for delivery to Amazon FCs once it leaves our warehouse.</span>
-            </div>
-            <div className="flex flex-col gap-1">
+            <span className="text-3xl font-bold text-white leading-tight">24 - 72 Hrs</span>
+            <span className="text-base text-white opacity-80">for delivery to Amazon FCs once it leaves our warehouse.</span>
+          </div>
+          <div className="flex flex-col gap-1">
             <span className="text-3xl font-bold text-white leading-tight">98%</span>
             <span className="text-base text-white opacity-80">On-Time LTL & FTL Delivery Accuracy</span>
-            </div>
-            <div className="flex flex-col gap-1">
+          </div>
+          <div className="flex flex-col gap-1">
             <span className="text-3xl font-bold text-white leading-tight">Free Daily Pickup</span>
             <span className="text-base text-white opacity-80">In the Bay Area</span>
-            </div>
+          </div>
         </div>
       </div>
     </div>

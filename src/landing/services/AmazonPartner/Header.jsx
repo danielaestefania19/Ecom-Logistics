@@ -27,7 +27,7 @@ const Header = () => (
           radius="full"
           className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
         >
-          Contact Sell
+          Contact Sales
         </Button>
       </a>
     </div>
