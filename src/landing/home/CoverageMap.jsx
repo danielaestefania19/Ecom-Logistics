@@ -1,22 +1,23 @@
 import React from 'react';
-import map from '../../assets/map.png';
+import map from '../../assets/map.png'
 import { Button } from "@heroui/react";
 
 const CoverageMap = () => {
   return (
-    <section className="bg-black text-white px-6 py-20">
+    <section className="bg-black text-white px-6 py-16 md:py-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        {/* Mapa */}
+        {/* Mapa de fondo con puntos */}
         <div className="relative w-full md:w-1/2 mb-12 md:mb-0">
           <img
             src={map}
             alt="World Map"
-            className="w-[110%] md:w-[110%] max-w-none -ml-6 md:-ml-12 rounded-xl shadow-lg"
+            className="w-[110%] md:w-[110%] max-w-none  -ml-6 md:-ml-12"
           />
+
         </div>
 
-        {/* Texto y botón */}
-        <div className="w-full md:w-1/2 flex items-center justify-center">
+         {/* Texto y botón */}
+         <div className="w-full md:w-1/2 flex items-center justify-center">
           <div className="text-center md:text-left max-w-xl">
             <h2 className="text-4xl font-bold leading-tight mb-4">
               <span className="text-white">Did you know?</span>
