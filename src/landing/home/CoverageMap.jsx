@@ -38,15 +38,9 @@ const CoverageMap = () => {
             </p>
 
             <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              📍 Based in the <span className="text-white font-semibold">Bay Area</span>, we’re exactly where commerce moves fastest — 
+              📍 Based in the <span className="text-white font-semibold">Bay Area</span>, we’re exactly where commerce moves fastest, 
               closer to the ports, closer to suppliers, closer to success.
             </p>
-
-            <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              🚚 From pallet shipping to Amazon FBA prep and container deliveries, 
-              <span className="text-third font-semibold"> we move your products faster and smarter.</span>
-            </p>
-
             <p className="text-white text-lg mb-8 leading-relaxed opacity-70 italic">
               Stop guessing. Start growing.
             </p>
