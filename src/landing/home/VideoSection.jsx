@@ -2,9 +2,7 @@ import videoBg from '../../assets/video.mp4';
 
 const VideoSection = () => {
   return (
-    <section className="relative h-[800px] w-full overflow-hidden">
-
-      {/* 🎥 Video como fondo */}
+    <section className="relative w-full overflow-hidden h-[60vh] sm:h-[70vh] md:h-[90vh] lg:h-[100vh]">
       <video
         autoPlay
         loop
@@ -14,7 +12,6 @@ const VideoSection = () => {
       >
         <source src={videoBg} type="video/mp4" />
       </video>
-
     </section>
   );
 };

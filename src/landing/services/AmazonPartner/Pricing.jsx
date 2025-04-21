@@ -1,5 +1,6 @@
 import { Button, Card, CardBody, CardHeader, Image } from "@heroui/react";
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
+import PriceListPrepLTL from '../../../assets/PriceListPrep&LTL.pdf';
 
 
 const Pricing = () => {
@@ -18,14 +19,15 @@ const Pricing = () => {
                     </div>
                     <a href="#contact">
                         <div className="w-full px-2 md:px-0">
-                            <Button
-                                variant="shadow"
-                                size="lg"
-                                className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
-                                endContent={<ArrowRightIcon className="h-5 w-5 ml-2" />}
-                            >
-                                Check Pricing
-                            </Button>
+                            <a href={PriceListPrepLTL} target="_blank" rel="noopener noreferrer">
+                                <Button
+                                    size="lg"
+                                    className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
+                                    endContent={<ArrowRightIcon className="h-5 w-5 ml-2" />}
+                                >
+                                    Check Pricing
+                                </Button>
+                            </a>
                         </div>
                     </a>
                 </div>

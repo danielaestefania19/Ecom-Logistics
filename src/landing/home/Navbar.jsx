@@ -20,11 +20,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import Banner from "./Banner.jsx";
+import { useNavbarDropdown } from './NavbarDropdownProvider.jsx';
+
+
 
 const menuItems = ["Home", "Services", "Pricing", "About us"];
 
 const servicesItems = [
-  { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner' },
+  { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner', id: 'Amazon' },
   { key: 'FBA', label: 'FBA Prep Center', path: '/prepservices' },
   { key: 'TikTok', label: 'TikTok Shop 3PL', path: '/TikTok' },
   { key: 'StorageService', label: 'Storage Service', path: '/Storage Service' },
@@ -93,8 +96,8 @@ function NavbarMenu() {
                 as={ReactRouterLink}
                 to={`/${item.toLowerCase().replace(' ', '')}`}
                 className={`w-full text-white text-lg ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
-                    ? "text-third"
-                    : "text-white"
+                  ? "text-third"
+                  : "text-white"
                   }`}
                 onPress={() => setIsMenuOpen(false)}
               >
@@ -110,6 +113,7 @@ function NavbarMenu() {
 
 const Navbar = () => {
   const location = useLocation();
+  const { openDropdown, setOpenDropdown } = useNavbarDropdown();
 
   return (
     <div>
@@ -135,6 +139,10 @@ const Navbar = () => {
               if (item === "Services") {
                 return (
                   <Dropdown
+                    isOpen={openDropdown === "services"}
+                    onOpenChange={(isOpen) => {
+                      if (!isOpen) setOpenDropdown(null);
+                    }}
                     classNames={{
                       base: "before:bg-primary",
                       content: "bg-primary",
@@ -194,10 +202,10 @@ const Navbar = () => {
                     as={ReactRouterLink}
                     to={`/${item.toLowerCase().replace(' ', '')}`}
                     className={`text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
-                        ? item === "Home"
-                          ? "text-third"
-                          : "text-white"
+                      ? item === "Home"
+                        ? "text-third"
                         : "text-white"
+                      : "text-white"
                       }`}
                   >
                     {item}

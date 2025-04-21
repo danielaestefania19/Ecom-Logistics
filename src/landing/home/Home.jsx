@@ -1,3 +1,4 @@
+import Navbar from './Navbar.jsx';
 import Hero from './Hero.jsx';
 import Services from './Services.jsx';
 import Discount from './Discount.jsx';
@@ -24,6 +25,7 @@ import FastDeliverySection from './FastDeliverySection.jsx';
 function Home() {
   return (
     <>
+      <Navbar />
       <Hero /> 
       <Services /> 
       <FulfillmentPromise />

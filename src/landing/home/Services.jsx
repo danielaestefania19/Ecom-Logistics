@@ -14,8 +14,19 @@ import storege from '../../assets/storage.png';
 import localmoving from '../../assets/localmoving.png';
 import telefono from '../../assets/telefono.png';
 import flecha from '../../assets/flecha.png';
+import { useNavbarDropdown } from "./NavbarDropdownProvider";
+
 
 const Services = () => {
+  const { setOpenDropdown } = useNavbarDropdown();
+
+  const handleOpenServicesDropdown = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => {
+      setOpenDropdown("services");
+    }, 500);
+  };
+
   return (
     <section className="w-full py-20 px-6 md:px-20 bg-white">
       <div className="max-w-[1500px] mx-auto">
@@ -43,10 +54,12 @@ const Services = () => {
                 </Button>
               </a>
               <Button
+                onPress={handleOpenServicesDropdown}
                 radius="full"
-                className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold">
+                className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold"
+              >
                 All Service
-                <img src={flecha} alt="All Service" className="w-4 h-4" />
+                <img src={flecha} alt="All Service" className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </div>
@@ -66,7 +79,7 @@ const Services = () => {
               <div className="absolute right-0 w-2 h-2 bg-gray-200 rounded-full" />
             </div>
             <CardFooter>
-              <a href="#" className="text-sm text-third hover:underline font-semibold">Learn More</a>
+              <a href="/Amazon Partner" className="text-sm text-third hover:underline font-semibold">Learn More</a>
             </CardFooter>
           </Card>
 
@@ -84,7 +97,7 @@ const Services = () => {
               <div className="absolute right-0 w-2 h-2 bg-gray-200 rounded-full" />
             </div>
             <CardFooter>
-              <a href="#" className="text-sm text-third hover:underline font-semibold">Learn More</a>
+              <a href="/prepservices" className="text-sm text-third hover:underline font-semibold">Learn More</a>
             </CardFooter>
           </Card>
 
@@ -94,15 +107,15 @@ const Services = () => {
               <p className="text-lg font-semibold">TikTok Shop 3PL</p>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence—from product launches and PPC marketing to logistics and shipping.   
-              </CardBody>
+              Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence—from product launches and PPC marketing to logistics and shipping.
+            </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
               <div className="absolute left-0 w-2 h-2 bg-gray-200 rounded-full" />
               <div className="absolute right-0 w-2 h-2 bg-gray-200 rounded-full" />
             </div>
             <CardFooter>
-              <a href="#" className="text-sm text-third hover:underline font-semibold">Learn More</a>
+              <a href="/TikTok" className="text-sm text-third hover:underline font-semibold">Learn More</a>
             </CardFooter>
           </Card>
 

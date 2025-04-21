@@ -1,4 +1,4 @@
-import ThirdParty from '../../../assets/ThirdParty.jpg';
+import ThirdParty from '../../../assets/ThirdParty.png';
 import { Button } from "@heroui/react";
 
 
