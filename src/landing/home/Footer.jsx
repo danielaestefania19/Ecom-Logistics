@@ -2,6 +2,7 @@ import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.png';
 import tiktokicono from '../../assets/tiktokicono.png'
+import PriceList3PL from '../../assets/PriceList3PL.pdf';
 
 export default function Footer() {
   return (
@@ -18,13 +19,15 @@ export default function Footer() {
 
       {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-end">
-    <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start justify-start text-left sm:justify-between sm:text-left" >
-      {/* Information */}
+        <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start justify-start text-left sm:justify-between sm:text-left" >
+          {/* Information */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Information</h4>
             <ul className="space-y-1">
               <li><a href="#">Our services</a></li>
+               <a href={PriceList3PL} target="_blank" rel="noopener noreferrer">
               <li><a href="#">Pricing</a></li>
+              </a>
               <li><a href="#">About Us</a></li>
             </ul>
           </div>
@@ -44,9 +47,15 @@ export default function Footer() {
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Find Us</h4>
             <div className="flex justify-start gap-4 mt-2">
-              <img src={facebook} alt="Facebook" className="h-8" />
-              <img src={instagram} alt="Instagram" className="h-8" />
-              <img src={tiktokicono} alt="Instagram" className="h-8" />
+              <a href="https://www.instagram.com/ecomlogistics?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer">
+                <img src={facebook} alt="Facebook" className="h-8" />
+              </a>
+              <a href="https://www.instagram.com/ecomlogistics?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer">
+                <img src={instagram} alt="Instagram" className="h-8" />
+              </a>
+              <a href="https://www.instagram.com/ecomlogistics?igsh=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener noreferrer">
+                <img src={tiktokicono} alt="Instagram" className="h-8" />
+              </a>
             </div>
           </div>
         </div>

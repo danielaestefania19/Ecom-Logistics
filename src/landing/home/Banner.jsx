@@ -38,7 +38,7 @@ const Banner = () => {
               color: 'transparent',
             }}
           >
-              Get A Discount Of Up To 30% For Orders This Month!
+              Get a Discount of Up to 10% as a New Customer!
           </span>
         </a>
         <a href="#contact"
@@ -48,7 +48,7 @@ const Banner = () => {
        <span className="absolute inset-[-1000%] animate-spin bg-[conic-gradient(from_90deg_at_50%_50%,#19203C_0%,#2D596D_50%,#2D596D_100%)]"></span>
        
        <div  href="#contact"className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-primary group-hover:bg-primary/70 transition-primary px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-            Get 30% off
+            Get 10% off
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"

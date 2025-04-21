@@ -1,5 +1,6 @@
 import FreeStorage from '../../../assets/FreeStorage.jpg'
-import { Button } from "@heroui/react"; // O usa un <button> clásico si no usas HeroUI
+import { Button } from "@heroui/react";
+import PriceList3PL from '../../../assets/PriceList3PL.pdf';
 
 const FreeStorageOffer = () => {
     return (
@@ -22,12 +23,14 @@ const FreeStorageOffer = () => {
                     <p className="text-lg text-black mb-8">
                         Take advantage of our introductory offer and enjoy peace of mind with secure storage.
                     </p>
-                    <Button
-                        size="lg"
-                        className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
-                    >
-                        Get our storage prices
-                    </Button>
+                    <a href={PriceList3PL} target="_blank" rel="noopener noreferrer">
+                        <Button
+                            size="lg"
+                            className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
+                        >
+                            Get our storage prices
+                        </Button>
+                    </a>
                 </div>
             </div>
         </section>

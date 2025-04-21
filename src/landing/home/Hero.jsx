@@ -29,12 +29,6 @@ const Hero = () => {
             Get Started
           </Button>
           </a>
-          <Button
-            radius="full"
-            className="px-8 py-6 text-lg md:text-xl text-third bg-white hover:bg-gray-100 font-semibold mt-8"
-          >
-            Open App
-          </Button>
         </div>
       </div>
       <div

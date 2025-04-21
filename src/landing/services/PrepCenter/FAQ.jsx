@@ -27,14 +27,12 @@ const faqData = [
 export default function FAQ() {
     return (
         <div className="min-h-[600px] py-20 px-4 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-32">
-
-            {/* Columna izquierda */}
             <div className="lg:w-2/4 w-full justify-center self-center text-center lg:text-left">
                 <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
                     Frequently asked questions
                 </h2>
                 <p className="text-slate-500 mt-4">
-                    Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+                    Everything you need to know about how we manage, store, and ship your goods.
                 </p>
                 <a href="#contact">
                     <Button
@@ -45,8 +43,6 @@ export default function FAQ() {
                     </Button>
                 </a>
             </div>
-
-            {/* Columna derecha */}
             <div className="lg:w-2/4 w-full self-center space-y-4">
                 <Accordion variant="splitted" defaultExpandedKeys={["0"]}>
                     {faqData.map((faq, index) => (

@@ -30,11 +30,11 @@ export default function FAQ() {
       
       {/* Columna izquierda */}
       <div className="lg:w-2/4 w-full justify-center self-center text-center lg:text-left">
-        <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
+      <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
           Frequently asked questions
         </h2>
         <p className="text-slate-500 mt-4">
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor.
+          Everything you need to know about how we manage, store, and ship your goods.
         </p>
         <a href="#contact">
           <Button
