@@ -1,5 +1,5 @@
 import React from 'react';
-import map1 from '../../../assets/map1.jpg'
+import map1 from '../../../assets/map1.jpg';
 import { Button } from "@heroui/react";
 
 const CoverageMap = () => {
@@ -11,9 +11,8 @@ const CoverageMap = () => {
           <img
             src={map1}
             alt="World Map"
-            className="w-[110%] md:w-[110%] max-w-none  -ml-6 md:-ml-12"
+            className="w-[110%] md:w-[110%] max-w-none -ml-6 md:-ml-12"
           />
-
         </div>
 
         {/* Texto y botón */}
@@ -24,28 +23,21 @@ const CoverageMap = () => {
             </h2>
 
             <p className="text-white text-lg mb-4 leading-relaxed">
-              Over <span className="text-third font-semibold">40% of U.S. imports</span> come through <span className="text-third font-bold opacity-90">California</span>,
-              home to the biggest brands and suppliers. That’s not just trivia,
-              <span className="text-third font-semibold"> it’s your business advantage!</span>
+              At <span className="text-third font-semibold">Ecom Logistics</span>, we team up with Amazon’s trusted carrier network
+              to bring you fast, on-time deliveries nationwide 🚚🌎.
+              From coast to coast, our optimized shipping solutions ensure your products
+              reach customers and fulfillment centers quickly, cost-effectively,
+              and with full FBA compliance 📦✅.
             </p>
 
-            <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              Welcome to <span className="text-third font-semibold">California</span>, the core of American logistics.
+            <p className="text-white text-lg mb-4 leading-relaxed">
+              Track your shipments in real-time 📍 and enjoy personalized support at every step.
+              Ready to see how far we go? Check out the map below to explore the locations we service.
             </p>
 
-            <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              Right at the center is <span className="text-third font-bold">Ecom Logistics</span>.
-            </p>
-
-            <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              📍 Based in the <span className="text-white font-semibold">Bay Area</span>, we’re exactly where commerce moves fastest,
-              closer to the ports, closer to suppliers, closer to success.
-            </p>
-            <p className="text-white text-lg mb-4 leading-relaxed opacity-90">
-              🚚 From pallet shipping to <span className="text-white font-semibold">Amazon FBA prep and container deliveries</span>, we move your products faster and smarter.
-            </p>
-            <p className="text-white text-lg mb-8 leading-relaxed opacity-70 italic">
-              Stop guessing. Start growing.
+            <p className="text-white text-lg mb-8 leading-relaxed opacity-90 font-semibold italic">
+              Don’t see your preferred warehouse? <br />
+              <span className="not-italic font-normal">No worries! Simply contact us and ask about the location you have in mind! 📞</span>
             </p>
 
             <a href="#contact">
@@ -64,5 +56,3 @@ const CoverageMap = () => {
 };
 
 export default CoverageMap;
-
-

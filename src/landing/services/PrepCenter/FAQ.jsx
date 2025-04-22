@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 const faqData = [
     {
         question: 'How long does it take Ecom Logistics to prepare my products for Amazon FBA?',
-        answer: 'Most orders are prepped within 24–72 hours, depending on volume and requirements.',
+        answer: 'Most orders are prepped within 24–48 hours, depending on volume and requirements.',
     },
     {
         question: 'Can Ecom Logistics receive shipments directly from my suppliers?',

@@ -9,6 +9,7 @@ import WhyChooseUs from './WhyChooseUs';
 import ContactUs from '../../home/ContacUs';
 import FAQ from './FAQ';
 import Footer from '../../home/Footer';
+import LocalMoving from './ LocalMoving';
 
 const AmazonPartner = () => {
     return (
@@ -20,6 +21,7 @@ const AmazonPartner = () => {
             <Request />
             <CoverageMap />
             <WhyChooseUs />
+            <LocalMoving/>
             <ContactUs />
             <FAQ />
             <Footer />  

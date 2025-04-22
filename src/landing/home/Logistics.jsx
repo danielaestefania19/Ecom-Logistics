@@ -5,13 +5,13 @@ const Logistics = () => {
     <section className="bg-white py-24 px-4">
       <div className="max-w-3xl mx-auto bg-primary/5 rounded-2xl shadow-xl px-6 sm:px-12 py-16 text-center space-y-6  transition-transform duration-300 hover:scale-105">
         <h2 className="text-third text-2xl sm:text-3xl font-bold">
-          Ready to Talk?
+        Get in touch today!
         </h2>
 
         <p className="text-gray-900 text-2xl sm:text-3xl font-bold leading-tight">
-          Shipfusion ecommerce fulfillment.
+        Our team will respond to your inquiry in
           <br />
-          Fast. Reliable. Consistent.
+          less than 24 hours.
         </p>
 
         <p className="text-gray-700 text-lg sm:text-xl font-medium">

@@ -25,7 +25,7 @@ const faqData = [
   {
     question: 'Does Ecom Logistics offer reverse logistics or returns management?',
     answer:
-      'Yes, we handle product returns efficiently and can reintegrate items into your inventory when possible.',
+      'Yes, we offer reverse logistics (returns) services. For more detailed information, please contact our sales team.',
   },
 ];
 

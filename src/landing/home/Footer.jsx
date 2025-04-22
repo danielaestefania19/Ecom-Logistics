@@ -2,7 +2,7 @@ import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.png';
 import tiktokicono from '../../assets/tiktokicono.png'
-import PriceList3PL from '../../assets/PriceList3PL.pdf';
+import PriceList from '../../assets/PriceList.pdf';
 
 export default function Footer() {
   return (
@@ -25,9 +25,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-3">Information</h4>
             <ul className="space-y-1">
               <li><a href="#">Our services</a></li>
-               <a href={PriceList3PL} target="_blank" rel="noopener noreferrer">
-              <li><a href="#">Pricing</a></li>
-              </a>
+              <li><a  href={PriceList} target="_blank" rel="noopener noreferrer">Pricing</a></li>
               <li><a href="#">About Us</a></li>
             </ul>
           </div>
@@ -39,7 +37,6 @@ export default function Footer() {
               25509 Industrial<br />
               Blvd, Hayward CA<br />
               94545 Suite E3<br />
-              +1 341-208-9445
             </p>
           </div>
 

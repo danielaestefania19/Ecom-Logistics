@@ -20,19 +20,14 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Link as ReactRouterLink, useLocation } from 'react-router-dom';
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import Banner from "./Banner.jsx";
-import { useNavbarDropdown } from './NavbarDropdownProvider.jsx';
-
-
+import PriceList from '../../assets/PriceList.pdf';
 
 const menuItems = ["Home", "Services", "Pricing", "About us"];
 
 const servicesItems = [
-  { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner', id: 'Amazon' },
+  { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner' },
   { key: 'FBA', label: 'FBA Prep Center', path: '/prepservices' },
   { key: 'TikTok', label: 'TikTok Shop 3PL', path: '/TikTok' },
-  { key: 'StorageService', label: 'Storage Service', path: '/Storage Service' },
-  { key: 'LocalMoving', label: 'Local Moving', path: '/Local Moving' },
-  { key: 'BrandManagement', label: 'Brand Management', path: '/Brand Management' },
 ];
 
 function NavbarMenu() {
@@ -113,7 +108,6 @@ function NavbarMenu() {
 
 const Navbar = () => {
   const location = useLocation();
-  const { openDropdown, setOpenDropdown } = useNavbarDropdown();
 
   return (
     <div>
@@ -139,10 +133,6 @@ const Navbar = () => {
               if (item === "Services") {
                 return (
                   <Dropdown
-                    isOpen={openDropdown === "services"}
-                    onOpenChange={(isOpen) => {
-                      if (!isOpen) setOpenDropdown(null);
-                    }}
                     classNames={{
                       base: "before:bg-primary",
                       content: "bg-primary",
@@ -193,6 +183,22 @@ const Navbar = () => {
                       )}
                     </DropdownMenu>
                   </Dropdown>
+                );
+              }
+              if (item === "Pricing") {
+                return (
+                  <NavbarItem key={i}>
+                    <button
+                      onClick={() => window.open(PriceList, "_blank")}
+                      variant="light"
+                      disableRipple
+                      size="lg"
+                      radius="sm"
+                      className="p-0 bg-transparent text-white hover:text-gray-300 data-[hover=true]:bg-transparent -mt-4"
+                    >
+                      {item}
+                    </button>
+                  </NavbarItem>
                 );
               }
 
