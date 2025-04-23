@@ -27,7 +27,7 @@ const menuItems = ["Home", "Services", "Pricing", "About us"];
 const servicesItems = [
   { key: 'Amazon', label: 'Amazon Partner (LTL & FTL)', path: '/Amazon Partner' },
   { key: 'FBA', label: 'FBA Prep Center', path: '/prepservices' },
-  { key: 'TikTok', label: 'TikTok Shop 3PL', path: '/TikTok' },
+  { key: 'TikTok', label: '3PL (TikTok Shop & Amazon)', path: '/TikTok' },
 ];
 
 function NavbarMenu() {
@@ -207,12 +207,9 @@ const Navbar = () => {
                   <Link
                     as={ReactRouterLink}
                     to={`/${item.toLowerCase().replace(' ', '')}`}
-                    className={`text-white ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
-                      ? item === "Home"
-                        ? "text-third"
-                        : "text-white"
-                      : "text-white"
-                      }`}
+                    className={`text-white hover:text-gray-300 transition-colors ${
+                      location.pathname === `/${item.toLowerCase().replace(' ', '')}` ? 'text-third' : ''
+                    }`}
                   >
                     {item}
                   </Link>

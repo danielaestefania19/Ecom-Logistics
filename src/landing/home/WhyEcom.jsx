@@ -9,8 +9,15 @@ import top from '../../assets/top.png';
 import support from '../../assets/support.png';
 import competitive from '../../assets/competitive.png';
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 const WhyEcom = () => {
+    const navigate = useNavigate();
+
+    const handleNavigate = (path) => () => {
+        navigate(path);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
     return (
         <section className="w-full py-20 px-6 md:px-20 bg-white">
             <div className="max-w-7xl mx-auto">
@@ -28,18 +35,18 @@ const WhyEcom = () => {
                                 src={top}
                                 alt="Top LTL and Prep Rates"
                                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
-                                />
+                            />
                             <p className="text-2xl font-semibold text-primary">
-                               1# LTL & Prep Rates
+                                1# LTL & Prep Rates
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
-                        Save More with the Leading LTL and Prep Rates in Northern California
-                        Increase your margins with Ecom Logistics' exceptional pricing. Our LTL and prep rates are the most competitive in Northern California, tailored for e-commerce sellers' needs. With our affordable options, you'll save on every shipment without sacrificing quality.      
+                            Save More with the Leading LTL and Prep Rates in Northern California
+                            Increase your margins with Ecom Logistics' exceptional pricing. Our LTL and prep rates are the most competitive in Northern California, tailored for e-commerce sellers' needs. With our affordable options, you'll save on every shipment without sacrificing quality.
                         </CardBody>
-                       <CardFooter>
+                        <CardFooter>
                             <a
-                                href="#"
+                                onClick={handleNavigate('/aboutus')}
                                 className="text-sm text-third hover:underline font-semibold inline-flex items-center"
                             >
                                 Learn More
@@ -60,11 +67,11 @@ const WhyEcom = () => {
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
-                        At Ecom Logistics, we have 5 years of experience in the logistics industry. Our trained team is here to offer you advice and support at every stage of the process, from the initial pricing inquiry to the completion of your order, ensuring a smooth and hassle-free experience.      
+                            At Ecom Logistics, we have 5 years of experience in the logistics industry. Our trained team is here to offer you advice and support at every stage of the process, from the initial pricing inquiry to the completion of your order, ensuring a smooth and hassle-free experience.
                         </CardBody>
                         <CardFooter>
                             <a
-                                href="#"
+                                onClick={handleNavigate('/aboutus')}
                                 className="text-sm text-third hover:underline font-semibold inline-flex items-center"
                             >
                                 Learn More
@@ -79,16 +86,16 @@ const WhyEcom = () => {
                                 src={competitive}
                                 alt="Efficiency Guaranteed"
                                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
-                                />
+                            />
                             <p className="text-2xl font-semibold text-primary">
-                             Efficiency Guaranteed
+                                Efficiency Guaranteed
                             </p>
                         </CardHeader>
                         <CardBody className="text-blue/80 text-[16px]">
-                        We are committed to delivering fast and efficient service every time. With a highly trained team, we guarantee that your shipments are handled swiftly and without delays, meeting deadlines and ensuring quality at every stage of the process.        </CardBody>
+                            We are committed to delivering fast and efficient service every time. With a highly trained team, we guarantee that your shipments are handled swiftly and without delays, meeting deadlines and ensuring quality at every stage of the process.        </CardBody>
                         <CardFooter>
                             <a
-                                href="#"
+                                onClick={handleNavigate('/aboutus')}
                                 className="text-sm text-third hover:underline font-semibold inline-flex items-center"
                             >
                                 Learn More

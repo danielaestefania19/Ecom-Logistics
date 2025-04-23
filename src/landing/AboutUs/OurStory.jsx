@@ -21,15 +21,15 @@ const OurStory = () => {
 
           <p className="text-lg text-primary leading-relaxed text-center lg:text-left mb-6">
             We’ve lived the e-commerce journey ourselves, so we truly understand what sellers need to grow. 
-            Our experience has shaped every part of our service — from fast response times to flexible solutions — 
+            Our experience has shaped every part of our service, from fast response times to flexible solutions, 
             because we know what it’s like to be on the other side.
           </p>
 
           <div className="border-l-4 border-primary pl-6 text-base md:text-lg text-gray-700 leading-relaxed space-y-5">
             <p>
               We started with a simple belief: 
-              <span className="font-semibold text-primary"> logistics shouldn’t hold growing companies back.</span>
-              As entrepreneurs, we knew how complex logistics could be for small businesses trying to scale.
+              <span className="font-semibold text-primary"> logistics shouldn’t hold growing companies back. </span>
+                As entrepreneurs, we knew how complex logistics could be for small businesses trying to scale.
             </p>
             <p>
               That’s why we created 

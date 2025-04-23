@@ -3,8 +3,15 @@ import facebook from '../../assets/facebook.png';
 import instagram from '../../assets/instagram.png';
 import tiktokicono from '../../assets/tiktokicono.png'
 import PriceList from '../../assets/PriceList.pdf';
+import { useNavigate } from 'react-router-dom';
 
 export default function Footer() {
+      const navigate = useNavigate();
+  
+      const handleNavigate = (path) => () => {
+          navigate(path);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
   return (
     <footer className="bg-primary text-white">
       {/* Logo */}
@@ -24,9 +31,9 @@ export default function Footer() {
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">Information</h4>
             <ul className="space-y-1">
-              <li><a href="#">Our services</a></li>
+              <li><a onClick={handleNavigate('/home#services')}>Our services</a></li>
               <li><a  href={PriceList} target="_blank" rel="noopener noreferrer">Pricing</a></li>
-              <li><a href="#">About Us</a></li>
+              <button><a onClick={handleNavigate('/aboutus')}>About Us</a></button>
             </ul>
           </div>
 

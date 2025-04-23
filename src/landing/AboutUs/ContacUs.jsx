@@ -126,7 +126,7 @@ const ContactUs = () => {
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
-                            placeholder="First name*"
+                            placeholder="First name"
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
@@ -163,7 +163,7 @@ const ContactUs = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Email Address*"
+                            placeholder="Email Address"
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -176,7 +176,7 @@ const ContactUs = () => {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="Phone Number*"
+                            placeholder="Phone Number"
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
@@ -192,7 +192,7 @@ const ContactUs = () => {
                                 }`}
                         >
                             <option value="" disabled hidden>
-                                Type of Service*
+                                Type of Service
                             </option>
                             <option value="LTL">LTL</option>
                             <option value="FBA Prep">FBA Prep</option>

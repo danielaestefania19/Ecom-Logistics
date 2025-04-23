@@ -19,7 +19,7 @@ const LocalMoving = () => (
         <div className="bg-primary rounded-2xl shadow-2xl p-10 text-center lg:text-left flex flex-col gap-6 max-w-xl transition-transform duration-300 hover:scale-105">
           
           <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight tracking-tight">
-          Local Moving!
+          Local Moving
           </h2>
 
           <p className="text-base text-white opacity-90 leading-relaxed">

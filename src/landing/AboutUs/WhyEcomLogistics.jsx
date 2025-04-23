@@ -6,6 +6,7 @@ import {
     UserGroupIcon,
     HandRaisedIcon,
 } from '@heroicons/react/24/outline';
+import { Button } from "@heroui/react";
 
 const features = [
     {
@@ -82,11 +83,15 @@ const WhyEcomLogistics = () => {
                         Ready to see the difference? Contact us today and let us show you how we can take your logistics to the next level!
                     </p>
                     <div className="mt-6">
-                        <button
-                            className="bg-third text-white px-6 py-3 rounded-xl font-semibold text-lg shadow-md hover:bg-orange-500 transition-all duration-300"
-                        >
-                            Contact us today!
-                        </button>
+
+                        <a href="#contact">
+                            <Button
+                                radius="full"
+                                className="px-6 py-6 text-lg md:text-xl text-white bg-third hover:bg-white-100 font-semibold mt-8"
+                            >
+                                Contact us today!
+                            </Button>
+                        </a>
                     </div>
                 </div>
             </div>
