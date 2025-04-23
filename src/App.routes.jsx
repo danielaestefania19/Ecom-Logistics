@@ -3,6 +3,7 @@ import Home from './landing/home/Home.jsx';
 import AmazonPartner from './landing/services/AmazonPartner/AmazonPartner.jsx';
 import PrepCenter from './landing/services/PrepCenter/PrepCenter.jsx';
 import TikTokShop from './landing/services/TikTokShop/TikTokShop.jsx';
+import AboutUs from './landing/AboutUs/AboutUs.jsx';
 import NotFound from './landing/NotFound.jsx';
 /**
  * Main routing configuration for the application.
@@ -22,6 +23,7 @@ function App() {
           <Route path="/Amazon Partner" element={<AmazonPartner />} />
           <Route path="/prepservices" element={<PrepCenter />} />
           <Route path="/TikTok" element={<TikTokShop />} />
+          <Route path='/aboutus' element={<AboutUs />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
     </div>

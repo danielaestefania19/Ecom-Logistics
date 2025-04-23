@@ -4,7 +4,6 @@ import Box from '../../../assets/Box.jpg'
 const FreePackagingSection = () => {
     return (
         <section 
-        id="free-packaging"
         className="bg-primary py-32 px-6  bg-no-repeat bg-cover bg-center">
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
                 <div className="w-full lg:w-1/2 mt-10 lg:mt-0 flex justify-center">

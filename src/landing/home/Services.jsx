@@ -175,7 +175,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/Local Moving')}
+                onClick={handleNavigate('/Amazon Partner#local-moving')}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"

@@ -2,7 +2,7 @@ import LocalMovingImage from '../../../assets/LocalMovingImage.png';
 import { Button } from '@heroui/react';
 
 const LocalMoving = () => (
-  <section className="bg-white py-24 px-6 bg-no-repeat bg-cover bg-center">
+  <section id="local-moving" className="bg-white py-24 px-6 bg-no-repeat bg-cover bg-center">
     <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
       
       {/* Imagen */}
