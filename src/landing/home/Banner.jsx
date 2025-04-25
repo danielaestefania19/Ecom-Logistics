@@ -26,7 +26,7 @@ const Banner = () => {
           target="_blank"
         >
           <span aria-label="rocket" className="hidden md:block" role="img">
-           🎁 
+            🎁
           </span>
           <span
             className="inline-flex md:ml-1 animate-text-gradient font-medium bg-clip-text text-transparent bg-[linear-gradient(90deg,#FFEBF9_0%,#2D596D_50%,#FFEBF9_100%)]"
@@ -38,17 +38,17 @@ const Banner = () => {
               color: 'transparent',
             }}
           >
-              Get a Discount of Up to 10% as a New Customer!
+            Ask for wholesale prices in all the services now!
           </span>
         </a>
         <a href="#contact"
           className="flex group min-w-[120px] items-center font-semibold text-foreground shadow-sm gap-1.5 relative overflow-hidden rounded-full p-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           rel="noopener noreferrer"
         >
-       <span className="absolute inset-[-1000%] animate-spin bg-[conic-gradient(from_90deg_at_50%_50%,#19203C_0%,#2D596D_50%,#2D596D_100%)]"></span>
-       
-       <div  href="#contact"className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-primary group-hover:bg-primary/70 transition-primary px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-            Get 10% off
+          <span className="absolute inset-[-1000%] animate-spin bg-[conic-gradient(from_90deg_at_50%_50%,#19203C_0%,#2D596D_50%,#2D596D_100%)]"></span>
+
+          <div href="#contact" className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-primary group-hover:bg-primary/70 transition-primary px-3 py-1 text-sm font-medium text-white backdrop-blur-3xl">
+            Contact Us
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"

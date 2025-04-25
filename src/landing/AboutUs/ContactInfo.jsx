@@ -9,7 +9,7 @@ const ContactInfo = () => {
                     <div className="bg-third p-3 rounded-full">
                         <Phone className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-base lg:text-lg font-mono">+1 (341) 208 9445</p>
+                    <p className="text-base lg:text-lg">+1 (341) 208 9445</p>
                 </div>
 
                 {/* Email */}
@@ -17,7 +17,7 @@ const ContactInfo = () => {
                     <div className="bg-third p-3 rounded-full">
                         <Mail className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-base lg:text-lg font-mono">info@ecomlogisticsus.com</p>
+                    <p className="text-base lg:text-lg">info@ecomlogisticsus.com</p>
                 </div>
 
                 {/* Dirección */}
@@ -25,7 +25,7 @@ const ContactInfo = () => {
                     <div className="bg-third p-3 rounded-full mt-1">
                         <MapPin className="w-6 h-6 text-white" />
                     </div>
-                    <p className="text-base lg:text-lg font-mono">
+                    <p className="text-base lg:text-lg">
                         25509 Industrial Blvd,<br />
                         Hayward CA 94545 Suite E3
                     </p>
