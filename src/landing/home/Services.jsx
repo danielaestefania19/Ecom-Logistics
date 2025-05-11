@@ -51,13 +51,13 @@ const Services = () => {
                 </Button>
               </a>
               <a href="#services">
-              <Button
-                radius="full"
-                className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold"
-              >
-                All Service
-                <img src={flecha} alt="All Service" className="w-4 h-4 ml-2" />
-              </Button>
+                <Button
+                  radius="full"
+                  className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold"
+                >
+                  All Service
+                  <img src={flecha} alt="All Service" className="w-4 h-4 ml-2" />
+                </Button>
               </a>
             </div>
           </div>
@@ -201,7 +201,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/Brand Management')}
+                //onClick={handleNavigate('/Brand Management')}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
