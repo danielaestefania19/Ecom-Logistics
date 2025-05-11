@@ -28,11 +28,12 @@ function Home() {
       <Navbar />
       <Hero /> 
       <Services /> 
-      <FulfillmentPromise />
+      <CoverageMap/>
+     
       <FastDeliverySection/>
       <Discount/>
       <VideoSection/>
-      <CoverageMap/>
+      <FulfillmentPromise />
       <WhyEcom/>
       <ContactUs/>
       <Logistics/>
