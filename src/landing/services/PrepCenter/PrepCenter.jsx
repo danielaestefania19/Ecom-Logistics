@@ -7,6 +7,7 @@ import Pricing from './Pricing';
 import Request from './Request';
 import FAQ from './FAQ';
 import ContactUs from '../../home/ContacUs';
+import FreeStorageOffer from './FreeStorageOffer';
 import VideoSection from './VideoSection';
 
 const PrepCenter = () => {
@@ -17,7 +18,8 @@ const PrepCenter = () => {
             <Advantages />
             <Pricing />
             <Request />
-            <VideoSection/>
+            <FreeStorageOffer />
+            <VideoSection />
             <ContactUs />
             <FAQ />
             <Footer />

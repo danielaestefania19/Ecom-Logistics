@@ -36,7 +36,7 @@ import {
       icon: <TruckIcon className="w-7 h-7 text-white" />,
       title: "Shipping to Amazon FBA",
       description:
-        "We manage your shipments to Amazon fulfillment centers, ensuring timely delivery, compliance and full SPD processing."
+        "We manage your shipments to Amazon fulfillment centers, ensuring timely delivery, compliance and full SPD or LTL processing."
     },
     {
       icon: <DocumentMagnifyingGlassIcon className="w-7 h-7 text-white" />,

@@ -23,13 +23,14 @@ const CoverageMap = () => {
             </h2>
 
             <p className="text-white text-lg mb-4 leading-relaxed">
-              At <span className="text-third font-semibold">Ecom Logistics</span>, we team up with Amazon’s trusted carrier network
-              to bring you fast, on-time deliveries nationwide 🚚🌎.
-              From coast to coast, our optimized shipping solutions ensure your products
-              reach customers and fulfillment centers quickly, cost-effectively,
+              At <span className="text-third font-semibold">Ecom Logistics</span>,
+              we partner with Amazon’s trusted carrier network
+              to provide fast, on-time deliveries throughout the <span className="text-third font-semibold"> West Coast 🚚🌄.</span>
+              From California to the surrounding region, our optimized shipping solutions ensure your products
+              reach customers and Amazon fulfillment centers quickly, cost-effectively,
               and with full FBA compliance 📦✅.
             </p>
-
+            <p className="text-white text-lg mb-4 leading-relaxed">Nationwide service coming soon!</p>
             <p className="text-white text-lg mb-4 leading-relaxed">
               Track your shipments in real-time 📍 and enjoy personalized support at every step.
               Ready to see how far we go? Check out the map below to explore the locations we service.

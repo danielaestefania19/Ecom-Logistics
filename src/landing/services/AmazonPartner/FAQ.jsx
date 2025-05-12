@@ -8,7 +8,7 @@ const faqData = [
   },
   {
     question: 'How fast can Ecom Logistics deliver my products to an Amazon Fulfillment Center?',
-    answer: 'Depending on location, we can deliver within 1–3 business days.',
+    answer: 'After the pallet pickup, it may take 1 to 3 days for them to leave our warehouses. Once they leave our facility, it takes 1 to 3 days for delivery to the Amazon fulfillment centers (FC). (Please note that unexpected events beyond our control may cause delays in the process). However, we are fully prepared to handle these situations and resolve them as quickly as possible.',
   },
   {
     question: 'Does Ecom Logistics offer free pickup service?',
@@ -27,10 +27,10 @@ const faqData = [
 export default function FAQ() {
   return (
     <div className="min-h-[600px] py-20 px-4 sm:px-8 max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-32">
-      
+
       {/* Columna izquierda */}
       <div className="lg:w-2/4 w-full justify-center self-center text-center lg:text-left">
-      <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
+        <h2 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
           Frequently asked questions
         </h2>
         <p className="text-slate-500 mt-4">

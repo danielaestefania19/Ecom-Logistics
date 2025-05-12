@@ -11,27 +11,27 @@ const steps = [
   {
     icon: <PhoneIcon className="w-10 h-10 text-white" />,
     title: "STEP 1",
-    description: "Contact us to get a free quote and create an account with us!"
+    description: "Contact us to receive a free quote and open your account."
   },
   {
     icon: <BuildingStorefrontIcon className="w-10 h-10 text-white" />,
     title: "STEP 2",
-    description: "Get your LTL or FTL shipment ready, prepare your pallets with our advisory."
+    description: "Work with our team to get your LTL or FTL shipment prepared and your pallets ready."
   },
   {
     icon: <CurrencyDollarIcon className="w-10 h-10 text-white" />,
     title: "STEP 3",
-    description: "Coordinate the payment with our dedicated team."
+    description: "Finalize the payment process with assistance from our support team."
   },
   {
     icon: <TruckIcon className="w-10 h-10 text-white" />,
     title: "STEP 4",
-    description: "Get in touch with us to arrange a free pickup or delivery in San Francisco and Bay Area."
+    description: "We’ll coordinate a free pickup or local delivery within the San Francisco Bay Area."
   },
   {
     icon: <InboxArrowDownIcon className="w-10 h-10 text-white" />,
     title: "STEP 5",
-    description: "Your merchandise will reach the Amazon fulfillment center within 2 to 3 days from the date of shipment."
+    description: "Your products will be delivered to the Amazon fulfillment center within 2 to 3 days from the date of shipment."
   }
 ];
 
