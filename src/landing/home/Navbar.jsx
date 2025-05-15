@@ -66,10 +66,8 @@ function NavbarMenu() {
                 </button>
               </NavbarMenuItem>
 
-
               <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${isServicesOpen ? 'max-h-96' : 'max-h-0'
-                  }`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${isServicesOpen ? 'max-h-96' : 'max-h-0'}`}
               >
                 {servicesItems.map((service) => (
                   <NavbarMenuItem key={service.key}>
@@ -85,15 +83,26 @@ function NavbarMenu() {
                 ))}
               </div>
             </>
+          ) : item === "Pricing" ? (
+            <NavbarMenuItem>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.open(PriceList, "_blank");
+                }}
+                className="w-full text-white text-lg text-left py-2  hover:text-gray-300"
+              >
+                {item}
+              </button>
+            </NavbarMenuItem>
           ) : (
             <NavbarMenuItem>
               <Link
                 as={ReactRouterLink}
                 to={`/${item.toLowerCase().replace(' ', '')}`}
-                className={`w-full text-white text-lg ${location.pathname === `/${item.toLowerCase().replace(' ', '')}`
-                  ? "text-third"
-                  : "text-white"
-                  }`}
+                className={`w-full text-white text-lg ${
+                  location.pathname === `/${item.toLowerCase().replace(' ', '')}` ? "text-third" : "text-white"
+                }`}
                 onPress={() => setIsMenuOpen(false)}
               >
                 {item}
@@ -185,15 +194,12 @@ const Navbar = () => {
                   </Dropdown>
                 );
               }
+
               if (item === "Pricing") {
                 return (
                   <NavbarItem key={i}>
                     <button
                       onClick={() => window.open(PriceList, "_blank")}
-                      variant="light"
-                      disableRipple
-                      size="lg"
-                      radius="sm"
                       className="p-0 bg-transparent text-white hover:text-gray-300 data-[hover=true]:bg-transparent -mt-4"
                     >
                       {item}
