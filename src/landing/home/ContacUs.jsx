@@ -14,7 +14,8 @@ const ContactUs = () => {
         serviceType: "",
         unitsPerMonth: "",
         shipmentsPerMonth: "",
-        message: ""
+        message: "",
+        language: ""
     });
 
     const [isLoading, setIsLoading] = useState(false);
@@ -30,29 +31,29 @@ const ContactUs = () => {
         e.preventDefault();
         const { firstName, email, phone } = formData;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      
+
         // 1. Validación individual con retorno inmediato
         if (!firstName.trim()) {
-          setErrors({ firstName: "First name is required" });
-          return;
+            setErrors({ firstName: "First name is required" });
+            return;
         }
-      
+
         if (!phone.trim()) {
-          setErrors({ phone: "Phone is required" });
-          return;
+            setErrors({ phone: "Phone is required" });
+            return;
         }
-      
+
         if (!email.trim()) {
-          setErrors({ email: "Email is required" });
-          return;
+            setErrors({ email: "Email is required" });
+            return;
         } else if (!emailRegex.test(email)) {
-          setErrors({ email: "Invalid email format" });
-          return;
+            setErrors({ email: "Invalid email format" });
+            return;
         }
-      
+
         // Limpia errores si no hay ninguno
         setErrors({});
-    
+
 
         const toastId = toast.loading("Sending your message...", {
             icon: <Spinner size="sm" />,
@@ -88,7 +89,8 @@ const ContactUs = () => {
                     serviceType: "",
                     unitsPerMonth: "",
                     shipmentsPerMonth: "",
-                    message: ""
+                    message: "",
+                    language: ""
                 });
                 setErrors({});
             } else {
@@ -182,21 +184,19 @@ const ContactUs = () => {
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
 
-                    {/* Service Type */}
+                    {/* Language */}
                     <div>
-                    <select
-                            name="serviceType"
-                            value={formData.serviceType}
+                        <select
+                            name="language"
+                            value={formData.language}
                             onChange={handleChange}
-                            className={`w-full h-[50px] border bg-white border-black p-3 rounded-xl ${formData.serviceType === "" ? "text-gray-400" : "text-black"
-                                }`}
+                            className={`w-full h-[50px] border bg-white border-black p-3 rounded-xl ${formData.language === "" ? "text-gray-400" : "text-black"}`}
                         >
                             <option value="" disabled hidden>
-                                Type of Service
+                                Select Language
                             </option>
-                            <option value="LTL">LTL</option>
-                            <option value="FBA Prep">FBA Prep</option>
-                            <option value="3PL">3PL</option>
+                            <option value="English">English</option>
+                            <option value="Spanish">Spanish</option>
                         </select>
                     </div>
 
@@ -222,6 +222,24 @@ const ContactUs = () => {
                             placeholder="Shipments per Month"
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
+                    </div>
+
+                    {/* Service Type */}
+                    <div className="md:col-span-2">
+                        <select
+                            name="serviceType"
+                            value={formData.serviceType}
+                            onChange={handleChange}
+                            className={`w-full h-[50px] border bg-white border-black p-3 rounded-xl ${formData.serviceType === "" ? "text-gray-400" : "text-black"
+                                }`}
+                        >
+                            <option value="" disabled hidden>
+                                Type of Service
+                            </option>
+                            <option value="LTL">LTL</option>
+                            <option value="FBA Prep">FBA Prep</option>
+                            <option value="3PL">3PL</option>
+                        </select>
                     </div>
 
                     {/* Message */}
