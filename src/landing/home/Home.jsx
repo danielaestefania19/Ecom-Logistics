@@ -29,7 +29,6 @@ function Home() {
       <Hero /> 
       <Services /> 
       <CoverageMap/>
-     
       <FastDeliverySection/>
       <Discount/>
       <VideoSection/>

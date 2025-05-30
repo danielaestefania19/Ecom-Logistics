@@ -1,8 +1,11 @@
-import React from 'react';
-import map1 from '../../../assets/map1.jpg';
+import React from "react";
+import map1 from "../../../assets/map1.jpg";
 import { Button } from "@heroui/react";
+import { useLanguage } from "../../i18n/LanguageContext";
 
 const CoverageMap = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="bg-black text-white px-6 py-16 md:py-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
@@ -19,26 +22,28 @@ const CoverageMap = () => {
         <div className="w-full md:w-1/2 flex items-center justify-center">
           <div className="text-center md:text-left max-w-xl">
             <h2 className="text-4xl font-bold leading-tight mb-4">
-              <span className="text-white">Our Amazon Partner Carrier Coverage</span>
+              <span className="text-white">{t("coverageMap.title")}</span>
             </h2>
 
             <p className="text-white text-lg mb-4 leading-relaxed">
-              At <span className="text-third font-semibold">Ecom Logistics</span>,
-              we partner with Amazon’s trusted carrier network
-              to provide fast, on-time deliveries throughout the <span className="text-third font-semibold"> West Coast 🚚🌄.</span>
-              From California to the surrounding region, our optimized shipping solutions ensure your products
-              reach customers and Amazon fulfillment centers quickly, cost-effectively,
-              and with full FBA compliance 📦✅.
+              {t("coverageMap.desc1.pre")}{" "}
+              <span className="text-third font-semibold">{t("coverageMap.desc1.brand")}</span>
+              {t("coverageMap.desc1.post")}
+              <span className="text-third font-semibold"> {t("coverageMap.desc1.region")}</span>
+              {t("coverageMap.desc1.end")}
             </p>
-            <p className="text-white text-lg mb-4 leading-relaxed">Nationwide service coming soon!</p>
+
             <p className="text-white text-lg mb-4 leading-relaxed">
-              Track your shipments in real-time 📍 and enjoy personalized support at every step.
-              Ready to see how far we go? Check out the map below to explore the locations we service.
+              {t("coverageMap.desc2")}
+            </p>
+
+            <p className="text-white text-lg mb-4 leading-relaxed">
+              {t("coverageMap.desc3")}
             </p>
 
             <p className="text-white text-lg mb-8 leading-relaxed opacity-90 font-semibold italic">
-              Don’t see your preferred warehouse? <br />
-              <span className="not-italic font-normal">No worries! Simply contact us and ask about the location you have in mind! 📞</span>
+              {t("coverageMap.contactPre")} <br />
+              <span className="not-italic font-normal">{t("coverageMap.contactPost")}</span>
             </p>
 
             <a href="#contact">
@@ -46,7 +51,7 @@ const CoverageMap = () => {
                 radius="full"
                 className="px-8 py-6 text-base md:text-lg text-white bg-third hover:opacity-90 transition font-semibold shadow-lg"
               >
-                Contact us today
+                {t("coverageMap.button")}
               </Button>
             </a>
           </div>

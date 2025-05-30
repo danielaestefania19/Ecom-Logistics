@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Button, Spinner } from "@heroui/react";
 import { toast } from "react-toastify";
+import { useLanguage } from "../i18n/LanguageContext";
 import check from "../../assets/check.png";
 
 const ContactUs = () => {
+    const { t } = useLanguage();
+    const c = t("contactAboutUs");
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -31,30 +35,27 @@ const ContactUs = () => {
         const { firstName, email, phone } = formData;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        // 1. Validación individual con retorno inmediato
         if (!firstName.trim()) {
-            setErrors({ firstName: "First name is required" });
+            setErrors({ firstName: c.errors.requiredFirstName });
             return;
         }
 
         if (!phone.trim()) {
-            setErrors({ phone: "Phone is required" });
+            setErrors({ phone: c.errors.requiredPhone });
             return;
         }
 
         if (!email.trim()) {
-            setErrors({ email: "Email is required" });
+            setErrors({ email: c.errors.requiredEmail });
             return;
         } else if (!emailRegex.test(email)) {
-            setErrors({ email: "Invalid email format" });
+            setErrors({ email: c.errors.invalidEmail });
             return;
         }
 
-        // Limpia errores si no hay ninguno
         setErrors({});
 
-
-        const toastId = toast.loading("Sending your message...", {
+        const toastId = toast.loading(c.loading, {
             icon: <Spinner size="sm" />,
             progressStyle: { background: "#19203C" },
         });
@@ -69,7 +70,7 @@ const ContactUs = () => {
 
             if (response.ok) {
                 toast.update(toastId, {
-                    render: "Information sent successfully. We will contact you within a few minutes.",
+                    render: c.success,
                     isLoading: false,
                     autoClose: 4000,
                     icon: <img src={check} alt="Success Icon" />,
@@ -112,77 +113,70 @@ const ContactUs = () => {
     return (
         <section id="contact" className="w-full bg-primary py-16 px-4 flex justify-center">
             <div className="bg-white rounded-2xl w-full max-w-6xl px-4 sm:px-6 md:px-8 lg:px-20 py-12 shadow-md">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2">Contact Us</h2>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2">{c.title}</h2>
                 <p className="text-center text-gray-500 mb-8 max-w-xl mx-auto text-sm sm:text-base">
-                    We would like to hear from you! Fill out your contact information below. When we receive your inquiry, we will contact you as soon as possible.
+                    {c.description}
                 </p>
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    {/* First Name */}
                     <div>
                         <input
                             type="text"
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
-                            placeholder="First name"
+                            placeholder={c.placeholders.firstName}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
                     </div>
 
-                    {/* Last Name */}
                     <div>
                         <input
                             type="text"
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleChange}
-                            placeholder="Last name"
+                            placeholder={c.placeholders.lastName}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                     </div>
 
-                    {/* Company Name */}
                     <div>
                         <input
                             type="text"
                             name="companyName"
                             value={formData.companyName}
                             onChange={handleChange}
-                            placeholder="Company Name"
+                            placeholder={c.placeholders.companyName}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                     </div>
 
-                    {/* Email */}
                     <div>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Email Address"
+                            placeholder={c.placeholders.email}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
 
-                    {/* Phone */}
                     <div>
                         <input
                             type="text"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="Phone Number"
+                            placeholder={c.placeholders.phone}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
 
-                    {/* Service Type */}
                     <div>
                         <select
                             name="serviceType"
@@ -192,45 +186,42 @@ const ContactUs = () => {
                                 }`}
                         >
                             <option value="" disabled hidden>
-                                Type of Service
+                                {c.placeholders.serviceType}
                             </option>
-                            <option value="LTL">LTL</option>
-                            <option value="FBA Prep">FBA Prep</option>
-                            <option value="3PL">3PL</option>
+                            <option value="LTL">{c.serviceOptions.ltl}</option>
+                            <option value="FBA Prep">{c.serviceOptions.fba}</option>
+                            <option value="3PL">{c.serviceOptions.pl}</option>
                         </select>
                     </div>
 
-                    {/* Units per Month */}
                     <div>
                         <input
                             type="number"
                             name="unitsPerMonth"
                             value={formData.unitsPerMonth}
                             onChange={handleChange}
-                            placeholder="Number of Units"
+                            placeholder={c.placeholders.unitsPerMonth}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                     </div>
 
-                    {/* Shipments per Month */}
                     <div>
                         <input
                             type="number"
                             name="shipmentsPerMonth"
                             value={formData.shipmentsPerMonth}
                             onChange={handleChange}
-                            placeholder="Shipments per Month"
+                            placeholder={c.placeholders.shipmentsPerMonth}
                             className="w-full h-[50px] border border-black p-3 rounded-xl"
                         />
                     </div>
 
-                    {/* Message */}
                     <div className="md:col-span-2">
                         <textarea
                             name="message"
                             value={formData.message}
                             onChange={handleChange}
-                            placeholder="Any additional information..."
+                            placeholder={c.placeholders.message}
                             className="w-full rounded-md min-h-[120px] border border-black p-3"
                         />
                     </div>
@@ -242,7 +233,7 @@ const ContactUs = () => {
                             type="submit"
                             isDisabled={isLoading}
                         >
-                            Submit
+                            {c.submit}
                         </Button>
                     </div>
                 </form>

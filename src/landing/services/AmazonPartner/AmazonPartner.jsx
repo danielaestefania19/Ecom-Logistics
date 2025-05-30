@@ -22,7 +22,7 @@ const AmazonPartner = () => {
             if (element) {
                 setTimeout(() => {
                     element.scrollIntoView({ behavior: "smooth" });
-                }, 100); // pequeño delay para esperar el render
+                }, 100); 
             }
         }
     }, [location]);
