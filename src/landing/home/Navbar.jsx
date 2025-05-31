@@ -44,6 +44,9 @@ function NavbarMenu() {
   const location = useLocation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+
+
 
   const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
 
@@ -121,49 +124,46 @@ function NavbarMenu() {
           )}
         </React.Fragment>
       ))}
-      <NavbarMenuItem>
-        <Dropdown
-          classNames={{
-            base: "before:bg-primary",
-            content: "bg-primary",
-          }}
-        >
-          <DropdownTrigger>
-            <Button
-              variant="light"
-              disableRipple
-              size="lg"
-              radius="sm"
-              className="w-full text-left px-2 text-white hover:text-gray-300 bg-transparent"
-              endContent={
-                <ChevronDownIcon
-                  className="h-5 w-5 text-white"
-                  aria-hidden="true"
-                />
-              }
-            >
-              {language.toUpperCase()}
-            </Button>
-          </DropdownTrigger>
+<NavbarMenuItem>
+  <button
+    onClick={() => setIsLanguageOpen((prev) => !prev)}
+    className="w-full -mt-2 -mb-4 text-white text-lg pr-2 py-2 flex justify-between items-center"
+  >
+    {language.toUpperCase()}
+    <ChevronDownIcon
+      className={`h-5 w-5 transition-transform duration-300 ${isLanguageOpen ? "rotate-180" : ""}`}
+      aria-hidden="true"
+    />
+  </button>
 
-          <DropdownMenu
-            variant="light"
-            aria-label="Select Language"
-            itemClasses={{
-              base: [
-                "rounded-md",
-                "text-white",
-                "transition-opacity",
-                "data-[hover=true]:bg-white-100",
-                "data-[hover=true]:text-gray-300",
-              ],
-            }}
-          >
-            <DropdownItem onClick={() => setLanguage("en")}>EN</DropdownItem>
-            <DropdownItem onClick={() => setLanguage("es")}>ES</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarMenuItem>
+  <div
+    className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${isLanguageOpen ? "max-h-40" : "max-h-0"}`}
+  >
+    <NavbarMenuItem>
+      <button
+        onClick={() => {
+          setLanguage("en");
+          setIsMenuOpen(false);
+        }}
+        className="w-full text-white text-base pl-6 py-1 text-left"
+      >
+        EN
+      </button>
+    </NavbarMenuItem>
+    <NavbarMenuItem>
+      <button
+        onClick={() => {
+          setLanguage("es");
+          setIsMenuOpen(false);
+        }}
+        className="w-full text-white text-base pl-6 py-1 text-left"
+      >
+        ES
+      </button>
+    </NavbarMenuItem>
+  </div>
+</NavbarMenuItem>
+
 
     </HerouiNavbarMenu>
   );

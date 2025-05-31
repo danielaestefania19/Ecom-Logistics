@@ -881,6 +881,34 @@ es: {
     description2: "¡Contáctanos hoy para una cotización personalizada!",
     button: "Contáctanos",
     },
+    faq: {
+    title: "Preguntas frecuentes",
+    subtitle: "Todo lo que necesitas saber sobre cómo gestionamos, almacenamos y enviamos tus productos.",
+    button: "Comenzar",
+    questions: [
+    {
+    question: "¿Cuáles son los beneficios de elegir Ecom Logistics para envíos a centros de cumplimiento de Amazon?",
+    answer: "Nos especializamos en el cumplimiento de Amazon FBA, entregas rápidas y una coordinación fluida con los centros de cumplimiento (FC).",
+    },
+    {
+    question: "¿Qué tan rápido puede Ecom Logistics entregar mis productos a un centro de cumplimiento de Amazon?",
+    answer: "Después del recojo de la tarima, puede tomar de 1 a 3 días para que los productos salgan de nuestros almacenes. Una vez fuera, la entrega al centro de cumplimiento toma entre 1 y 3 días. (Ten en cuenta que eventos imprevistos pueden ocasionar retrasos, pero estamos preparados para manejarlos de forma eficiente).",
+    },
+    {
+    question: "¿Ecom Logistics ofrece servicio de recojo gratuito?",
+    answer: "Sí, el recojo estándar está incluido en la mayoría de los planes de servicio. Contáctanos para confirmar según tu ubicación.",
+    },
+    {
+    question: "¿Ecom Logistics puede ofrecer servicio de montacargas si no hay montacargas disponible en el lugar de recojo o entrega?",
+    answer: "Por supuesto. Contamos con camiones equipados con montacargas para una carga y descarga seguras.",
+    },
+    {
+    question: "¿Cómo puedo rastrear mi envío a un centro de Amazon con Ecom Logistics?",
+    answer: "Cada envío incluye seguimiento en tiempo real a través de nuestro portal para clientes.",
+    },
+    ],
+    },
+
 
 
     //PrepCenter
