@@ -17,25 +17,30 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-white">
-      {/* Logo */}
       <div className="max-w-7xl mx-auto px-8 pt-10 pb-6 flex justify-center md:justify-start">
         <img src={LogoPrincipal2} alt="e-com LOGISTICS" className="h-12" />
       </div>
-
-      {/* Línea superior */}
       <div className="flex justify-center">
         <div className="border-t border-slate-600 w-3/4" />
       </div>
-
-      {/* Contenido principal */}
       <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-end">
         <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start justify-start text-left sm:justify-between sm:text-left">
-          {/* Information */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">{t("footerInformation")}</h4>
             <ul className="space-y-1">
               <li>
-                <a onClick={handleNavigate("/home#services")} className="cursor-pointer">
+                <a
+                  onClick={() => {
+                    navigate("/home");
+                    setTimeout(() => {
+                      const target = document.getElementById("services");
+                      if (target) {
+                        target.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }, 100);
+                  }}
+                  className="cursor-pointer"
+                >
                   {t("footerServices")}
                 </a>
               </li>
@@ -51,8 +56,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Contact */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">{t("footerContact")}</h4>
             <p className="leading-relaxed">
@@ -61,8 +64,6 @@ export default function Footer() {
               94545 Suite E3<br />
             </p>
           </div>
-
-          {/* Social */}
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">{t("footerFindUs")}</h4>
             <div className="flex justify-start gap-4 mt-2">
@@ -94,13 +95,9 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Línea inferior */}
       <div className="flex justify-center">
         <div className="border-t border-slate-600 w-3/4" />
       </div>
-
-      {/* Copyright */}
       <div className="text-center text-xs py-6">
         ©2023 camps. {t("footerRights")}
       </div>

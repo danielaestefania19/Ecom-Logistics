@@ -7,7 +7,6 @@ const Header = () => {
 
     return (
         <div className="relative w-full min-h-[85vh] flex flex-col md:flex-row bg-primary text-white overflow-hidden font-montserrat">
-            {/* Contenido principal */}
             <div className="relative z-10 w-full md:w-3/5 px-6 sm:px-10 md:px-20 lg:px-32 py-20 flex flex-col justify-center text-center md:text-left">
                 <h1 className="text-4xl md:text-6xl font-semibold leading-tight mb-6">
                     {t("tiktokShop.header.title")} <span className="text-third">{t("tiktokShop.header.highlight")}</span>
@@ -29,8 +28,6 @@ const Header = () => {
                     </Button>
                 </a>
             </div>
-
-            {/* Imagen con gradiente lateral para escritorio */}
             <div
                 className="absolute top-0 right-0 h-full w-3/5 hidden md:block"
                 style={{
@@ -52,8 +49,6 @@ const Header = () => {
                     backgroundRepeat: "no-repeat",
                 }}
             />
-
-            {/* Imagen para móviles */}
             <div className="w-full h-full md:hidden relative">
                 <img
                     src={ThirdParty}

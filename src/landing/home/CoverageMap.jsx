@@ -9,7 +9,6 @@ const CoverageMap = () => {
   return (
     <section className="bg-black text-white px-6 py-16 md:py-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        {/* Imagen del mapa */}
         <div className="relative w-full md:w-1/2 mb-12 md:mb-0">
           <img
             src={map}
@@ -17,8 +16,6 @@ const CoverageMap = () => {
             className="w-[110%] md:w-[110%] max-w-none -ml-6 md:-ml-12"
           />
         </div>
-
-        {/* Texto y botón */}
         <div className="w-full md:w-1/2 flex items-center justify-center">
           <div className="text-center md:text-left max-w-xl">
             <h2 className="text-4xl font-bold leading-tight mb-4">

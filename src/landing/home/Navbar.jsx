@@ -43,12 +43,11 @@ function NavbarMenu() {
   const { setIsMenuOpen } = useNavbarContext();
   const location = useLocation();
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const { t, language, setLanguage } = useLanguage();
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-
-
-
+  const { t, language, setLanguage } = useLanguage();
   const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
+
+  const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
   return (
     <HerouiNavbarMenu className="bg-primary text-white">
@@ -79,7 +78,6 @@ function NavbarMenu() {
                   />
                 </button>
               </NavbarMenuItem>
-
               <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${isServicesOpen ? "max-h-96" : "max-h-0"}`}
               >
@@ -114,8 +112,7 @@ function NavbarMenu() {
               <Link
                 as={ReactRouterLink}
                 to={getRoutePath(item, t)}
-                className={`w-full text-white text-lg ${location.pathname === getRoutePath(item, t) ? "text-third" : ""
-                  }`}
+                className={`w-full text-white text-lg ${location.pathname === getRoutePath(item, t) ? "text-third" : ""}`}
                 onPress={() => setIsMenuOpen(false)}
               >
                 {item}
@@ -124,47 +121,45 @@ function NavbarMenu() {
           )}
         </React.Fragment>
       ))}
-<NavbarMenuItem>
-  <button
-    onClick={() => setIsLanguageOpen((prev) => !prev)}
-    className="w-full -mt-2 -mb-4 text-white text-lg pr-2 py-2 flex justify-between items-center"
-  >
-    {language.toUpperCase()}
-    <ChevronDownIcon
-      className={`h-5 w-5 transition-transform duration-300 ${isLanguageOpen ? "rotate-180" : ""}`}
-      aria-hidden="true"
-    />
-  </button>
 
-  <div
-    className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${isLanguageOpen ? "max-h-40" : "max-h-0"}`}
-  >
-    <NavbarMenuItem>
-      <button
-        onClick={() => {
-          setLanguage("en");
-          setIsMenuOpen(false);
-        }}
-        className="w-full text-white text-base pl-6 py-1 text-left"
-      >
-        EN
-      </button>
-    </NavbarMenuItem>
-    <NavbarMenuItem>
-      <button
-        onClick={() => {
-          setLanguage("es");
-          setIsMenuOpen(false);
-        }}
-        className="w-full text-white text-base pl-6 py-1 text-left"
-      >
-        ES
-      </button>
-    </NavbarMenuItem>
-  </div>
-</NavbarMenuItem>
-
-
+      <NavbarMenuItem>
+        <button
+          onClick={() => setIsLanguageOpen((prev) => !prev)}
+          className="w-full -mt-2 -mb-4 text-white text-lg pr-2 py-2 flex justify-between items-center"
+        >
+          {getFlag(language)} {language.toUpperCase()}
+          <ChevronDownIcon
+            className={`h-5 w-5 transition-transform duration-300 ${isLanguageOpen ? "rotate-180" : ""}`}
+            aria-hidden="true"
+          />
+        </button>
+        <div
+          className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${isLanguageOpen ? "max-h-40" : "max-h-0"}`}
+        >
+          <NavbarMenuItem>
+            <button
+              onClick={() => {
+                setLanguage("en");
+                setIsMenuOpen(false);
+              }}
+              className="w-full text-white text-base pl-6 py-1 text-left"
+            >
+              🇺🇸 EN
+            </button>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <button
+              onClick={() => {
+                setLanguage("es");
+                setIsMenuOpen(false);
+              }}
+              className="w-full text-white text-base pl-6 py-1 text-left"
+            >
+              🇪🇸 ES
+            </button>
+          </NavbarMenuItem>
+        </div>
+      </NavbarMenuItem>
     </HerouiNavbarMenu>
   );
 }
@@ -172,13 +167,14 @@ function NavbarMenu() {
 const Navbar = () => {
   const location = useLocation();
   const { t, language, setLanguage } = useLanguage();
+  const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
+
   const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
 
   return (
     <div>
       <Banner />
       <HerouiNavbar position="static" className="bg-primary text-white px-8 h-20">
-        {/* Mobile */}
         <NavbarContent className="sm:hidden" justify="start">
           <NavbarMenuToggle />
         </NavbarContent>
@@ -189,7 +185,6 @@ const Navbar = () => {
           </NavbarBrand>
         </NavbarItem>
 
-        {/* Desktop */}
         <NavbarContent className="hidden sm:flex gap-4" justify="start">
           <NavbarBrand>
             <img src={LogoPrincipal2} alt="Logo" className="h-12 w-auto" />
@@ -199,13 +194,7 @@ const Navbar = () => {
             {menuItems.map((item, i) => {
               if (item === t("services")) {
                 return (
-                  <Dropdown
-                    key="services"
-                    classNames={{
-                      base: "before:bg-primary",
-                      content: "bg-primary",
-                    }}
-                  >
+                  <Dropdown key="services" classNames={{ base: "before:bg-primary", content: "bg-primary" }}>
                     <NavbarItem>
                       <DropdownTrigger>
                         <Button
@@ -224,6 +213,7 @@ const Navbar = () => {
                     </NavbarItem>
                     <DropdownMenu
                       variant="light"
+                      aria-label="Servicios disponibles"
                       itemClasses={{
                         base: [
                           "rounded-md",
@@ -233,7 +223,6 @@ const Navbar = () => {
                           "data-[hover=true]:text-gray-300",
                         ],
                       }}
-                      aria-label="Servicios disponibles"
                     >
                       {servicesItems.map((item) => (
                         <DropdownItem key={item.key}>
@@ -274,7 +263,6 @@ const Navbar = () => {
               );
             })}
 
-            {/* Language Selector - Desktop */}
             <Dropdown classNames={{ content: "bg-primary" }}>
               <NavbarItem>
                 <DropdownTrigger>
@@ -284,11 +272,9 @@ const Navbar = () => {
                     size="lg"
                     radius="sm"
                     className="p-0 bg-transparent text-white hover:text-gray-300 data-[hover=true]:bg-transparent"
-                    endContent={
-                      <ChevronDownIcon className="w-4 h-4" aria-hidden="true" />
-                    }
+                    endContent={<ChevronDownIcon className="w-4 h-4" aria-hidden="true" />}
                   >
-                    {language.toUpperCase()}
+                    {getFlag(language)} {language.toUpperCase()}
                   </Button>
                 </DropdownTrigger>
               </NavbarItem>
@@ -305,8 +291,8 @@ const Navbar = () => {
                   ],
                 }}
               >
-                <DropdownItem onClick={() => setLanguage("en")}>EN</DropdownItem>
-                <DropdownItem onClick={() => setLanguage("es")}>ES</DropdownItem>
+                <DropdownItem onPress={() => setLanguage("en")}>🇺🇸 EN</DropdownItem>
+                <DropdownItem onPress={() => setLanguage("es")}>🇪🇸 ES</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

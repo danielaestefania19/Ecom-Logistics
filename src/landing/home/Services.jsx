@@ -26,6 +26,14 @@ const Services = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const routes = {
+    amazonPartner: '/amazon-partner',
+    prepCenter: '/prep-center',
+    tiktokShop: '/tiktok-shop',
+    storageAnchor: '/tiktok-shop#free-packaging',
+    localMovingAnchor: '/amazon-partner#local-moving',
+  };
+
   return (
     <section id="services" className="w-full py-20 px-6 md:px-20 bg-white">
       <div className="max-w-[1500px] mx-auto">
@@ -65,8 +73,7 @@ const Services = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* LTL */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={camion} alt="LTL" className="rounded-md bg-white w-8 h-8 xl:w-9 xl:h-9" />
               <p className="text-lg font-semibold">{t("ltlTitle")}</p>
@@ -81,7 +88,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/Amazon Partner')}
+                onClick={handleNavigate(routes.amazonPartner)}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
@@ -90,9 +97,7 @@ const Services = () => {
               </span>
             </CardFooter>
           </Card>
-
-          {/* FBA */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={amazon} alt="FBA Prep Center" className="rounded-md bg-white p-1 w-10 h-10 xl:w-12 xl:h-12" />
               <p className="text-lg font-semibold">{t("fbaTitle")}</p>
@@ -107,7 +112,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/prepservices')}
+                onClick={handleNavigate(routes.prepCenter)}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
@@ -116,9 +121,7 @@ const Services = () => {
               </span>
             </CardFooter>
           </Card>
-
-          {/* TikTok */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={tiktok} alt="TikTok Shop 3PL" className="rounded-md bg-white p-1 w-12 h-12 xl:w-10 xl:h-10" />
               <p className="text-lg font-semibold">{t("tiktokTitle")}</p>
@@ -133,7 +136,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/TikTok')}
+                onClick={handleNavigate(routes.tiktokShop)}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
@@ -142,9 +145,7 @@ const Services = () => {
               </span>
             </CardFooter>
           </Card>
-
-          {/* Storage */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={storege} alt="Storage" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
               <p className="text-lg font-semibold">{t("storageTitle")}</p>
@@ -159,7 +160,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/TikTok#free-packaging')}
+                onClick={handleNavigate(routes.storageAnchor)}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
@@ -168,9 +169,7 @@ const Services = () => {
               </span>
             </CardFooter>
           </Card>
-
-          {/* Local Moving */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={localmoving} alt="Local Moving" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
               <p className="text-lg font-semibold">{t("localTitle")}</p>
@@ -185,7 +184,7 @@ const Services = () => {
             </div>
             <CardFooter>
               <span
-                onClick={handleNavigate('/Amazon Partner#local-moving')}
+                onClick={handleNavigate(routes.localMovingAnchor)}
                 role="button"
                 tabIndex={0}
                 className="text-sm text-third hover:underline font-semibold cursor-pointer"
@@ -194,9 +193,7 @@ const Services = () => {
               </span>
             </CardFooter>
           </Card>
-
-          {/* Brand Management */}
-          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+          <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={logistica} alt="Brand Management" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
               <p className="text-lg font-semibold">{t("brandTitle")}</p>

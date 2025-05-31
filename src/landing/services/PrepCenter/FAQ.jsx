@@ -1,10 +1,10 @@
 import { Accordion, AccordionItem } from "@heroui/react";
 import { Button } from "@heroui/react";
-import { useLanguage } from "../../i18n/LanguageContext"; // CORREGIDO
+import { useLanguage } from "../../i18n/LanguageContext"; 
 import { useMemo } from "react";
 
 export default function FAQ() {
-  const { t } = useLanguage(); // CORREGIDO
+  const { t } = useLanguage(); 
 
   const faqData = useMemo(() => {
     const items = t("prepCenter.faqItems", { returnObjects: true });

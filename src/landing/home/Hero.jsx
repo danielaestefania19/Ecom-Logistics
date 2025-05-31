@@ -12,10 +12,8 @@ const Hero = () => {
           {t("heroHeadline1")} <span className="text-third">E-Commerce</span>
         </h1>
         <h1 className="text-4xl md:text-6xl font-semibold mb-9">{t("heroHeadline2")}</h1>
-
         <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">{t("heroDesc1")}</p>
         <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">{t("heroDesc2")}</p>
-
         <div className="flex gap-4 justify-center md:justify-start">
           <a href="#contact">
             <Button
@@ -27,8 +25,6 @@ const Hero = () => {
           </a>
         </div>
       </div>
-
-      {/* Imagen derecha desktop */}
       <div
         className="absolute top-0 right-0 h-full w-3/5 hidden md:block"
         style={{
@@ -48,8 +44,6 @@ const Hero = () => {
           backgroundPosition: "center",
         }}
       />
-
-      {/* Imagen móvil */}
       <div className="w-full h-full md:hidden relative">
         <img src={ImageHero} alt="Hero" className="w-full h-auto object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />

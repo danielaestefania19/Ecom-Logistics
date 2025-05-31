@@ -10,7 +10,6 @@ const Discount = () => {
     <section className="bg-primary py-16 px-4">
       <div className="max-w-7xl mx-auto flex justify-center">
         <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-31 w-full">
-          {/* Texto */}
           <div className="text-center md:text-left px-2 md:px-0">
             <h2 className="text-third text-2xl sm:text-3xl font-bold mb-1">
               {t("discountHeadline1")}
@@ -19,8 +18,6 @@ const Discount = () => {
               {t("discountHeadline2")}
             </span>
           </div>
-
-          {/* Card */}
           <a href="#contact">
             <div className="w-full md:w-[300px] lg:w-[300px] xl:w-[400px] px-2 md:px-0">
               <Card

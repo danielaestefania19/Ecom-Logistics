@@ -7,7 +7,6 @@ const OurStory = () => {
   return (
     <section className="bg-white py-24 px-6 lg:px-24">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
-        {/* Imagen a la izquierda */}
         <div className="w-full lg:w-1/2 flex justify-center">
           <img
             src={ourstory}
@@ -15,8 +14,6 @@ const OurStory = () => {
             className="rounded-2xl shadow-lg w-full max-w-md"
           />
         </div>
-
-        {/* Texto a la derecha */}
         <div className="w-full lg:w-1/2">
           <h2 className="text-4xl font-bold text-primary mb-6 text-center lg:text-left">
             {t("AboutUs.storyTitle")}

@@ -99,7 +99,6 @@ export default function CustomerFeedback() {
   return (
     <section className="bg-white py-16">
       <div className="max-w-[1350px] mx-auto px-4 sm:px-8 md:px-16">
-        {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12">
           <div className="w-full lg:w-2/3">
             <h1 className="text-4xl md:text-5xl font-medium mb-2 text-blue">
@@ -120,17 +119,12 @@ export default function CustomerFeedback() {
             </span>
             <p className="text-xs text-gray-500">Searching for excellence</p>
           </div>
-
         </div>
-
-        {/* Carousel */}
         <div className="mt-12 relative">
           <div
             ref={containerRef}
             className="flex overflow-x-auto gap-2 scroll-smooth no-scrollbar py-4"
           >
-
-
             {reviews.map((review) => (
               <div
                 key={review.id}
@@ -148,7 +142,6 @@ export default function CustomerFeedback() {
                     </div>
                   </div>
                 </div>
-
                 <div className="mt-4">
                   <div className="flex text-third text-sm mb-2">
                     {'★'.repeat(review.stars)}
@@ -162,8 +155,6 @@ export default function CustomerFeedback() {
               </div>
             ))}
           </div>
-
-          {/* Navigation */}
           <div className="mt-10 flex justify-end gap-4">
             <button
               onClick={() => scrollBy('prev')}

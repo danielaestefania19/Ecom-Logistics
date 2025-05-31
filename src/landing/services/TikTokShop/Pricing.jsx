@@ -10,7 +10,6 @@ const Pricing = () => {
         <section className="bg-primary py-16 px-8">
             <div className="max-w-7xl mx-auto flex justify-center">
                 <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-24 w-full">
-                    {/* Texto */}
                     <div className="text-center md:text-left px-2 md:px-0">
                         <h2 className="text-third text-2xl sm:text-3xl font-bold mb-1">
                             {t("tiktokShopPricing.title")}

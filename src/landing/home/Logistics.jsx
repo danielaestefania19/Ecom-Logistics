@@ -10,7 +10,6 @@ const Logistics = () => {
         <h2 className="text-third text-2xl sm:text-3xl font-bold">
           {t("logisticsTitle")}
         </h2>
-
         <p className="text-gray-900 text-2xl sm:text-3xl font-bold leading-tight">
           {t("logisticsSubtitleLine1")}
           <br />
@@ -20,7 +19,6 @@ const Logistics = () => {
         <p className="text-gray-700 text-lg sm:text-xl font-medium">
           {t("logisticsDescription")}
         </p>
-
         <div className="pt-6">
           <a href="#contact">
             <Button

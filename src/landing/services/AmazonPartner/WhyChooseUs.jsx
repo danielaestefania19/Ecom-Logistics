@@ -46,8 +46,6 @@ const WhyChooseUs = () => {
         <h2 className="text-4xl font-bold text-center mb-12">
           {t("whyChooseUs.title")}
         </h2>
-
-        {/* Top Icons */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16 text-center">
           {introItems.map(({ icon, title, description }, idx) => (
             <div key={idx} className="flex flex-col items-center px-4">
@@ -57,8 +55,6 @@ const WhyChooseUs = () => {
             </div>
           ))}
         </div>
-
-        {/* Feature Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden">
             <thead>
