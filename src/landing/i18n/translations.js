@@ -656,9 +656,9 @@ es: {
     bannerMessage: "¡Pregunta por precios al mayoreo en todos los servicios ahora!",
     // Hero
     heroHeadline1: "Soluciones logísticas para",
-    heroHeadline2: "Vendedores de E-Commerce",
-    heroDesc1: "Centro de preparación, transportista aliado de Amazon (LTL y FTL),",
-    heroDesc2: "Cumplimiento 3PL para Amazon y TikTok Shop.",
+    heroHeadline2: "E-Commerce",
+    heroDesc1: "Prep Center, transportista aliado de Amazon (LTL y FTL),",
+    heroDesc2: "3PL para Amazon y TikTok Shop.",
     // Contact Us
     contactTitle: "Contáctanos",
     contactSubtitle: "¡Nos encantaría saber de ti! Llena tus datos de contacto y te responderemos pronto.",
@@ -682,8 +682,8 @@ es: {
     errorInvalidEmail: "Formato de correo inválido",
     //Services 
     servicesTitle1: "Nuestros Servicios:",
-    servicesTitle2: "Haciendo tu Mudanza Sin Esfuerzo",
-    servicesTitle3: "Movimiento sin esfuerzo",
+    servicesTitle2: "Facilitamos cada movimiento de tu",
+    servicesTitle3: "negocio online",
     servicesDesc: "Brindamos soluciones logísticas y de cumplimiento adaptadas para Amazon FBA, TikTok Shop y negocios locales. Desde almacenamiento hasta entrega de última milla, garantizamos que tus operaciones funcionen sin problemas.",
     servicesAll: "Todos los Servicios",
     ltlTitle: "Transportista Amazon (LTL & FTL)",
@@ -694,7 +694,7 @@ es: {
     tiktokDesc: "Administramos tu marca como profesionales: logística, lanzamientos, envíos y presencia digital.",
     storageTitle: "Servicio de Almacenaje",
     storageDesc: "Ofrecemos almacenamiento seguro, organizado y con 7 días gratuitos para todos los clientes nuevos.",
-    localTitle: "Mudanzas Locales",
+    localTitle: "Movimientos de Mercancía Locales",
     localDesc: "Nos encargamos de tus entregas o recogidas locales en California. LTL o SPD, sin estrés.",
     brandTitle: "Gestión de Marca",
     brandDesc: "Estrategias de marca completas: descubrimiento, identidad visual y monitoreo de rendimiento para posicionarte en el mercado.",
@@ -730,7 +730,7 @@ es: {
     discountCardTitle: "Recojo diario LTL gratis",
     discountCardSubtitle: "En el Área de la Bahía",
     //FulfillmentPromise
-    fulfillmentHeadline: "Centro de cumplimiento mejor calificado en la Costa Oeste",
+    fulfillmentHeadline: "El mejor calificado  Fulfillment Center en el Área de la Bahía ", 
     fulfillmentAccuracy: "Precisión en los pedidos",
     fulfillmentOnTime: "Entregas a tiempo (envíos diarios)",
     fulfillmentPreparation: "para preparar tus productos",
@@ -795,7 +795,7 @@ es: {
     },
     step2: {
     title: "PASO 2",
-    description: "Trabaja con nuestro equipo para preparar tu envío LTL o FTL y alistar tus tarimas.",
+    description: "Trabaja con nuestro equipo para preparar tu envío LTL o FTL y alistar tus paletas.",
     },
     step3: {
     title: "PASO 3",
@@ -803,7 +803,7 @@ es: {
     },
     step4: {
     title: "PASO 4",
-    description: "Coordinamos un recojo gratuito o entrega local dentro del Área de la Bahía de San Francisco.",
+    description: "Coordinamos una recojida gratuita o entrega local dentro del Área de la Bahía de San Francisco.",
     },
     step5: {
     title: "PASO 5",
@@ -851,11 +851,11 @@ es: {
     featureLabels: {
     "Delivery Time": "Tiempo de Entrega",
     "Liftgate": "Montacargas",
-    "Residential Pickup": "Recojo Residencial",
-    "Commercial Pickup": "Recojo Comercial",
-    "Hazmat Handling": "Manejo de Materiales Peligrosos",
-    "POD at Amazon FC": "Comprobante en Centro Amazon",
-    "Daily Pickup": "Recojo Diario",
+    "Residential Pickup": "Recogida en Ubicación Residencial",
+    "Commercial Pickup": "Recogida en Ubicación Comercial",
+    "Hazmat Handling": "Manejo de Materiales Hazmat",
+    "POD at Amazon FC": "Seguimiento en Tiempo Real ",
+    "Daily Pickup": "Recojidas Diarias",
     "Personalized Support": "Soporte Personalizado",
     "Exclusive Monthly Offers and Discounts": "Ofertas y Descuentos Mensuales Exclusivos",
     },
@@ -873,7 +873,7 @@ es: {
     },
     //LocalMoving
     localMoving: {
-    title: "Mudanzas Locales",
+    title: "Movimiento de Mercancía Locales",
     description1: {
     pre: " Ya sea que recojas productos de tu proveedor o realices entregas locales en California (LTL o SPD),",
     post: " te respalda. Nuestra flota amplia, junto con socios logísticos confiables, asegura operaciones fluidas con un servicio flexible y confiable adaptado a tus necesidades.",
@@ -892,7 +892,7 @@ es: {
     },
     {
     question: "¿Qué tan rápido puede Ecom Logistics entregar mis productos a un centro de cumplimiento de Amazon?",
-    answer: "Después del recojo de la tarima, puede tomar de 1 a 3 días para que los productos salgan de nuestros almacenes. Una vez fuera, la entrega al centro de cumplimiento toma entre 1 y 3 días. (Ten en cuenta que eventos imprevistos pueden ocasionar retrasos, pero estamos preparados para manejarlos de forma eficiente).",
+    answer: "Después del recojo de la paleta, puede tomar de 1 a 3 días para que los productos salgan de nuestros almacenes. Una vez fuera, la entrega al centro de cumplimiento toma entre 1 y 3 días. (Ten en cuenta que eventos imprevistos pueden ocasionar retrasos, pero estamos preparados para manejarlos de forma eficiente).",
     },
     {
     question: "¿Ecom Logistics ofrece servicio de recojo gratuito?",

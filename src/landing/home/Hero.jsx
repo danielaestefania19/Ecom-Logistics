@@ -3,17 +3,35 @@ import ImageHero from "../../assets/ImageHero.jpg";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const Hero = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isSpanish = language === "es";
 
   return (
     <div className="relative w-full min-h-[70vh] flex flex-col md:flex-row text-white bg-primary overflow-hidden">
       <div className="relative z-10 w-full md:w-1/2 p-8 md:pl-28 md:pr-10 lg:pl-36 lg:pr-20 xl:pl-48 xl:pr-28 md:py-24 font-montserrat flex-1 md:flex md:flex-col md:justify-center md:items-start text-center md:text-left">
-        <h1 className="text-4xl md:text-6xl font-semibold mb-2">
-          {t("heroHeadline1")} <span className="text-third">E-Commerce</span>
-        </h1>
-        <h1 className="text-4xl md:text-6xl font-semibold mb-9">{t("heroHeadline2")}</h1>
-        <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">{t("heroDesc1")}</p>
-        <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">{t("heroDesc2")}</p>
+        {isSpanish ? (
+          <h1 className="text-4xl md:text-6xl font-semibold mb-9">
+            Soluciones logísticas para <br/> Vendedores de{" "}
+            <span className="text-third">E-Commerce</span>
+          </h1>
+        ) : (
+          <>
+            <h1 className="text-4xl md:text-6xl font-semibold mb-2">
+              {t("heroHeadline1")}{" "}
+              <span className="text-third">E-Commerce</span>
+            </h1>
+            <h1 className="text-4xl md:text-6xl font-semibold mb-9">
+              {t("heroHeadline2")}
+            </h1>
+          </>
+        )}
+
+        <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">
+          {t("heroDesc1")}
+        </p>
+        <p className="text-xl sm:text-base md:text-3xl font-light w-full mb-4 sm:mb-2">
+          {t("heroDesc2")}
+        </p>
         <div className="flex gap-4 justify-center md:justify-start">
           <a href="#contact">
             <Button
@@ -25,6 +43,8 @@ const Hero = () => {
           </a>
         </div>
       </div>
+
+      {/* Imagen lateral para escritorio */}
       <div
         className="absolute top-0 right-0 h-full w-3/5 hidden md:block"
         style={{
@@ -44,8 +64,14 @@ const Hero = () => {
           backgroundPosition: "center",
         }}
       />
+
+      {/* Imagen para móvil */}
       <div className="w-full h-full md:hidden relative">
-        <img src={ImageHero} alt="Hero" className="w-full h-auto object-cover" />
+        <img
+          src={ImageHero}
+          alt="Hero"
+          className="w-full h-auto object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
       </div>
     </div>
