@@ -9,9 +9,9 @@ const WhoWeAre = () => {
     <section className="bg-white py-24 px-6 lg:px-24">
       <div className="max-w-6xl mx-auto flex flex-col gap-12 lg:flex-row items-center">
         <div className="w-full lg:w-2/3">
-          <h2 className="text-4xl font-bold text-primary mb-6 text-center lg:text-left">
+          <h1 className="text-4xl font-bold text-primary mb-6 text-center lg:text-left">
             {who.title}
-          </h2>
+          </h1>
           <p className="text-lg text-third leading-relaxed mb-6 text-center lg:text-left">
             {who.paragraph1}
           </p>

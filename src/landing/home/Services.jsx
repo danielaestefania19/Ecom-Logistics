@@ -39,12 +39,9 @@ const Services = () => {
       <div className="max-w-[1500px] mx-auto">
         <div className="flex flex-col lg:flex-row justify-between items-start w-full mb-12 gap-8">
           <div className="w-full lg:w-2/3">
-            <h1 className="text-4xl md:text-6xl font-normal mb-2">
-              <span className="text-third">{t("servicesTitle1")} </span>{t("servicesTitle2")}
-            </h1>
-            <h1 className="tracking-tight font-normal text-primary text-4xl lg:text-6xl bg-clip-text">
-              {t("servicesTitle3")}
-            </h1>
+            <h2 className="text-4xl md:text-6xl font-normal mb-2">
+            {t("servicesTitle1")}
+            </h2>
           </div>
           <div className="w-full lg:w-1/3 mt-4 flex flex-col gap-4 text-left">
             <p className="text-third text-sm leading-relaxed">
@@ -76,10 +73,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={camion} alt="LTL" className="rounded-md bg-white w-8 h-8 xl:w-9 xl:h-9" />
-              <p className="text-lg font-semibold">{t("ltlTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("ltlTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("ltlDesc")}
+              <p>{t("ltlDesc")}</p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -100,10 +97,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={amazon} alt="FBA Prep Center" className="rounded-md bg-white p-1 w-10 h-10 xl:w-12 xl:h-12" />
-              <p className="text-lg font-semibold">{t("fbaTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("fbaTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("fbaDesc")}
+              <p> {t("fbaDesc")} </p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -124,10 +121,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={tiktok} alt="TikTok Shop 3PL" className="rounded-md bg-white p-1 w-12 h-12 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">{t("tiktokTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("tiktokTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("tiktokDesc")}
+              <p>{t("tiktokDesc")}</p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -148,10 +145,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={storege} alt="Storage" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">{t("storageTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("storageTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("storageDesc")}
+              <p> {t("storageDesc")} </p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -172,10 +169,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={localmoving} alt="Local Moving" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">{t("localTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("localTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("localDesc")}
+              <p>{t("localDesc")}</p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />
@@ -196,10 +193,10 @@ const Services = () => {
           <Card className="bg-white p-6 min-h-[320px] flex flex-col justify-between rounded-lg transition-transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
             <CardHeader className="flex gap-3 items-center">
               <Image src={logistica} alt="Brand Management" className="rounded-md bg-white p-1 w-8 h-8 xl:w-10 xl:h-10" />
-              <p className="text-lg font-semibold">{t("brandTitle")}</p>
+              <h3 className="text-lg font-semibold">{t("brandTitle")}</h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
-              {t("brandDesc")}
+              <p> {t("brandDesc")} </p>
             </CardBody>
             <div className="relative w-full h-5 flex items-center justify-center">
               <div className="w-full h-[1px] bg-gray-200" />

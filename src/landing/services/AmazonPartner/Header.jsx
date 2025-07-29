@@ -20,11 +20,6 @@ const Header = () => {
         <p className="text-base md:text-lg text-white/80 font-light leading-relaxed mb-4">
           {t("amazonHeader.description1")}
         </p>
-
-        <p className="text-base md:text-lg text-white/70 font-light leading-relaxed">
-          {t("amazonHeader.description2")}
-        </p>
-
         <a href="#contact" className="inline-block">
           <Button
             radius="full"

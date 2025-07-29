@@ -28,9 +28,9 @@ const WhyEcom = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex lg:flex-row justify-center items-center w-full mb-12 gap-8">
           <div className="w-full">
-            <h1 className="text-4xl md:text-6xl font-normal mb-2">
+            <h2 className="text-4xl md:text-6xl font-normal mb-2">
               {t("whyEcomTitle")} <span className="text-third">Logistics</span>?
-            </h1>
+            </h2>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -41,9 +41,9 @@ const WhyEcom = () => {
                 alt="Top LTL and Prep Rates"
                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
               />
-              <p className="text-2xl font-semibold text-primary">
+              <h3 className="text-2xl font-semibold text-primary">
                 {t("whyEcomCard1Title")}
-              </p>
+              </h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
               {t("whyEcomCard1Text")}
@@ -67,9 +67,9 @@ const WhyEcom = () => {
                 alt="Customer Support and Advisors"
                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
               />
-              <p className="text-2xl font-semibold text-primary">
+              <h3 className="text-2xl font-semibold text-primary">
                 {t("whyEcomCard2Title")}
-              </p>
+              </h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
               {t("whyEcomCard2Text")}
@@ -93,9 +93,9 @@ const WhyEcom = () => {
                 alt="Efficiency Guaranteed"
                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
               />
-              <p className="text-2xl font-semibold text-primary">
+              <h3 className="text-2xl font-semibold text-primary">
                 {t("whyEcomCard3Title")}
-              </p>
+              </h3>
             </CardHeader>
             <CardBody className="text-blue/80 text-[16px]">
               {t("whyEcomCard3Text")}

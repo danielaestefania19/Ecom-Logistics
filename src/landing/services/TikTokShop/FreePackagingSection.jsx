@@ -21,9 +21,9 @@ const FreePackagingSection = () => {
                             {t("tiktokShopPackaging.title")}
                         </h2>
                         <div className="flex flex-col gap-1">
-                            <span className="text-base text-black opacity-80">
+                            <p className="text-base text-black opacity-80">
                                 {t("tiktokShopPackaging.description")}
-                            </span>
+                            </p>
                         </div>
                     </div>
                 </div>

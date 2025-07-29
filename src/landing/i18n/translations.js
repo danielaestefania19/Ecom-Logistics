@@ -43,12 +43,12 @@ en: {
     servicesTitle3: "Move Effortless",
     servicesDesc: "We provide tailored logistics and fulfillment solutions for Amazon FBA, TikTok Shop, and local businesses. From warehousing to last-mile delivery, we ensure your operations run smoothly and your brand grows with confidence.",
     servicesAll: "All Services",
-    ltlTitle: "Amazon Partner (LTL & FTL)",
-    ltlDesc: "As your logistics partner for LTL and FTL, we offer the most competitive rates in the market along with fast delivery to Amazon Fulfillment Centers, saving you time and money without compromising quality. We help you avoid low inventory fees and keep your stock moving efficiently.",
+    ltlTitle: "Amazon LTL & FTL Shippings ",
+    ltlDesc: " Ecom Logistics provides reliable Less-Than-Truckload (LTL) and Full Truckload (FTL) shipping options to meet all your commercial freight needs. As an experienced Amazon Freight Partner, we ensure seamless and efficient delivery to Amazon fulfillment centers. Optimize your supply chain with our cost-effective transportation services.",
     fbaTitle: "FBA Prep Center",
-    fbaDesc: "Specialized in preparing, labeling, bundling, and shipping inventory to Amazon warehouses, ensuring full compliance with FBA standards.",
-    tiktokTitle: "3PL (TikTok Shop & Amazon)",
-    tiktokDesc: "Let us manage your brand like the pros. At Ecom Logistics, we support both new and established brands by managing every aspect of your online presence, from product launches, to logistics and shipping.",
+    fbaDesc: "Amazon Prep Center specialized in preparing, labeling, bundling, and shipping inventory to Amazon warehouses, ensuring full compliance with FBA standards.",
+    tiktokTitle: "3PL (Shopify, Amazon, Tiktok Shop)",
+    tiktokDesc: " Efficient inventory management, secure storage, and state-of-the-art picking and packing processes in our 3PL warehouse.",
     storageTitle: "Storage Service",
     storageDesc: "Looking for secure storage for your products? Our warehouse has the space you need to keep your inventory safe and organized. Try us out! All customers get First 7 days of free storage.",
     localTitle: "Local Moving",
@@ -76,8 +76,8 @@ en: {
     coverageClosing: "Stop guessing. Start growing.",
     contactUsToday: "Contact us today",
     //FastDeliverySection
-    fastTitle: "No More Low Inventory Fees!",
-    fastSubtitle: "Optimize Your LTL Shipments to Amazon",
+    fastTitle: "What Makes Ecom Logistics Your Ideal Shipping Partner?",
+    fastSubtitle: "No More Low Inventory Fees!",
     fastBenefit1: "2–3 Days to Deliver",
     fastBenefit2: "Avoid Extra Inventory Fees",
     fastBenefit3: "Free Expert Advisory",
@@ -87,7 +87,7 @@ en: {
     discountCardTitle: "Free daily LTL Pickup",
     discountCardSubtitle: "In the Bay Area",
     //FulfillmentPromise
-    fulfillmentHeadline: "Top-Rated Fulfillment Center on the West Coast",
+    fulfillmentHeadline: " Top-Rated Fulfillment Center on the West Coast",
     fulfillmentAccuracy: "Order Accuracy",
     fulfillmentOnTime: "On-Time Delivery (daily outbound shipments)",
     fulfillmentPreparation: "to Prepare Your Products",
@@ -120,11 +120,9 @@ en: {
     amazonHeader: {
     title: "Amazon Partner Carrier",
     highlight: "LTL & FTL",
-    subtitle: "Your Logistics Partner for Amazon Fulfillment Center Shipments",
+    subtitle: "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner, we offer efficient, cost-effective freight forwarding to Amazon FBA warehouses and beyond. Get a shipping quote!",
     description1:
-    "We simplify your logistics to Amazon FBA. We handle your LTL and FTL shipments from residential or commercial locations across Northern California. We also take care of appointment scheduling and delivery.",
-    description2:
-    "Plus, we offer some of the best rates and fastest delivery times in the region.",
+    "Amazon LTL & FTL Shipping: Your Expert Freight Partner",
     cta: "Contact Sales",
     },
     //Advantages
@@ -169,21 +167,56 @@ en: {
     },
     //CoverageMap
     coverageMap: {
-    title: "Our Amazon Partner Carrier Coverage",
+    title: "Our Amazon FBA Warehouse Coverage",
     desc1: {
-    pre: "At",
+    pre: "At ",
     brand: "Ecom Logistics",
-    post: ", we partner with Amazon’s trusted carrier network to provide fast, on-time deliveries throughout the",
-    region: " West Coast 🚚🌄.",
-    end: " From California to the surrounding region, our optimized shipping solutions ensure your products reach customers and Amazon fulfillment centers quickly, cost-effectively, and with full FBA compliance 📦✅.",
+    post: ", your trusted ",
+    role1: "Amazon Freight Partner",
+    and: " and ",
+    role2: "freight forwarder",
+    comma: ", we specialize in providing fast, on-time ",
+    service1: "Amazon LTL",
+    and2: " and ",
+    service2: "FTL shipping",
+    region: " solutions throughout the ",
+    area: "West Coast",
+    end: ". From California to the surrounding region, our optimized ",
+    solutions: "shipping solutions",
+    ensure: " ensure your products reach customers and ",
+    target: "FBA warehouses",
+    final: " quickly, cost-effectively, and with full FBA compliance 📦✅."
     },
-    desc2: "Nationwide service coming soon!",
-    desc3:
-    "Track your shipments in real-time 📍 and enjoy personalized support at every step. Ready to see how far we go? Check out the map below to explore the locations we service.",
-    contactPre: "Don’t see your preferred warehouse?",
-    contactPost: "No worries! Simply contact us and ask about the location you have in mind! 📞",
-    button: "Contact us today",
+    desc2: {
+    pre: "We are actively expanding our network, with ",
+    bold: "nationwide service coming soon!",
     },
+    desc3: {
+    pre: "Experience seamless ",
+    bold1: "freight shipping",
+    mid1: " with real-time ",
+    bold2: "shipment tracking",
+    mid2: " 📍 and enjoy personalized support from your dedicated ",
+    bold3: "freight forwarder",
+    mid3: " expert at every step. Ready to see how far our ",
+    bold4: "Amazon freight shipping",
+    mid4: " goes for you? Check out the map below to explore the extensive ",
+    bold5: "locations we service",
+    end: "."
+    },
+    contactPre: {
+    pre: "Don’t see your preferred warehouse or need specific ",
+    bold: "Amazon freight solutions",
+    post: "?"
+    },
+    contactPost: {
+    pre: "No worries! Simply contact us and ask about the location or custom ",
+    bold: "freight solutions",
+    post: " you have in mind! 📞"
+    },
+    button: "Contact us today"
+    },
+
     //WhyChooseUs
     whyChooseUs: {
     title: "Why Choose Ecom Logistics?",
@@ -249,15 +282,15 @@ en: {
     answer: "We specialize in Amazon FBA compliance, fast delivery windows, and smooth coordination with FCs.",
     },
     {
-    question: "How fast can Ecom Logistics deliver my products to an Amazon Fulfillment Center?",
+    question: "How fast can Ecom Logistics deliver my Amazon LTL products to an Amazon FBA warehouse?",
     answer: "After the pallet pickup, it may take 1 to 3 days for them to leave our warehouses. Once they leave our facility, it takes 1 to 3 days for delivery to the Amazon fulfillment centers (FC). (Please note that unexpected events beyond our control may cause delays in the process). However, we are fully prepared to handle these situations and resolve them as quickly as possible.",
     },
     {
-    question: "Does Ecom Logistics offer free pickup service?",
+    question: "Does Ecom Logistics offer free pickup service for LTL freight?",
     answer: "Yes, standard pickup is included in most service plans—contact us to confirm based on your area.",
     },
     {
-    question: "Can Ecom Logistics provide liftgate service if a forklift is unavailable at pickup or delivery?",
+    question: " Can Ecom Logistics provide liftgate service if a forklift is unavailable at pickup or delivery?",
     answer: "Absolutely. We offer liftgate-equipped trucks for safe and easy loading/unloading.",
     },
     {
@@ -346,11 +379,11 @@ en: {
     answer: "Most orders are prepped within 24–48 hours, depending on volume and requirements."
     },
     {
-    question: "Can Ecom Logistics receive shipments directly from my suppliers?",
+    question: " Can Ecom Logistics receive shipments directly from my suppliers?",
     answer: "Yes, we receive, inspect, and process shipments directly from your vendors."
     },
     {
-    question: "Does Ecom Logistics have experience handling Hazmat or oversized items?",
+    question: " Does Ecom Logistics have experience handling Hazmat or oversized items?",
     answer: "Yes, we’re trained and equipped to manage Hazmat and large-size product categories."
     },
     {
@@ -373,7 +406,7 @@ en: {
     highlight: "(3PL)",
     subtitle: "Increase Your Profits with Reliable 3PL Services at the Best Price.",
     description:
-    "We provide reliable and fully personalized 3PL logistics solutions and the most competitive pricing. Scale your business with faster shipping, lower costs, and greater efficiency today.",
+    " As a leading 3PL company for e-commerce, Ecom Logistics offers seamless third-party logistics solutions. We manage your 3PL warehouse operations, from inventory to fulfillment center services, ensuring peak efficiency.",
     cta: "Contact Sales"
     }
     },
@@ -483,7 +516,7 @@ en: {
     //AboutUs
     //OurStory
     AboutUs: {
-    storyTitle: "Our Story",
+    storyTitle: " Our story",
     storyIntro: "We’ve lived the e-commerce journey ourselves, so we truly understand what sellers need to grow. Our experience has shaped every part of our service, from fast response times to flexible solutions, because we know what it’s like to be on the other side.",
     storyParagraph1: {
     pre: "We started with a simple belief: ",
@@ -498,7 +531,7 @@ en: {
     },
     //WhooWeAre
     whoWeAre: {
-    title: "Who We Are",
+    title: "Who We Are?",
     paragraph1:
     "At Ecom Logistics, we deliver smart, scalable logistics solutions designed for today’s fast-paced e-commerce world. Based in the Bay Area, California, we operate from one of the country’s most strategic logistics hubs, right next to the ports and suppliers that keep America moving.",
     paragraph2:
@@ -681,27 +714,25 @@ es: {
     errorPhoneRequired: "El teléfono es obligatorio",
     errorInvalidEmail: "Formato de correo inválido",
     //Services 
-    servicesTitle1: "Nuestros Servicios:",
-    servicesTitle2: "Facilitamos cada movimiento de tu",
-    servicesTitle3: "negocio online",
-    servicesDesc: "Brindamos soluciones logísticas y de cumplimiento adaptadas para Amazon FBA, TikTok Shop y negocios locales. Desde almacenamiento hasta entrega de última milla, garantizamos que tus operaciones funcionen sin problemas.",
+    servicesTitle1: "Nuestros Servicios Integrales de Logística para E-commerce",
+    servicesDesc: "En Ecom Logistics, ofrecemos un espectro completo de soluciones integradas diseñadas para optimizar sus operaciones e impulsar el crecimiento. Descubra cómo nuestros servicios expertos de 3PL, preparación de FBA y envío de carga pueden beneficiar a su negocio.",
     servicesAll: "Todos los Servicios",
-    ltlTitle: "Transportista Amazon (LTL & FTL)",
-    ltlDesc: "Como tu socio logístico, ofrecemos tarifas competitivas y entregas rápidas a centros de Amazon, ayudándote a evitar cargos y mantener tu inventario fluyendo.",
+    ltlTitle: " Envíos LTL y FTL de Amazon",
+    ltlDesc: " Ecom Logistics proporciona opciones fiables de envío de Carga Parcial (LTL) y Carga Completa (FTL) para satisfacer todas sus necesidades de carga comercial. Como Socio de Carga de Amazon experimentado, garantizamos una entrega fluida y eficiente a los centros de fulfillment de Amazon. Optimice su cadena de suministro con nuestros servicios de transporte rentables.",
     fbaTitle: "Centro de Preparación FBA",
-    fbaDesc: "Especialistas en etiquetado, embalaje y envío a Amazon cumpliendo todas las normas de FBA.",
-    tiktokTitle: "3PL (TikTok Shop y Amazon)",
-    tiktokDesc: "Administramos tu marca como profesionales: logística, lanzamientos, envíos y presencia digital.",
-    storageTitle: "Servicio de Almacenaje",
+    fbaDesc: " Centro de preparación de Amazon especializado en preparar, etiquetar, empaquetar y enviar inventario a los almacenes de Amazon, asegurando el cumplimiento total de los estándares de FBA.",
+    tiktokTitle: "3PL (Shopify, Amazon, Tiktok Shop)",
+    tiktokDesc: " Gestión eficiente de inventario, almacenamiento seguro y procesos de picking y packing de última generación en nuestro almacén 3PL.",
+    storageTitle: "Servicio de Almacenamiento",
     storageDesc: "Ofrecemos almacenamiento seguro, organizado y con 7 días gratuitos para todos los clientes nuevos.",
-    localTitle: "Movimientos de Mercancía Locales",
+    localTitle: "Mudanzas Locales",
     localDesc: "Nos encargamos de tus entregas o recogidas locales en California. LTL o SPD, sin estrés.",
-    brandTitle: "Gestión de Marca",
+    brandTitle: "Gestión de Marcas",
     brandDesc: "Estrategias de marca completas: descubrimiento, identidad visual y monitoreo de rendimiento para posicionarte en el mercado.",
     learnMore: "Ver más",
     comingSoon: "Próximamente",
     //CoverageMap
-    coverageHeadline: "¿Sabías esto?",
+    coverageHeadline: "¿Sabías que?",
     coverageFactPrefix: "Más del",
     coverageFactHighlight1: "40% de las importaciones de EE.UU.",
     coverageFactMiddle: "pasan por",
@@ -719,28 +750,28 @@ es: {
     coverageClosing: "Deja de adivinar. Empieza a crecer.",
     contactUsToday: "Contáctanos hoy",
     //FastDeliverySection
-    fastTitle: "¡No más cargos por bajo inventario!",
-    fastSubtitle: "Optimiza tus envíos LTL a Amazon",
+    fastTitle: "¿Qué hace de Ecom Logistics tu socio de envío ideal?",
+    fastSubtitle: "¡No Más Tarifas por Bajo Inventario!",
     fastBenefit1: "Entrega en 2–3 días",
-    fastBenefit2: "Evita cargos adicionales de inventario",
-    fastBenefit3: "Asesoría experta gratuita", 
+    fastBenefit2: "Evite Tarifas Adicionales por Inventario",
+    fastBenefit3: "Asesoramiento Experto Gratuito", 
     //Discount
     discountHeadline1: "¿Estás pagando de más por",
     discountHeadline2: "Servicios LTL y perdiendo tiempo?",
     discountCardTitle: "Recojo diario LTL gratis",
     discountCardSubtitle: "En el Área de la Bahía",
     //FulfillmentPromise
-    fulfillmentHeadline: "El mejor calificado  Fulfillment Center en el Área de la Bahía ", 
-    fulfillmentAccuracy: "Precisión en los pedidos",
-    fulfillmentOnTime: "Entregas a tiempo (envíos diarios)",
-    fulfillmentPreparation: "para preparar tus productos",
+    fulfillmentHeadline: "Centro de Fulfillment Mejor Valorado en la Costa Oeste", 
+    fulfillmentAccuracy: "Precisión de Pedidos",
+    fulfillmentOnTime: "Entrega a Tiempo (Envíos salientes diarios)",
+    fulfillmentPreparation: "Para Preparar Sus Productos",
     //WhyEcom
     whyEcomTitle: "¿Por qué Ecom",
-    whyEcomCard1Title: "#1 en tarifas LTL y Prep",
+    whyEcomCard1Title: "#1 Tarifas LTL y de Preparación",
     whyEcomCard1Text: "Ahorra más con las tarifas LTL y de preparación líderes en el norte de California. Aumenta tus márgenes con los precios excepcionales de Ecom Logistics. Nuestras tarifas están diseñadas para vendedores de e-commerce. Ahorra en cada envío sin sacrificar calidad.",
-    whyEcomCard2Title: "Soporte experto y asesores",
+    whyEcomCard2Title: "Soporte Experto y Asesores",
     whyEcomCard2Text: "En Ecom Logistics, tenemos 5 años de experiencia en la industria logística. Nuestro equipo capacitado está listo para apoyarte en cada etapa, desde la cotización inicial hasta la entrega final.",
-    whyEcomCard3Title: "Eficiencia garantizada",
+    whyEcomCard3Title: "Eficiencia Garantizada",
     whyEcomCard3Text: "Estamos comprometidos a brindar un servicio rápido y eficiente siempre. Con un equipo altamente capacitado, garantizamos que tus envíos se manejen sin demoras, cumpliendo plazos y con calidad.", 
     //Logistics
     logisticsTitle: "¡Contáctanos hoy!",
@@ -812,20 +843,54 @@ es: {
     },
     //CoverageMap
     coverageMap: {
-    title: "Cobertura de nuestro servicio como Transportista Asociado de Amazon",
+    title: "Nuestra Cobertura de Almacenes Amazon FBA",
     desc1: {
-    pre: "En",
+    pre: "En ",
     brand: "Ecom Logistics",
-    post: ", nos asociamos con la red de transportistas de confianza de Amazon para ofrecer entregas rápidas y puntuales en toda la",
-    region: " Costa Oeste 🚚🌄.",
-    end: " Desde California hasta regiones cercanas, nuestras soluciones de envío optimizadas aseguran que tus productos lleguen a los clientes y centros de cumplimiento de Amazon de manera rápida, rentable y cumpliendo completamente con FBA 📦✅.",
+    post: ", su ",
+    role1: "Socio de Carga de Amazon",
+    and: " (Amazon Freight Partner) y ",
+    role2: "transitario de confianza",
+    comma: ", nos especializamos en proporcionar soluciones rápidas y puntuales de envío ",
+    service1: "Amazon LTL",
+    and2: " y ",
+    service2: "FTL",
+    region: " en toda la ",
+    area: "Costa Oeste",
+    end: ". Desde California hasta la región circundante, nuestras ",
+    solutions: "soluciones de envío optimizadas",
+    ensure: " garantizan que sus productos lleguen a los clientes y a los ",
+    target: "almacenes de FBA de Amazon",
+    final: " de forma rápida, rentable y con total cumplimiento de las normas FBA 📦✅."
     },
-    desc2: "¡Próximamente servicio a nivel nacional!",
-    desc3:
-    "Rastrea tus envíos en tiempo real 📍 y recibe soporte personalizado en cada etapa. ¿Listo para ver hasta dónde llegamos? Consulta el mapa a continuación para explorar las ubicaciones que cubrimos.",
-    contactPre: "¿No ves tu almacén preferido?",
-    contactPost: "¡No te preocupes! Simplemente contáctanos y pregunta por la ubicación que necesitas 📞",
-    button: "Contáctanos hoy",
+    desc2: {
+    pre: "¡",
+    bold: "Nuestro servicio a nivel nacional estará disponible pronto!",
+    },
+    desc3: {
+    pre: "Experimente un ",
+    bold1: "envío de carga sin interrupciones",
+    mid1: " con ",
+    bold2: "seguimiento de envíos en tiempo real",
+    mid2: " 📍 y disfrute de un soporte personalizado de su ",
+    bold3: "experto transitario dedicado",
+    mid3: " en cada paso. ¿Listo para ver hasta dónde llegamos? Consulte el mapa a continuación para explorar las amplias ",
+    bold4: "ubicaciones que cubrimos",
+    mid4: "",
+    bold5: "",
+    end: "."
+    },
+    contactPre: {
+    pre: "¿No ve su almacén preferido o necesita ",
+    bold: "soluciones de carga de Amazon específicas",
+    post: "?"
+    },
+    contactPost: {
+    pre: "¡No se preocupe! Simplemente contáctenos y pregúntenos sobre la ubicación o las ",
+    bold: "soluciones de carga personalizadas",
+    post: " que tiene en mente. 📞"
+    },
+    button: "Contáctenos hoy"
     },
     //WhyChooseUs
     whyChooseUs: {
@@ -881,29 +946,30 @@ es: {
     description2: "¡Contáctanos hoy para una cotización personalizada!",
     button: "Contáctanos",
     },
+    //FAQ
     faq: {
-    title: "Preguntas frecuentes",
+    title: "Preguntas Frecuentes",
     subtitle: "Todo lo que necesitas saber sobre cómo gestionamos, almacenamos y enviamos tus productos.",
     button: "Comenzar",
     questions: [
     {
-    question: "¿Cuáles son los beneficios de elegir Ecom Logistics para envíos a centros de cumplimiento de Amazon?",
+    question: " ¿Cuáles son los beneficios de elegir Ecom Logistics para el envío de carga (Amazon freight) a los centros de fulfillment de Amazon?",
     answer: "Nos especializamos en el cumplimiento de Amazon FBA, entregas rápidas y una coordinación fluida con los centros de cumplimiento (FC).",
     },
     {
-    question: "¿Qué tan rápido puede Ecom Logistics entregar mis productos a un centro de cumplimiento de Amazon?",
+    question: "¿Qué tan rápido puede Ecom Logistics entregar mis productos LTL de Amazon a un almacén de Amazon FBA?",
     answer: "Después del recojo de la paleta, puede tomar de 1 a 3 días para que los productos salgan de nuestros almacenes. Una vez fuera, la entrega al centro de cumplimiento toma entre 1 y 3 días. (Ten en cuenta que eventos imprevistos pueden ocasionar retrasos, pero estamos preparados para manejarlos de forma eficiente).",
     },
     {
-    question: "¿Ecom Logistics ofrece servicio de recojo gratuito?",
+    question: "¿Ecom Logistics ofrece servicio de recogida gratuito para carga LTL?",
     answer: "Sí, el recojo estándar está incluido en la mayoría de los planes de servicio. Contáctanos para confirmar según tu ubicación.",
     },
     {
-    question: "¿Ecom Logistics puede ofrecer servicio de montacargas si no hay montacargas disponible en el lugar de recojo o entrega?",
+    question: "¿Puede Ecom Logistics proporcionar servicio de puerta elevadora si no hay un montacargas disponible en la recogida o entrega?",
     answer: "Por supuesto. Contamos con camiones equipados con montacargas para una carga y descarga seguras.",
     },
     {
-    question: "¿Cómo puedo rastrear mi envío a un centro de Amazon con Ecom Logistics?",
+    question: "¿Cómo puedo rastrear mi envío de carga (Amazon freight) a Amazon FC con Ecom Logistics?",
     answer: "Cada envío incluye seguimiento en tiempo real a través de nuestro portal para clientes.",
     },
     ],

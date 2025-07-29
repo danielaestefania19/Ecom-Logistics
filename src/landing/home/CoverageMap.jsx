@@ -19,7 +19,7 @@ const CoverageMap = () => {
         <div className="w-full md:w-1/2 flex items-center justify-center">
           <div className="text-center md:text-left max-w-xl">
             <h2 className="text-4xl font-bold leading-tight mb-4">
-              <span className="text-white">{t("coverageHeadline")}</span>
+              <h3 className="text-white">{t("coverageHeadline")}</h3>
             </h2>
 
             <p className="text-white text-lg mb-4 leading-relaxed">

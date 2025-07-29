@@ -46,9 +46,9 @@ const Request = () => {
                 />
               </div>
               <div className="p-6 md:p-8 flex flex-col justify-center text-center md:text-left">
-                <h2 className="text-2xl md:text-3xl font-extrabold text-black mb-4 md:mb-6 leading-tight tracking-tight">
+                <h3 className="text-2xl md:text-3xl font-extrabold text-black mb-4 md:mb-6 leading-tight tracking-tight">
                   {step.title}
-                </h2>
+                </h3>
                 <p className="text-lg font-medium text-black opacity-80">
                   {step.description}
                 </p>

@@ -13,9 +13,9 @@ export default function FastDeliverySection() {
             <h2 className="text-2xl md:text-3xl font-extrabold text-blue leading-tight">
               {t("fastTitle")}
             </h2>
-            <p className="text-xl md:text-2xl font-semibold text-blue-600 leading-snug">
+            <h3 class="benefit-highlight-box text-xl md:text-2xl font-semibold text-blue-600 leading-snug">
               {t("fastSubtitle")}
-            </p>
+            </h3>
             <ul className="text-lg md:text-xl text-gray-700 space-y-2 list-none mt-2">
               <li className="flex items-center gap-2 justify-center lg:justify-end">
                 <span className="text-primary font-bold">✓</span> {t("fastBenefit1")}
