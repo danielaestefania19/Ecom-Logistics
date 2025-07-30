@@ -12,10 +12,9 @@ en: {
     // Banner
     bannerMessage: "Ask for wholesale prices in all the services now!",
     // Hero
-    heroHeadline1: "Logistics Solutions for",
-    heroHeadline2: "E-Commerce Sellers",
-    heroDesc1: "Prep Center, Amazon Partner Carrier (LTL & FTL),",
-    heroDesc2: "3PL fulfillment for Amazon and TikTok Shop.",
+    heroHeadline2: "Fulfillment Solutions ",
+    heroDesc1: "for Ecommerce Sellers: 3rd party logistics (3PL), Amazon fba Prep Center,",
+    heroDesc2: " Amazon Freight Partner (LTL & FTL). All you need in one place!",
     // Contact Us
     contactTitle: "Contact Us",
     contactSubtitle: "We would like to hear from you! Fill out your contact information below.",
@@ -38,10 +37,10 @@ en: {
     errorPhoneRequired: "Phone is required",
     errorInvalidEmail: "Invalid email format",
     //Services 
-    servicesTitle1: "Our Offerings:", 
-    servicesTitle2: "Making Your",
+    servicesTitle1: "Our Comprehensive", 
+    servicesTitle2: "E-commerce Logistics Services",
     servicesTitle3: "Move Effortless",
-    servicesDesc: "We provide tailored logistics and fulfillment solutions for Amazon FBA, TikTok Shop, and local businesses. From warehousing to last-mile delivery, we ensure your operations run smoothly and your brand grows with confidence.",
+    servicesDesc: "At Ecom Logistics, we offer a full spectrum of integrated solutions designed to streamline your operations and drive growth. Discover how our expert 3PL, FBA prep, and Freight shipping services can benefit your business.",
     servicesAll: "All Services",
     ltlTitle: "Amazon LTL & FTL Shippings ",
     ltlDesc: " Ecom Logistics provides reliable Less-Than-Truckload (LTL) and Full Truckload (FTL) shipping options to meet all your commercial freight needs. As an experienced Amazon Freight Partner, we ensure seamless and efficient delivery to Amazon fulfillment centers. Optimize your supply chain with our cost-effective transportation services.",
@@ -118,11 +117,13 @@ en: {
     //AmazonPartner
     //Header: 
     amazonHeader: {
-    title: "Amazon Partner Carrier",
-    highlight: "LTL & FTL",
-    subtitle: "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner, we offer efficient, cost-effective freight forwarding to Amazon FBA warehouses and beyond. Get a shipping quote!",
+    title: "Amazon LTL & FTL Shipping:",
+    highlight: "Your Expert Freight Partner",
+    subtitle: "Your Logistics Partner for Amazon Fulfillment Center Shipments",
     description1:
-    "Amazon LTL & FTL Shipping: Your Expert Freight Partner",
+    "We simplify your logistics to Amazon FBA. We handle your LTL and FTL shipments from residential or commercial locations across Northern California. We also take care of appointment scheduling and delivery.",
+    description2:
+    "Plus, we offer some of the best rates and fastest delivery times in the region.",
     cta: "Contact Sales",
     },
     //Advantages
@@ -406,7 +407,7 @@ en: {
     highlight: "(3PL)",
     subtitle: "Increase Your Profits with Reliable 3PL Services at the Best Price.",
     description:
-    " As a leading 3PL company for e-commerce, Ecom Logistics offers seamless third-party logistics solutions. We manage your 3PL warehouse operations, from inventory to fulfillment center services, ensuring peak efficiency.",
+    "We provide reliable and fully personalized 3PL logistics solutions and the most competitive pricing. Scale your business with faster shipping, lower costs, and greater efficiency today.",
     cta: "Contact Sales"
     }
     },
@@ -690,8 +691,8 @@ es: {
     // Hero
     heroHeadline1: "Soluciones logísticas para",
     heroHeadline2: "E-Commerce",
-    heroDesc1: "Prep Center, transportista aliado de Amazon (LTL y FTL),",
-    heroDesc2: "3PL para Amazon y TikTok Shop.",
+    heroDesc1: "Para Vendedores de E-commerce: logística de terceros (3PL), Centro de Preparación Amazon FBA,",
+    heroDesc2: "Socio de Carga de Amazon (LTL y FTL). ¡Todo lo que necesitas en un solo lugar!,",
     // Contact Us
     contactTitle: "Contáctanos",
     contactSubtitle: "¡Nos encantaría saber de ti! Llena tus datos de contacto y te responderemos pronto.",
@@ -792,8 +793,8 @@ es: {
     //AmazonPartner
     //Header: 
     amazonHeader: {
-    title: "Transportista Asociado de Amazon",
-    highlight: "LTL y FTL",
+    title: " Envíos LTL y FTL de Amazon: ",
+    highlight: "Su Socio Experto en Carga",
     subtitle: "Tu socio logístico para envíos a Centros de Amazon",
     description1:
     "Simplificamos tu logística hacia Amazon FBA. Gestionamos tus envíos LTL y FTL desde ubicaciones residenciales o comerciales en el norte de California. También nos encargamos de agendar y entregar.",

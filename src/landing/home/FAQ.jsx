@@ -46,7 +46,7 @@ export default function FAQ() {
             <AccordionItem
               key={index.toString()}
               aria-label={`FAQ ${index + 1}`}
-              title={faq.question}
+              title={<h3>{faq.question}</h3>}
               className="py-4 px-8"
             >
               <p className="text-slate-500">{faq.answer}</p>

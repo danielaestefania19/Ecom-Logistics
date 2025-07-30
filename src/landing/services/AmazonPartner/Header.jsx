@@ -1,12 +1,25 @@
 import { Button } from "@heroui/react";
 import { useLanguage } from "../../i18n/LanguageContext";
+import { Helmet } from "react-helmet-async";
 import TruckImage from "../../../assets/TruckImage.png";
 
 const Header = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isSpanish = language === "es";
 
   return (
     <div className="relative w-full min-h-[80vh] flex flex-col md:flex-row bg-primary text-white overflow-hidden font-montserrat">
+      <Helmet>
+        <title>{isSpanish ? "Inicio - Ecom Logistics" : "Home - Ecom Logistics"}</title>
+        <meta
+          name="description"
+          content={
+            isSpanish
+              ? "Optimice sus envíos LTL y FTL con Ecom Logistics. Como Amazon Freight Partner, ofrecemos transporte de carga eficiente y rentable a almacenes de Amazon FBA y más allá. ¡Solicite una cotización de envío!"
+              : "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner, we offer efficient, cost-effective freight forwarding to Amazon FBA warehouses and beyond. Get a shipping quote!"
+          }
+        />
+      </Helmet>
       <div className="relative z-10 w-full md:w-3/5 px-6 sm:px-10 md:px-20 lg:px-32 py-20 flex flex-col justify-center text-center md:text-left">
         <h1 className="text-4xl md:text-6xl font-semibold leading-tight mb-6">
           {t("amazonHeader.title")}{" "}
@@ -20,6 +33,11 @@ const Header = () => {
         <p className="text-base md:text-lg text-white/80 font-light leading-relaxed mb-4">
           {t("amazonHeader.description1")}
         </p>
+
+        <p className="text-base md:text-lg text-white/70 font-light leading-relaxed">
+          {t("amazonHeader.description2")}
+        </p>
+
         <a href="#contact" className="inline-block">
           <Button
             radius="full"

@@ -1,10 +1,10 @@
 import { Accordion, AccordionItem } from "@heroui/react";
 import { Button } from "@heroui/react";
-import { useLanguage } from "../../i18n/LanguageContext"; 
+import { useLanguage } from "../../i18n/LanguageContext";
 import { useMemo } from "react";
 
 export default function FAQ() {
-  const { t } = useLanguage(); 
+  const { t } = useLanguage();
 
   const faqData = useMemo(() => {
     const items = t("prepCenter.faqItems", { returnObjects: true });
@@ -35,7 +35,7 @@ export default function FAQ() {
             <AccordionItem
               key={index.toString()}
               aria-label={`FAQ ${index + 1}`}
-              title={faq.question}
+              title={<h3>{faq.question}</h3>}
               className="py-4 px-8"
             >
               <p className="text-slate-500">{faq.answer}</p>

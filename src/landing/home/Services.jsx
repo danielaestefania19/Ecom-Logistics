@@ -40,7 +40,10 @@ const Services = () => {
         <div className="flex flex-col lg:flex-row justify-between items-start w-full mb-12 gap-8">
           <div className="w-full lg:w-2/3">
             <h2 className="text-4xl md:text-6xl font-normal mb-2">
-            {t("servicesTitle1")}
+              {t("servicesTitle1")}
+            </h2>
+            <h2 className="text-4xl md:text-6xl font-normal mb-2">
+              {t("servicesTitle2")}
             </h2>
           </div>
           <div className="w-full lg:w-1/3 mt-4 flex flex-col gap-4 text-left">
@@ -59,7 +62,7 @@ const Services = () => {
               <a href="#services">
                 <Button
                   radius="full"
-                  className="px-4 py-2 text-sm md:text-sm text-white bg-blue bg-opacity-85 hover:bg-white-100 font-semibold"
+                  className="px-4 py-2 text-sm md:text-sm text-white bg-blue  hover:bg-white-100 font-semibold"
                 >
                   {t("servicesAll")}
                   <img src={flecha} alt="All Service" className="w-4 h-4 ml-2" />
