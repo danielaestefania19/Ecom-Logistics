@@ -27,11 +27,11 @@ const Services = () => {
   };
 
   const routes = {
-    amazonPartner: '/amazon-partner',
+    amazonPartner: '/amazon-freight-partner-shipping',
     prepCenter: '/prep-center',
-    tiktokShop: '/tiktok-shop',
-    storageAnchor: '/tiktok-shop#free-packaging',
-    localMovingAnchor: '/amazon-partner#local-moving',
+    tiktokShop: '/3pl-services',
+    storageAnchor: '/3pl-services#free-packaging',
+    localMovingAnchor: '/amazon-freight-partner-shipping#local-moving',
   };
 
   return (

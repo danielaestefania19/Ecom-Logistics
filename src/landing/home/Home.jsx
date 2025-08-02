@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Navbar from './Navbar.jsx';
 import Hero from './Hero.jsx';
 import Services from './Services.jsx';
@@ -23,6 +24,10 @@ import FastDeliverySection from './FastDeliverySection.jsx';
  * @returns {JSX.Element} The `Home` component containing the `Navbar` and `Hero`.
  */
 function Home() {
+  useEffect(() => {
+    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA"
+  }, []); 
+  <link rel="canonical" href="https://www.ecomlogisticscus.com/home"></link>
   return (
     <>
       <Navbar />

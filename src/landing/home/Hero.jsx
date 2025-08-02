@@ -29,10 +29,8 @@ const Hero = () => {
           </h1>
         ) : (
           <>
-            <h1 className="text-4xl md:text-6xl font-semibold mb-2">
-              <span className="text-third">E-Commerce</span>
-            </h1>
-            <h1 className="text-4xl md:text-6xl font-semibold mb-9">
+            <h1 className="text-4xl md:text-6xl font-semibold mb-8">
+              <span className="text-third mb-9">E-Commerce</span>  <br/>
               {t("heroHeadline2")}
             </h1>
           </>

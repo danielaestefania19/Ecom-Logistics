@@ -26,7 +26,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-8 py-16 flex flex-col md:flex-row justify-end">
         <div className="w-full md:w-1/2 flex flex-col sm:flex-row flex-wrap gap-y-10 gap-x-12 text-sm items-start justify-start text-left sm:justify-between sm:text-left">
           <div className="w-full sm:w-auto">
-            <h4 className="font-semibold mb-3">{t("footerInformation")}</h4>
+            <h3 className="font-semibold mb-3">{t("footerInformation")}</h3>
             <ul className="space-y-1">
               <li>
                 <a

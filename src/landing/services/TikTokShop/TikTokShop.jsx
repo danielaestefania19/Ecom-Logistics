@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from '../../home/Navbar';
@@ -13,8 +14,11 @@ import FAQ from './FAQ';
 import Footer from '../../home/Footer';
 
 
-const TiktokShop = () => {  
-    const location = useLocation();
+const TiktokShop = () => {
+  const location = useLocation();
+  useEffect(() => {
+    document.title = "3PL Services | E-commerce Fulfillment & Logistics Solutions"
+  }, []);
 
   useEffect(() => {
     if (location.hash === "#free-packaging") {
@@ -22,26 +26,32 @@ const TiktokShop = () => {
       if (element) {
         setTimeout(() => {
           element.scrollIntoView({ behavior: "smooth" });
-        }, 100); 
+        }, 100);
       }
     }
   }, [location]);
 
-    return (
-        <div>
-            <Navbar />
-            <Header />
-            <Advantages />
-            <Pricing />
-            <Request />
-            <FreePackagingSection/>
-            <FreeStorageOffer />
-            <ContactUs />
-            <FAQ />
-            <Footer />  
-
-        </div>
-    );
+  return (
+    <>
+      <Helmet>
+        <link rel="canonical" href="https://www.ecomlogisticsus.com/3pl-services"></link>
+        <meta name="description" content="Streamline your e-commerce with Ecom Logistics' 3PL services. Expert third-party fulfillment, warehousing & pick and pack for growing brands."
+        />
+      </Helmet>
+      <div>
+        <Navbar />
+        <Header />
+        <Advantages />
+        <Pricing />
+        <Request />
+        <FreePackagingSection />
+        <FreeStorageOffer />
+        <ContactUs />
+        <FAQ />
+        <Footer />
+      </div>
+    </>
+  );
 }
 
 export default TiktokShop;

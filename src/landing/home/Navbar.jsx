@@ -23,9 +23,9 @@ import PriceList from "../../assets/PriceList.pdf";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const servicesItems = [
-  { key: "Amazon", labelKey: "ltlTitle", path: "/amazon-partner" },
+  { key: "Amazon", labelKey: "ltlTitle", path: "/amazon-freight-partner-shipping" },
   { key: "FBA", labelKey: "fbaTitle", path: "/prep-center" },
-  { key: "TikTok", labelKey: "tiktokTitle", path: "/tiktok-shop" },
+  { key: "TikTok", labelKey: "tiktokTitle", path: "/3pl-services" },
 ];
 
 function getRoutePath(label, t) {

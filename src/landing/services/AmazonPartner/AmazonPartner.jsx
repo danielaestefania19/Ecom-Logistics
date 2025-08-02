@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect } from "react";
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from "react-router-dom";
 import Navbar from '../../home/Navbar';
 import Header from './Header';
@@ -15,35 +16,44 @@ import LocalMoving from './ LocalMoving';
 
 const AmazonPartner = () => {
     const location = useLocation();
-
+    useEffect(() => {
+        document.title = "Amazon Freight Partner | LTL & FTL Shipments | Ecom Logistics";
+    }, []);
     useEffect(() => {
         if (location.hash === "#local-moving") {
             const element = document.getElementById("local-moving");
             if (element) {
                 setTimeout(() => {
                     element.scrollIntoView({ behavior: "smooth" });
-                }, 100); 
+                }, 100);
             }
         }
     }, [location]);
+    <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping"></link>
 
     return (
+        <>
+            <Helmet>
+                <title>Amazon Freight Partner | LTL & FTL Shipments | Ecom Logistics</title>
+                <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping" />
+            </Helmet>
 
-        <div className="bg-white text-gray-800">
-            <Navbar />
-            <Header />
-            <Advantages />
-            <Pricing />
-            <Request />
-            <CoverageMap />
-            <WhyChooseUs />
-            <LocalMoving />
-            <ContactUs />
-            <FAQ />
-            <Footer />
-
-        </div>
+            <div className="bg-white text-gray-800">
+                <Navbar />
+                <Header />
+                <Advantages />
+                <Pricing />
+                <Request />
+                <CoverageMap />
+                <WhyChooseUs />
+                <LocalMoving />
+                <ContactUs />
+                <FAQ />
+                <Footer />
+            </div>
+        </>
     );
+
 };
 
 export default AmazonPartner;

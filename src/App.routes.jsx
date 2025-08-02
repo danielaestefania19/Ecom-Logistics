@@ -20,9 +20,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/amazon-partner" element={<AmazonPartner />} />
+        <Route path="/amazon-freight-partner-shipping" element={<AmazonPartner />} />
         <Route path="/prep-center" element={<PrepCenter />} />
-        <Route path="/tiktok-shop" element={<TikTokShop />} />
+        <Route path="/3pl-services" element={<TikTokShop />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
