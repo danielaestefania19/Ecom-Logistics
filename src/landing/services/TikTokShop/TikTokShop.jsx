@@ -15,11 +15,10 @@ import Footer from '../../home/Footer';
 
 
 const TiktokShop = () => {
-  const location = useLocation();
   useEffect(() => {
     document.title = "3PL Services | E-commerce Fulfillment & Logistics Solutions"
   }, []);
-
+  const location = useLocation();
   useEffect(() => {
     if (location.hash === "#free-packaging") {
       const element = document.getElementById("free-packaging");

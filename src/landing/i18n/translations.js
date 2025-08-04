@@ -715,7 +715,8 @@ es: {
     errorPhoneRequired: "El teléfono es obligatorio",
     errorInvalidEmail: "Formato de correo inválido",
     //Services 
-    servicesTitle1: "Nuestros Servicios Integrales de Logística para E-commerce",
+    servicesTitle1: "Nuestros Servicios Integrales de",
+    servicesTitle2: "Logística para E-commerce",
     servicesDesc: "En Ecom Logistics, ofrecemos un espectro completo de soluciones integradas diseñadas para optimizar sus operaciones e impulsar el crecimiento. Descubra cómo nuestros servicios expertos de 3PL, preparación de FBA y envío de carga pueden beneficiar a su negocio.",
     servicesAll: "Todos los Servicios",
     ltlTitle: " Envíos LTL y FTL de Amazon",

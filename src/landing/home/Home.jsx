@@ -23,10 +23,10 @@ import FastDeliverySection from './FastDeliverySection.jsx';
  * @component
  * @returns {JSX.Element} The `Home` component containing the `Navbar` and `Hero`.
  */
-function Home() {
+const Home = () => {
   useEffect(() => {
-    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA"
-  }, []); 
+    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA";
+  }, []);
   <link rel="canonical" href="https://www.ecomlogisticscus.com/home"></link>
   return (
     <>
