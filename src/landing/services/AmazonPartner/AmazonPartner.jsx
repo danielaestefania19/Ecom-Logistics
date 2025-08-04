@@ -15,10 +15,10 @@ import Footer from '../../home/Footer';
 import LocalMoving from './ LocalMoving';
 
 const AmazonPartner = () => {
+    const location = useLocation();
     useEffect(() => {
         document.title = "Amazon Freight Partner | LTL & FTL Shipments | Ecom Logistics";
     }, []);
-    const location = useLocation();
     useEffect(() => {
         if (location.hash === "#local-moving") {
             const element = document.getElementById("local-moving");
@@ -33,11 +33,6 @@ const AmazonPartner = () => {
 
     return (
         <>
-            <Helmet>
-                <title>Amazon Freight Partner | LTL & FTL Shipments | Ecom Logistics</title>
-                <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping" />
-            </Helmet>
-
             <div className="bg-white text-gray-800">
                 <Navbar />
                 <Header />
