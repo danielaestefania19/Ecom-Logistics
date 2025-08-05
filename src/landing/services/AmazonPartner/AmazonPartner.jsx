@@ -33,6 +33,10 @@ const AmazonPartner = () => {
 
     return (
         <>
+            <Helmet>
+                <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping" />
+            </Helmet>
+
             <div className="bg-white text-gray-800">
                 <Navbar />
                 <Header />

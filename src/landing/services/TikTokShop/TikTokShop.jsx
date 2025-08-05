@@ -15,10 +15,10 @@ import Footer from '../../home/Footer';
 
 
 const TiktokShop = () => {
+  const location = useLocation();
   useEffect(() => {
     document.title = "3PL Services | E-commerce Fulfillment & Logistics Solutions"
   }, []);
-  const location = useLocation();
   useEffect(() => {
     if (location.hash === "#free-packaging") {
       const element = document.getElementById("free-packaging");
@@ -29,11 +29,11 @@ const TiktokShop = () => {
       }
     }
   }, [location]);
+  <link rel="canonical" href="https://www.ecomlogisticsus.com/3pl-services"></link>
 
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://www.ecomlogisticsus.com/3pl-services"></link>
         <meta name="description" content="Streamline your e-commerce with Ecom Logistics' 3PL services. Expert third-party fulfillment, warehousing & pick and pack for growing brands."
         />
       </Helmet>

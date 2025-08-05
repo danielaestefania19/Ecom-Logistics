@@ -25,23 +25,27 @@ import FastDeliverySection from './FastDeliverySection.jsx';
  */
 const Home = () => {
   useEffect(() => {
-    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA";
+    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA"
   }, []);
-  <link rel="canonical" href="https://www.ecomlogisticscus.com/home"></link>
   return (
     <>
-      <Navbar />
-      <Hero /> 
-      <Services /> 
-      <CoverageMap/>
-      <FastDeliverySection/>
-      <Discount/>
-      <VideoSection/>
-      <FulfillmentPromise />
-      <WhyEcom/>
-      <ContactUs/>
-      <Logistics/>
-      <Footer/>
+      <Helmet>
+        <link rel="canonical" href="https://www.ecomlogisticscus.com/home"></link>
+      </Helmet>
+      <div className="bg-white text-gray-800">
+        <Navbar />
+        <Hero />
+        <Services />
+        <CoverageMap />
+        <FastDeliverySection />
+        <Discount />
+        <VideoSection />
+        <FulfillmentPromise />
+        <WhyEcom />
+        <ContactUs />
+        <Logistics />
+        <Footer />
+      </div>
     </>
   );
 }
