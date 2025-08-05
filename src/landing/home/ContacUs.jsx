@@ -146,26 +146,28 @@ const ContactUs = () => {
             className="w-full h-[50px] border border-black p-3 rounded-xl"
           />
 
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder={t("formEmail")}
-            className="w-full h-[50px] border border-black p-3 rounded-xl"
-          />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder={t("formPhone")}
-            className="w-full h-[50px] border border-black p-3 rounded-xl"
-          />
-          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
-
+          <div>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder={t("formEmail")}
+              className="w-full h-[50px] border border-black p-3 rounded-xl"
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          </div>
+          <div>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder={t("formPhone")}
+              className="w-full h-[50px] border border-black p-3 rounded-xl"
+            />
+            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          </div>
           <select
             name="language"
             value={formData.language}

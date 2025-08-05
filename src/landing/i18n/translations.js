@@ -876,10 +876,10 @@ es: {
     bold2: "seguimiento de envíos en tiempo real",
     mid2: " 📍 y disfrute de un soporte personalizado de su ",
     bold3: "experto transitario dedicado",
-    mid3: " en cada paso. ¿Listo para ver hasta dónde llegamos? Consulte el mapa a continuación para explorar las amplias ",
-    bold4: "ubicaciones que cubrimos",
-    mid4: "",
-    bold5: "",
+    mid3: " en cada paso. ¿Listo para ver hasta dónde llegamos? ",
+    bold4: "Consulte el mapa a continuación",
+    mid4: "para explorar las amplias ",
+    bold5: "ubicaciones que cubrimos",
     end: "."
     },
     contactPre: {
