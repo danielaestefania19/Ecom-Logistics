@@ -10,7 +10,6 @@ const Header = () => {
     return (
         <div className="relative w-full min-h-[85vh] flex flex-col md:flex-row bg-primary text-white overflow-hidden font-montserrat">
             <Helmet>
-                <title>{isSpanish ? "Inicio - Ecom Logistics" : "Home - Ecom Logistics"}</title>
                 <meta
                     name="description"
                     content={

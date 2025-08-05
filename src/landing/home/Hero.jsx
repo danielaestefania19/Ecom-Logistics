@@ -10,7 +10,6 @@ const Hero = () => {
   return (
     <div className="relative w-full min-h-[70vh] flex flex-col md:flex-row text-white bg-primary overflow-hidden">
       <Helmet>
-        <title>{isSpanish ? "Inicio - Ecom Logistics" : "Home - Ecom Logistics"}</title>
         <meta
           name="description"
           content={
