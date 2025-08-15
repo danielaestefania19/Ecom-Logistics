@@ -2,7 +2,14 @@ import React from "react";
 
 export default function YoutubeVideo() {
   return (
-    <div style={{ width: "100%", height: "800px" }}>
+    <div className="bg-primary">
+    <div 
+      style={{
+        width: "100%",
+        maxWidth: "1422px", // mantiene el ancho máximo similar al original
+        margin: "0 auto", // centrado
+      }}
+    >
       <iframe
         src="https://www.youtube.com/embed/OakXRL5lOUs"
         title="Video de YouTube"
@@ -11,9 +18,11 @@ export default function YoutubeVideo() {
         allowFullScreen
         style={{
           width: "100%",
-          height: "100%",
+          aspectRatio: "16 / 9", // mantiene proporción
+          display: "block",
         }}
-      ></iframe>
+      />
+    </div>
     </div>
   );
 }
