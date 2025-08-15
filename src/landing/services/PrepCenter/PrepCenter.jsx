@@ -11,6 +11,7 @@ import FAQ from './FAQ';
 import ContactUs from '../../home/ContacUs';
 import FreeStorageOffer from './FreeStorageOffer';
 import VideoSection from './VideoSection';
+import YoutubeVideo from './YoutubeVideo';
 
 const PrepCenter = () => {
     useEffect(() => {
@@ -28,6 +29,7 @@ const PrepCenter = () => {
             <div className="bg-white text-gray-800">
                 <Navbar />
                 <Header />
+                <YoutubeVideo/>
                 <Advantages />
                 <Pricing />
                 <Request />
