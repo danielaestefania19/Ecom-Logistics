@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://www.ecomlogisticscus.com/home"></link>
+        <link rel="canonical" href="https://www.ecomlogisticsus.com/home"></link>
       </Helmet>
       <div className="bg-white text-gray-800">
         <Navbar />

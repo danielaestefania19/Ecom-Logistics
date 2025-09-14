@@ -11,7 +11,6 @@ import FAQ from './FAQ';
 import ContactUs from '../../home/ContacUs';
 import FreeStorageOffer from './FreeStorageOffer';
 import VideoSection from './VideoSection';
-import YoutubeVideo from './YoutubeVideo';
 
 const PrepCenter = () => {
     useEffect(() => {
@@ -20,7 +19,7 @@ const PrepCenter = () => {
     return (
         <>
             <Helmet>
-                <link rel="canonical" href="https://www.ecomlogisticscus.com/prep-center"></link>
+                <link rel="canonical" href="https://www.ecomlogisticsus.com/prep-center"></link>
                 <meta
                     name="description"
                     content="Ecom Logistics is your Amazon FBA Prep Center in Hayward, CA. We offer expert inspection, FNSKU labeling, efficient packaging, and direct shipping to Amazon. Optimize your FBA prep!"
@@ -29,7 +28,6 @@ const PrepCenter = () => {
             <div className="bg-white text-gray-800">
                 <Navbar />
                 <Header />
-                <YoutubeVideo/>
                 <Advantages />
                 <Pricing />
                 <Request />
