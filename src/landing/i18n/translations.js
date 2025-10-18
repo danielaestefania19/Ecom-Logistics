@@ -8,6 +8,7 @@ export const translations = {
     pricing: "Pricing",
     aboutUs: "About Us",
     contactUs: "Contact Us",
+    blogs: "Blogs",
     getStarted: "Get Started",
     // Banner
     bannerMessage: "Ask for wholesale prices in all the services now!",
@@ -774,6 +775,7 @@ export const translations = {
     pricing: "Precios",
     aboutUs: "Sobre Nosotros",
     contactUs: "Contáctanos",
+    blogs: "Blogs",
     getStarted: "Comenzar",
     // Banner
     bannerMessage:

@@ -45,7 +45,7 @@ function NavbarMenu() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blogs")];
 
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
@@ -79,7 +79,9 @@ function NavbarMenu() {
                 </button>
               </NavbarMenuItem>
               <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${isServicesOpen ? "max-h-96" : "max-h-0"}`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isServicesOpen ? "max-h-96" : "max-h-0"
+                }`}
               >
                 {servicesItems.map((service) => (
                   <NavbarMenuItem key={service.key}>
@@ -107,12 +109,26 @@ function NavbarMenu() {
                 {item}
               </button>
             </NavbarMenuItem>
+          ) : item === t("blogs") ? (
+            <NavbarMenuItem>
+              <a
+                href="https://blogs.ecomlogisticsus.com/2025/10/18/what-is-an-amazon-prep-center-and-why-sellers-need-it/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-white text-lg text-left py-2 hover:text-gray-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item}
+              </a>
+            </NavbarMenuItem>
           ) : (
             <NavbarMenuItem>
               <Link
                 as={ReactRouterLink}
                 to={getRoutePath(item, t)}
-                className={`w-full text-white text-lg ${location.pathname === getRoutePath(item, t) ? "text-third" : ""}`}
+                className={`w-full text-white text-lg ${
+                  location.pathname === getRoutePath(item, t) ? "text-third" : ""
+                }`}
                 onPress={() => setIsMenuOpen(false)}
               >
                 {item}
@@ -122,6 +138,7 @@ function NavbarMenu() {
         </React.Fragment>
       ))}
 
+      {/* Selector de idioma */}
       <NavbarMenuItem>
         <button
           onClick={() => setIsLanguageOpen((prev) => !prev)}
@@ -134,7 +151,9 @@ function NavbarMenu() {
           />
         </button>
         <div
-          className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${isLanguageOpen ? "max-h-40" : "max-h-0"}`}
+          className={`mt-2 overflow-hidden transition-all duration-300 ease-in-out ${
+            isLanguageOpen ? "max-h-40" : "max-h-0"
+          }`}
         >
           <NavbarMenuItem>
             <button
@@ -169,7 +188,7 @@ const Navbar = () => {
   const { t, language, setLanguage } = useLanguage();
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blogs")];
 
   return (
     <div>
@@ -203,9 +222,7 @@ const Navbar = () => {
                           size="lg"
                           radius="sm"
                           className="p-0 bg-transparent text-white hover:text-gray-300 data-[hover=true]:bg-transparent"
-                          endContent={
-                            <ChevronDownIcon className="w-4 h-4" aria-hidden="true" />
-                          }
+                          endContent={<ChevronDownIcon className="w-4 h-4" aria-hidden="true" />}
                         >
                           {t("services")}
                         </Button>
@@ -249,13 +266,29 @@ const Navbar = () => {
                 );
               }
 
+              if (item === t("blogs")) {
+                return (
+                  <NavbarItem key={i}>
+                    <a
+                      href="https://blogs.ecomlogisticsus.com/2025/10/18/what-is-an-amazon-prep-center-and-why-sellers-need-it/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-0 bg-transparent text-white hover:text-gray-300"
+                    >
+                      {item}
+                    </a>
+                  </NavbarItem>
+                );
+              }
+
               return (
                 <NavbarItem key={i}>
                   <Link
                     as={ReactRouterLink}
                     to={getRoutePath(item, t)}
-                    className={`text-white hover:text-gray-300 transition-colors ${location.pathname === getRoutePath(item, t) ? "text-third" : ""
-                      }`}
+                    className={`text-white hover:text-gray-300 transition-colors ${
+                      location.pathname === getRoutePath(item, t) ? "text-third" : ""
+                    }`}
                   >
                     {item}
                   </Link>
@@ -263,6 +296,7 @@ const Navbar = () => {
               );
             })}
 
+            {/* Selector de idioma */}
             <Dropdown classNames={{ content: "bg-primary" }}>
               <NavbarItem>
                 <DropdownTrigger>
