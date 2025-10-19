@@ -7,6 +7,7 @@ import Advantages from './Advantages';
 import Footer from '../../home/Footer';
 import Pricing from './Pricing';
 import Request from './Request';
+import YoutubeSection from './YouTubeSection'
 import FAQ from './FAQ';
 import ContactUs from '../../home/ContacUs';
 import FreeStorageOffer from './FreeStorageOffer';
@@ -31,6 +32,7 @@ const PrepCenter = () => {
                 <Advantages />
                 <Pricing />
                 <Request />
+                <YoutubeSection/>
                 <FreeStorageOffer />
                 <VideoSection />
                 <ContactUs />

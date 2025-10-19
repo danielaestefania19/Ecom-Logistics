@@ -8,6 +8,7 @@ import Advantages from './Advantages';
 import Pricing from './Pricing';
 import FreePackagingSection from './FreePackagingSection';
 import Request from './Request';
+import YouTubeSection from './YoutubeSection';
 import FreeStorageOffer from './FreeStorageOffer';
 import ContactUs from './ContacUs';
 import FAQ from './FAQ';
@@ -43,6 +44,7 @@ const TiktokShop = () => {
         <Advantages />
         <Pricing />
         <Request />
+        <YouTubeSection/>
         <FreePackagingSection />
         <FreeStorageOffer />
         <ContactUs />
