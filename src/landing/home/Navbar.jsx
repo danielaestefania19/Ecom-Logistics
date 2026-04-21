@@ -45,7 +45,7 @@ function NavbarMenu() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blogs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
 
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
@@ -108,18 +108,6 @@ function NavbarMenu() {
               >
                 {item}
               </button>
-            </NavbarMenuItem>
-          ) : item === t("blogs") ? (
-            <NavbarMenuItem>
-              <a
-                href="https://blogs.ecomlogisticsus.com/2025/10/18/what-is-an-amazon-prep-center-and-why-sellers-need-it/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-white text-lg text-left py-2 hover:text-gray-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item}
-              </a>
             </NavbarMenuItem>
           ) : (
             <NavbarMenuItem>
@@ -188,7 +176,7 @@ const Navbar = () => {
   const { t, language, setLanguage } = useLanguage();
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blogs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
 
   return (
     <div>
@@ -262,21 +250,6 @@ const Navbar = () => {
                     >
                       {item}
                     </button>
-                  </NavbarItem>
-                );
-              }
-
-              if (item === t("blogs")) {
-                return (
-                  <NavbarItem key={i}>
-                    <a
-                      href="https://blogs.ecomlogisticsus.com/2025/10/18/what-is-an-amazon-prep-center-and-why-sellers-need-it/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-0 bg-transparent text-white hover:text-gray-300"
-                    >
-                      {item}
-                    </a>
                   </NavbarItem>
                 );
               }
