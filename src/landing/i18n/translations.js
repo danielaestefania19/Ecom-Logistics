@@ -10,6 +10,8 @@ export const translations = {
     contactUs: "Contact Us",
     blogs: "Blogs",
     getStarted: "Get Started",
+    login: "Log In",
+    register: "Sign Up",
     // Banner
     bannerMessage: "Ask for wholesale prices in all the services now!",
     // Hero
@@ -777,6 +779,8 @@ export const translations = {
     contactUs: "Contáctanos",
     blogs: "Blogs",
     getStarted: "Comenzar",
+    login: "Iniciar Sesión",
+    register: "Registrarse",
     // Banner
     bannerMessage:
       "¡Pregunta por precios al mayoreo en todos los servicios ahora!",

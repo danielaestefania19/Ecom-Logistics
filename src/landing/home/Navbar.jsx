@@ -126,6 +126,18 @@ function NavbarMenu() {
         </React.Fragment>
       ))}
 
+      {/* Auth buttons mobile */}
+      <NavbarMenuItem>
+        <a
+          href="https://portal.ecomlogisticsus.com/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full text-center border border-white text-white text-lg py-2 rounded-sm hover:bg-white hover:text-primary transition-colors"
+        >
+          {t("login")}
+        </a>
+      </NavbarMenuItem>
+
       {/* Selector de idioma */}
       <NavbarMenuItem>
         <button
@@ -302,6 +314,22 @@ const Navbar = () => {
                 <DropdownItem onPress={() => setLanguage("es")}>🇪🇸 ES</DropdownItem>
               </DropdownMenu>
             </Dropdown>
+
+            {/* Auth buttons */}
+            <NavbarItem>
+              <Button
+                as="a"
+                href="https://portal.ecomlogisticsus.com/login"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="bordered"
+                size="md"
+                radius="sm"
+                className="border-third text-white hover:bg-third hover:text-primary transition-colors"
+              >
+                {t("login")}
+              </Button>
+            </NavbarItem>
           </div>
         </NavbarContent>
 
