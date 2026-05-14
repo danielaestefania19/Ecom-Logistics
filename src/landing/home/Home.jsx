@@ -11,9 +11,10 @@ import ContactUs from './ContacUs.jsx';
 import CoverageMap from './CoverageMap.jsx';
 //import FAQ from './FAQ.jsx';
 import Footer from './Footer.jsx';
-import Logistics from './Logistics.jsx';
+//import Logistics from './Logistics.jsx';
 import FulfillmentPromise from './FulfillmentPromise.jsx';
 import FastDeliverySection from './FastDeliverySection.jsx';
+import LocationSection from './LocationSection.jsx';
 /**
  * Main component for the homepage.
  * 
@@ -44,7 +45,7 @@ const Home = () => {
         <FulfillmentPromise />
         <WhyEcom />
         <ContactUs />
-        <Logistics />
+        <LocationSection />
         <Footer />
       </div>
     </>

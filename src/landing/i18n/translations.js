@@ -69,6 +69,16 @@ export const translations = {
     errorShipmentsInvalid: "Shipments must be a valid number",
     noResults: "No results found",
 
+    //LocationSection
+    locationTitle: "Find Us",
+    locationSubtitle: "Visit our warehouse in Hayward, CA. We are conveniently located to serve your logistics needs.",
+    locationAddressLabel: "Address",
+    locationHoursLabel: "Business Hours",
+    locationHoursWeekdays: "Mon – Fri: 8:00 AM – 5:00 PM",
+    locationHoursWeekend: "Sat – Sun: Closed",
+    locationPhoneLabel: "Phone",
+    locationDirections: "Get Directions",
+
     //Services
     servicesTitle1: "Our Comprehensive",
     servicesTitle2: "E-commerce Logistics Services",
@@ -838,6 +848,16 @@ export const translations = {
     errorUnitsInvalid: "Las unidades deben ser un número válido",
     errorShipmentsInvalid: "Los envíos deben ser un número válido",
     noResults: "No se encontraron resultados",
+
+    //LocationSection
+    locationTitle: "Encuéntranos",
+    locationSubtitle: "Visita nuestra bodega en Hayward, CA. Estamos estratégicamente ubicados para atender tus necesidades logísticas.",
+    locationAddressLabel: "Dirección",
+    locationHoursLabel: "Horario de Atención",
+    locationHoursWeekdays: "Lun – Vie: 8:00 AM – 5:00 PM",
+    locationHoursWeekend: "Sáb – Dom: Cerrado",
+    locationPhoneLabel: "Teléfono",
+    locationDirections: "Cómo llegar",
 
     //Services
     servicesTitle1: "Nuestros Servicios Integrales de",
