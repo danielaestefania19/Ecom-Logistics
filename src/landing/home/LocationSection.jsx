@@ -60,15 +60,14 @@ export default function LocationSection() {
                   href="tel:+15107157809"
                   className="text-white/80 hover:text-white transition-colors"
                 >
-                  +1 (510) 715-7809
+                  +1 (341) 208-9445
                 </a>
               </div>
             </div>
 
             <div className="border-t border-white/10" />
-
-            <a
-              href="https://www.google.com/maps/dir/?api=1&destination=Ecom+Logistics+-+Amazon+FBA+Prep+Center&destination_place_id=ChIJU7ktEmlp-YARru8EYGDHey0"
+<a
+              href="https://www.google.com/maps?cid=3277432369041198767&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en&gl=US&source=embed"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-white text-primary font-semibold rounded-full px-6 py-3 mt-2 hover:bg-gray-200 transition-colors w-fit"
