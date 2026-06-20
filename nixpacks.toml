@@ -4,5 +4,5 @@ cmds = ["npm install --legacy-peer-deps"]
 [phases.build]
 cmds = ["npm run build"]
 
-[phases.start]
-cmd = "vite preview --port $PORT"
+[start]
+cmd = "npx serve -s dist -l $PORT"
