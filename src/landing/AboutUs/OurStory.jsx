@@ -1,5 +1,5 @@
 import { useLanguage } from "../i18n/LanguageContext";
-import ourstory from '../../assets/ourstory.png';
+import ourstory from '../../assets/ourstory.webp';
 
 const OurStory = () => {
   const { t } = useLanguage();

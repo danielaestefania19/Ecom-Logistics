@@ -1,5 +1,5 @@
 import { useLanguage } from "../i18n/LanguageContext";
-import Team from "../../assets/Team_ecom.png";
+import Team from "../../assets/Team_ecom.webp";
 
 const WhoWeAre = () => {
   const { t } = useLanguage();

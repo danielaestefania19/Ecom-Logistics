@@ -1,5 +1,5 @@
 import { Button } from "@heroui/react";
-import ImageHero from "../../assets/ImageHero.jpg";
+import ImageHero from "../../assets/ImageHero.webp";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const Hero = () => {

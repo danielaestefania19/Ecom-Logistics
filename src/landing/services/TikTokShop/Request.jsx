@@ -1,6 +1,6 @@
-import steps1 from '../../../assets/steps1.jpg';
-import steps2 from '../../../assets/steps2.jpg';
-import steps3 from '../../../assets/steps3.jpg';
+import steps1 from '../../../assets/steps1.webp';
+import steps2 from '../../../assets/steps2.webp';
+import steps3 from '../../../assets/steps3.webp';
 import { useLanguage } from "../../i18n/LanguageContext";
 
 const Request = () => {

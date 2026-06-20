@@ -1,6 +1,6 @@
 import { Button } from "@heroui/react";
 import { useLanguage } from "../../i18n/LanguageContext";
-import TruckImage from "../../../assets/TruckImage.png";
+import TruckImage from "../../../assets/TruckImage.webp";
 
 const Header = () => {
   const { t } = useLanguage();

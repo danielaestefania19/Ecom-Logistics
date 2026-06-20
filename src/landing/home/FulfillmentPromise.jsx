@@ -1,5 +1,5 @@
 import React from "react";
-import Fulfillment from "../../assets/Fulfillment.png";
+import Fulfillment from "../../assets/Fulfillment.webp";
 import { useLanguage } from "../i18n/LanguageContext";
 
 export default function FulfillmentPromise() {

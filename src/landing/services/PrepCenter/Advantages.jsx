@@ -1,5 +1,5 @@
 import { useLanguage } from "../../i18n/LanguageContext";
-import AdvantagesPrepCenter from "../../../assets/AdvantagesPrepCenter.png";
+import AdvantagesPrepCenter from "../../../assets/AdvantagesPrepCenter.webp";
 
 const Advantages = () => {
   const { t } = useLanguage();

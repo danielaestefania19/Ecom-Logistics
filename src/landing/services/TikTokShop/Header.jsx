@@ -1,4 +1,4 @@
-import ThirdParty from '../../../assets/ThirdParty.png';
+import ThirdParty from '../../../assets/ThirdParty.webp';
 import { Button } from "@heroui/react";
 import { useLanguage } from "../../i18n/LanguageContext";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import map1 from "../../../assets/map1.jpg";
+import map1 from "../../../assets/map1.webp";
 import { Button } from "@heroui/react";
 import { useLanguage } from "../../i18n/LanguageContext";
 

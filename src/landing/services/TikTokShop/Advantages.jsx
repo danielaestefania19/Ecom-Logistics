@@ -1,4 +1,4 @@
-import AdvantagesTiktok from '../../../assets/AdvantagesTiktok.jpg';
+import AdvantagesTiktok from '../../../assets/AdvantagesTiktok.webp';
 import { useLanguage } from "../../i18n/LanguageContext";
 
 const Advantages = () => {

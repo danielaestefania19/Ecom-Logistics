@@ -1,6 +1,6 @@
 import { Button } from "@heroui/react";
 import { useLanguage } from "../../i18n/LanguageContext";
-import PrepCenter from "../../../assets/PrepCenter.png";
+import PrepCenter from "../../../assets/PrepCenter.webp";
 
 const Header = () => {
     const { t } = useLanguage();

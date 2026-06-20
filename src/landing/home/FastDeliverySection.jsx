@@ -1,5 +1,5 @@
 import React from "react";
-import FastDelivery from "../../assets/FastDelivery.png";
+import FastDelivery from "../../assets/FastDelivery.webp";
 import { useLanguage } from "../i18n/LanguageContext";
 
 export default function FastDeliverySection() {

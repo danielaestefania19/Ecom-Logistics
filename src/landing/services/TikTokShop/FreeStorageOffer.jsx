@@ -1,4 +1,4 @@
-import FreeStorage from '../../../assets/FreeStorage.jpg';
+import FreeStorage from '../../../assets/FreeStorage.webp';
 import { Button } from "@heroui/react";
 import PriceList3PL from '../../../assets/PriceList3PL.pdf';
 import { useLanguage } from '../../i18n/LanguageContext';
