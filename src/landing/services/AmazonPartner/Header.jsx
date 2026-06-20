@@ -58,8 +58,10 @@ const Header = () => {
       <div className="w-full h-full md:hidden relative">
         <img
           src={TruckImage}
-          alt="Truck delivering for Amazon"
+          alt="Amazon Freight Partner — LTL and FTL shipping from Hayward, CA"
           className="w-full h-auto object-cover"
+          fetchpriority="high"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
       </div>
