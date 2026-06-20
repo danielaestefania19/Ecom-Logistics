@@ -20,9 +20,12 @@ const root = resolve(__dirname, "..");
 const dist = join(root, "dist");
 
 async function main() {
-  const { SITE, localBusinessSchema, buildServiceSchema } = await import(
-    "../src/landing/seo/siteData.js"
+  const { SITE, localBusinessSchema, buildServiceSchema, buildFaqSchema } =
+    await import("../src/landing/seo/siteData.js");
+  const { translations } = await import(
+    "../src/landing/i18n/translations.js"
   );
+  const en = translations.en;
 
   const prepDescription =
     "Ecom Logistics is your Amazon FBA Prep Center in Hayward, CA. We offer expert inspection, FNSKU labeling, efficient packaging, and direct shipping to Amazon. Optimize your FBA prep!";
@@ -49,31 +52,40 @@ async function main() {
       path: "/amazon-freight-partner-shipping",
       title: "Amazon Freight Partner | LTL & FTL Shipping | Ecom Logistics",
       description: amazonDescription,
-      schema: buildServiceSchema({
-        name: "Amazon Freight Partner LTL & FTL Shipping",
-        description: amazonDescription,
-        path: "/amazon-freight-partner-shipping",
-      }),
+      schema: [
+        buildServiceSchema({
+          name: "Amazon Freight Partner LTL & FTL Shipping",
+          description: amazonDescription,
+          path: "/amazon-freight-partner-shipping",
+        }),
+        buildFaqSchema(en.faq?.questions),
+      ].filter(Boolean),
     },
     {
       path: "/prep-center",
-      title: "Amazon FBA Prep Center in Hayward, CA | Ecom Logistics",
+      title: "Amazon FBA Prep Center | Hayward, CA & Nationwide | Ecom Logistics",
       description: prepDescription,
-      schema: buildServiceSchema({
-        name: "Amazon FBA Prep Center",
-        description: prepDescription,
-        path: "/prep-center",
-      }),
+      schema: [
+        buildServiceSchema({
+          name: "Amazon FBA Prep Center",
+          description: prepDescription,
+          path: "/prep-center",
+        }),
+        buildFaqSchema(en.prepCenter?.faqItems),
+      ].filter(Boolean),
     },
     {
       path: "/3pl-services",
-      title: "3PL Services | E-commerce Fulfillment & Warehousing in CA",
+      title: "Amazon 3PL & E-commerce Fulfillment | Pick & Pack | Ecom Logistics",
       description: tiktokDescription,
-      schema: buildServiceSchema({
-        name: "3PL E-commerce Fulfillment Services",
-        description: tiktokDescription,
-        path: "/3pl-services",
-      }),
+      schema: [
+        buildServiceSchema({
+          name: "3PL E-commerce Fulfillment Services",
+          description: tiktokDescription,
+          path: "/3pl-services",
+        }),
+        buildFaqSchema(en.faqTiktok?.questions),
+      ].filter(Boolean),
     },
   ];
 

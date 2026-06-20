@@ -373,6 +373,12 @@ export const translations = {
           answer:
             "Every shipment includes real-time tracking via our client portal.",
         },
+        {
+          question:
+            "Are there any hidden fees on LTL or FTL freight to Amazon?",
+          answer:
+            "No. We provide clear, upfront freight quotes with no hidden charges. Pickup, liftgate options, and delivery to the Amazon fulfillment center are confirmed before you book.",
+        },
       ],
     },
 
@@ -492,6 +498,24 @@ export const translations = {
           answer:
             "We accept credit/debit cards, ACH transfers, and wire payments.",
         },
+        {
+          question:
+            "Amazon ended its in-house FBA prep service in 2026 — do I still need a prep center?",
+          answer:
+            "Yes. Since Amazon discontinued in-house prep, sellers are responsible for FNSKU labeling, poly-bagging, bubble wrapping, and compliance before inventory reaches a fulfillment center. We handle all of it for you so your shipments stay Amazon-compliant.",
+        },
+        {
+          question:
+            "Can I use Ecom Logistics if my business is in another state?",
+          answer:
+            "Absolutely. Many of our clients are out-of-state sellers who ship their inventory to our Hayward, CA facility for prep and then on to Amazon. You don't need to be in California to work with us.",
+        },
+        {
+          question:
+            "What happens if Amazon rejects my shipment due to prep issues?",
+          answer:
+            "It rarely happens because we follow Amazon's prep and labeling requirements exactly. If an issue ever arises, our team works with you to correct it quickly and reship at the lowest possible cost.",
+        },
       ],
     },
 
@@ -499,8 +523,8 @@ export const translations = {
     //Header
     tiktokShop: {
       header: {
-        title: "Third-Party Logistics",
-        highlight: "(3PL)",
+        title: "3PL & Fulfillment for",
+        highlight: "Amazon & E-commerce Sellers",
         subtitle:
           "Increase Your Profits with Reliable 3PL Services at the Best Price.",
         description:
@@ -625,6 +649,18 @@ export const translations = {
             "Does Ecom Logistics offer reverse logistics or returns management?",
           answer:
             "Yes, we offer reverse logistics (returns) services. For more detailed information, please contact our sales team.",
+        },
+        {
+          question:
+            "Are there hidden fees or long-term contracts with your 3PL service?",
+          answer:
+            "No. We work month-to-month with transparent pricing and no long-term contracts. You only pay for the storage and fulfillment services you actually use.",
+        },
+        {
+          question:
+            "Do you serve e-commerce sellers outside the Bay Area?",
+          answer:
+            "Yes. While our warehouse is in Hayward, CA, we fulfill orders for brands across the United States. Sellers from any state can store inventory with us and ship nationwide.",
         },
       ],
     },
@@ -1155,6 +1191,12 @@ export const translations = {
           answer:
             "Cada envío incluye seguimiento en tiempo real a través de nuestro portal para clientes.",
         },
+        {
+          question:
+            "¿Hay cargos ocultos en el flete LTL o FTL hacia Amazon?",
+          answer:
+            "No. Ofrecemos cotizaciones de flete claras y por adelantado, sin cargos ocultos. La recogida, las opciones de puerta elevadora y la entrega al centro de cumplimiento de Amazon se confirman antes de reservar.",
+        },
       ],
     },
 
@@ -1276,6 +1318,24 @@ export const translations = {
           answer:
             "Aceptamos tarjetas de crédito/débito, transferencias ACH y transferencias bancarias.",
         },
+        {
+          question:
+            "Amazon terminó su servicio de preparación FBA interno en 2026, ¿todavía necesito un prep center?",
+          answer:
+            "Sí. Desde que Amazon eliminó la preparación interna, el vendedor es responsable del etiquetado FNSKU, el embolsado, el bubble wrap y el cumplimiento antes de que el inventario llegue al centro de cumplimiento. Nosotros nos encargamos de todo para que tus envíos cumplan con Amazon.",
+        },
+        {
+          question:
+            "¿Puedo usar Ecom Logistics si mi negocio está en otro estado?",
+          answer:
+            "Por supuesto. Muchos de nuestros clientes son vendedores de otros estados que envían su inventario a nuestra instalación en Hayward, CA para la preparación y luego a Amazon. No necesitas estar en California para trabajar con nosotros.",
+        },
+        {
+          question:
+            "¿Qué pasa si Amazon rechaza mi envío por problemas de preparación?",
+          answer:
+            "Rara vez ocurre porque seguimos al pie de la letra los requisitos de preparación y etiquetado de Amazon. Si surge algún problema, nuestro equipo lo corrige rápidamente y reenvía al menor costo posible.",
+        },
       ],
     },
 
@@ -1283,8 +1343,8 @@ export const translations = {
     //Header
     tiktokShop: {
       header: {
-        title: "Logística de Terceros",
-        highlight: "(3PL)",
+        title: "3PL y Fulfillment para",
+        highlight: "Amazon y E-commerce",
         subtitle:
           "Aumenta tus ganancias con servicios 3PL confiables al mejor precio.",
         description:
@@ -1410,6 +1470,18 @@ export const translations = {
             "¿Ecom Logistics ofrece logística inversa o gestión de devoluciones?",
           answer:
             "Sí, ofrecemos servicios de logística inversa (devoluciones). Para más información, por favor contacta a nuestro equipo de ventas.",
+        },
+        {
+          question:
+            "¿Hay cargos ocultos o contratos a largo plazo en su servicio 3PL?",
+          answer:
+            "No. Trabajamos mes a mes con precios transparentes y sin contratos a largo plazo. Solo pagas por los servicios de almacenamiento y fulfillment que realmente usas.",
+        },
+        {
+          question:
+            "¿Atienden a vendedores de e-commerce fuera del Área de la Bahía?",
+          answer:
+            "Sí. Aunque nuestro almacén está en Hayward, CA, gestionamos pedidos para marcas en todo Estados Unidos. Vendedores de cualquier estado pueden almacenar inventario con nosotros y enviar a todo el país.",
         },
       ],
     },
