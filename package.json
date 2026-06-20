@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "vite",
     "test": "vitest run",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender-head.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve dist -s -n -L -p $PORT"
+    "start": "serve dist -n -L -p $PORT"
   },
   "engines": {
     "node": ">=18 <21",
