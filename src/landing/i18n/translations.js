@@ -411,6 +411,60 @@ export const translations = {
       subtitle: "competitive pricing for your FBA success.",
       button: "Check Pricing",
     },
+    // Dedicated /pricing page
+    pricingPage: {
+      heroEyebrow: "Transparent Pricing",
+      heroTitle: "Pricing that scales with your volume",
+      heroSubtitle:
+        "FBA prep, 3PL pick & pack, storage and freight — clear rates with automatic volume discounts. No hidden fees, no monthly minimums.",
+      ctaQuote: "Get a Custom Quote",
+      ctaCall: "Call Sales",
+      volumeTitle: "How volume discounts work",
+      volumeSubtitle:
+        "Per-unit prep and pick & pack prices drop automatically as your monthly volume grows.",
+      tableService: "Service",
+      tablePrice: "Price",
+      noteTitle: "What's included",
+      notes: [
+        "No hidden costs and no monthly fees — you only pay for what you use.",
+        "Pick & pack rates already include packaging materials and handling.",
+        "First 7 days of storage are free so you can test our system risk-free.",
+        "Daily inbound and outbound operations available.",
+      ],
+      oversizeTitle: "What counts as oversize?",
+      oversizeText:
+        "We follow Amazon's FBA guidelines. An item is oversize if its longest side exceeds 18 in or it weighs over 20 lb. A carton is oversize if its longest side exceeds 25 in or it weighs over 20 lb.",
+      finePrint:
+        "Prices are per unit unless noted and reflect our current list. Volume-tier prices are calculated from the list price and rounded to the cent. Final quotes for high-volume or custom workflows are confirmed by our team.",
+      faqTitle: "Pricing FAQ",
+      faq: [
+        {
+          question: "Are there any monthly fees or long-term contracts?",
+          answer:
+            "No. Ecom Logistics has no monthly fees and no long-term contracts — you only pay for the services you actually use, with the first 7 days of storage free.",
+        },
+        {
+          question: "How do the volume discounts work?",
+          answer:
+            "Per-unit FBA prep and pick & pack prices follow three tiers based on monthly volume: 1–500 units at list price, 501–1,499 units at 10% off, and 1,500+ units at 15% off. The discount is applied automatically — no negotiation needed.",
+        },
+        {
+          question: "Do your prices include packaging materials?",
+          answer:
+            "Pick & pack (3PL) rates include packaging materials and handling. For FBA prep, materials such as polybags, bubble wrap and master boxes are billed separately at the rates shown so you only pay for what your products need.",
+        },
+        {
+          question: "What payment methods do you accept and are there processing fees?",
+          answer:
+            "We accept ACH (0.8% processing) and credit card (3.5% processing). ACH is the most cost-effective option for recurring billing.",
+        },
+        {
+          question: "Can out-of-state sellers use your Hayward facility?",
+          answer:
+            "Yes. Many of our clients are based outside California and ship inventory to our Hayward, CA facility for FBA prep, storage and fulfillment. The same pricing applies regardless of where your business is located.",
+        },
+      ],
+    },
     //Request
     logistics: {
       title: "Our Logistics Process",
@@ -1229,6 +1283,60 @@ export const translations = {
       title: "Ecom Logistics combina velocidad, confianza y",
       subtitle: "precios competitivos para tu éxito en FBA.",
       button: "Ver Precios",
+    },
+    // Página dedicada /pricing
+    pricingPage: {
+      heroEyebrow: "Precios Transparentes",
+      heroTitle: "Precios que escalan con tu volumen",
+      heroSubtitle:
+        "Preparación FBA, pick & pack 3PL, almacenamiento y carga — tarifas claras con descuentos automáticos por volumen. Sin costos ocultos, sin mínimos mensuales.",
+      ctaQuote: "Solicitar Cotización",
+      ctaCall: "Llamar a Ventas",
+      volumeTitle: "Cómo funcionan los descuentos por volumen",
+      volumeSubtitle:
+        "Los precios por unidad de preparación y pick & pack bajan automáticamente a medida que crece tu volumen mensual.",
+      tableService: "Servicio",
+      tablePrice: "Precio",
+      noteTitle: "Qué incluye",
+      notes: [
+        "Sin costos ocultos y sin cuotas mensuales — solo pagas por lo que usas.",
+        "Las tarifas de pick & pack ya incluyen materiales de empaque y manejo.",
+        "Los primeros 7 días de almacenamiento son gratis para que pruebes sin riesgo.",
+        "Operaciones de entrada y salida disponibles todos los días.",
+      ],
+      oversizeTitle: "¿Qué se considera oversize?",
+      oversizeText:
+        "Seguimos las guías de FBA de Amazon. Un artículo es oversize si su lado más largo supera 18 in o pesa más de 20 lb. Una caja es oversize si su lado más largo supera 25 in o pesa más de 20 lb.",
+      finePrint:
+        "Los precios son por unidad salvo que se indique y reflejan nuestra lista actual. Los precios por volumen se calculan a partir del precio de lista y se redondean al centavo. Las cotizaciones finales para alto volumen o flujos personalizados las confirma nuestro equipo.",
+      faqTitle: "Preguntas sobre Precios",
+      faq: [
+        {
+          question: "¿Hay cuotas mensuales o contratos a largo plazo?",
+          answer:
+            "No. Ecom Logistics no tiene cuotas mensuales ni contratos a largo plazo — solo pagas por los servicios que realmente usas, con los primeros 7 días de almacenamiento gratis.",
+        },
+        {
+          question: "¿Cómo funcionan los descuentos por volumen?",
+          answer:
+            "Los precios por unidad de preparación FBA y pick & pack siguen tres niveles según el volumen mensual: 1–500 unidades a precio de lista, 501–1,499 unidades con 10% de descuento, y 1,500+ unidades con 15% de descuento. El descuento se aplica automáticamente — sin necesidad de negociar.",
+        },
+        {
+          question: "¿Los precios incluyen materiales de empaque?",
+          answer:
+            "Las tarifas de pick & pack (3PL) incluyen materiales de empaque y manejo. Para preparación FBA, materiales como polybags, burbuja y master boxes se facturan aparte a las tarifas mostradas, así solo pagas lo que tus productos necesitan.",
+        },
+        {
+          question: "¿Qué métodos de pago aceptan y hay comisiones?",
+          answer:
+            "Aceptamos ACH (0.8% de procesamiento) y tarjeta de crédito (3.5% de procesamiento). ACH es la opción más económica para facturación recurrente.",
+        },
+        {
+          question: "¿Pueden usar su bodega de Hayward los vendedores de otros estados?",
+          answer:
+            "Sí. Muchos de nuestros clientes están fuera de California y envían su inventario a nuestra bodega en Hayward, CA para preparación FBA, almacenamiento y fulfillment. Aplican los mismos precios sin importar dónde esté tu negocio.",
+        },
+      ],
     },
     //Request
     logistics: {

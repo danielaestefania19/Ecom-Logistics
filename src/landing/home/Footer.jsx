@@ -2,7 +2,6 @@ import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import facebook from "../../assets/facebook.png";
 import instagram from "../../assets/instagram.png";
 import tiktokicono from "../../assets/tiktokicono.png";
-import PriceList from "../../assets/PriceList.pdf";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
 import { SITE } from "../seo/siteData";
@@ -46,7 +45,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href={PriceList} target="_blank" rel="noopener noreferrer">
+                <a onClick={handleNavigate("/pricing")} className="cursor-pointer">
                   {t("footerPricing")}
                 </a>
               </li>

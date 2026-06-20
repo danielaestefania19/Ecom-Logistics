@@ -33,6 +33,8 @@ async function main() {
     "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner in Hayward, CA, we offer efficient, cost-effective freight to Amazon FBA warehouses and beyond.";
   const tiktokDescription =
     "Streamline your e-commerce with Ecom Logistics' 3PL services in Hayward, CA. Expert third-party fulfillment, warehousing & pick and pack for growing brands.";
+  const pricingDescription =
+    "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and freight in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
 
   const routes = [
     {
@@ -85,6 +87,19 @@ async function main() {
           path: "/3pl-services",
         }),
         buildFaqSchema(en.faqTiktok?.questions),
+      ].filter(Boolean),
+    },
+    {
+      path: "/pricing",
+      title: "FBA Prep & 3PL Pricing | Volume Discounts | Ecom Logistics",
+      description: pricingDescription,
+      schema: [
+        buildServiceSchema({
+          name: "FBA Prep & 3PL Fulfillment Pricing",
+          description: pricingDescription,
+          path: "/pricing",
+        }),
+        buildFaqSchema(en.pricingPage?.faq),
       ].filter(Boolean),
     },
   ];

@@ -19,7 +19,6 @@ import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link as ReactRouterLink, useLocation } from "react-router-dom";
 import LogoPrincipal2 from "../../assets/LogoPrincipal2.png";
 import Banner from "./Banner.jsx";
-import PriceList from "../../assets/PriceList.pdf";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const servicesItems = [
@@ -99,15 +98,16 @@ function NavbarMenu() {
             </>
           ) : item === t("pricing") ? (
             <NavbarMenuItem>
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  window.open(PriceList, "_blank");
-                }}
-                className="w-full text-white text-lg text-left py-2 hover:text-gray-300"
+              <Link
+                as={ReactRouterLink}
+                to="/pricing"
+                className={`w-full text-white text-lg ${
+                  location.pathname === "/pricing" ? "text-third" : ""
+                }`}
+                onPress={() => setIsMenuOpen(false)}
               >
                 {item}
-              </button>
+              </Link>
             </NavbarMenuItem>
           ) : (
             <NavbarMenuItem>
@@ -256,12 +256,15 @@ const Navbar = () => {
               if (item === t("pricing")) {
                 return (
                   <NavbarItem key={i}>
-                    <button
-                      onClick={() => window.open(PriceList, "_blank")}
-                      className="p-0 bg-transparent text-white hover:text-gray-300"
+                    <Link
+                      as={ReactRouterLink}
+                      to="/pricing"
+                      className={`text-white hover:text-gray-300 transition-colors ${
+                        location.pathname === "/pricing" ? "text-third" : ""
+                      }`}
                     >
                       {item}
-                    </button>
+                    </Link>
                   </NavbarItem>
                 );
               }

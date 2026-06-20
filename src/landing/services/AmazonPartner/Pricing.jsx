@@ -1,7 +1,7 @@
 import { Button } from "@heroui/react";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { useLanguage } from "../../i18n/LanguageContext";
-import PriceListPrepLTL from "../../../assets/PriceListPrep&LTL.pdf";
 
 const Pricing = () => {
   const { t } = useLanguage();
@@ -20,15 +20,16 @@ const Pricing = () => {
           </div>
           <div>
             <div className="w-full px-2 md:px-0">
-              <a href={PriceListPrepLTL} target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="lg"
-                  className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
-                  endContent={<ArrowRightIcon className="h-5 w-5 ml-2" />}
-                >
-                  {t("pricingAmazon.button")}
-                </Button>
-              </a>
+              <Button
+                as={ReactRouterLink}
+                to="/pricing"
+                onPress={() => window.scrollTo({ top: 0 })}
+                size="lg"
+                className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
+                endContent={<ArrowRightIcon className="h-5 w-5 ml-2" />}
+              >
+                {t("pricingAmazon.button")}
+              </Button>
             </div>
           </div>
         </div>
