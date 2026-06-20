@@ -419,6 +419,13 @@ export const translations = {
         "FBA prep, 3PL pick & pack, storage and freight — clear rates with automatic volume discounts. No hidden fees, no monthly minimums.",
       ctaQuote: "Get a Custom Quote",
       ctaCall: "Call Sales",
+      tabFulfillment: "FBA Prep & Fulfillment",
+      tabWarehouse: "Storage & Freight",
+      perUnitNote: "Per-unit price · drops with volume",
+      bestValue: "Best value",
+      storageOfferBadge: "First 7 days FREE",
+      storageOfferText:
+        "Test our system risk-free — your first week of storage is on us. No long-term contract.",
       volumeTitle: "How volume discounts work",
       volumeSubtitle:
         "Per-unit prep and pick & pack prices drop automatically as your monthly volume grows.",
@@ -1292,6 +1299,13 @@ export const translations = {
         "Preparación FBA, pick & pack 3PL, almacenamiento y carga — tarifas claras con descuentos automáticos por volumen. Sin costos ocultos, sin mínimos mensuales.",
       ctaQuote: "Solicitar Cotización",
       ctaCall: "Llamar a Ventas",
+      tabFulfillment: "Prep FBA y Fulfillment",
+      tabWarehouse: "Almacén y Carga",
+      perUnitNote: "Precio por unidad · baja con el volumen",
+      bestValue: "Mejor precio",
+      storageOfferBadge: "Primeros 7 días GRATIS",
+      storageOfferText:
+        "Prueba nuestro sistema sin riesgo — tu primera semana de almacenamiento va por nuestra cuenta. Sin contrato a largo plazo.",
       volumeTitle: "Cómo funcionan los descuentos por volumen",
       volumeSubtitle:
         "Los precios por unidad de preparación y pick & pack bajan automáticamente a medida que crece tu volumen mensual.",

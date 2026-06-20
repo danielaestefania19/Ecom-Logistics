@@ -1,5 +1,4 @@
-import React from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import React, { useState } from "react";
 import Seo from "../seo/Seo";
 import { SITE, buildServiceSchema, buildFaqSchema } from "../seo/siteData";
 import { useLanguage } from "../i18n/LanguageContext";
@@ -13,6 +12,33 @@ import {
   money,
 } from "./pricingData";
 
+// Minimal inline icons keyed by section.icon (no extra deps).
+const Icon = ({ name, className = "w-5 h-5" }) => {
+  const paths = {
+    box: "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96 12 12.01l8.73-5.05M12 22.08V12",
+    truck:
+      "M1 3h15v13H1zM16 8h4l3 3v5h-7V8zM5.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18.5 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+    warehouse:
+      "M22 8.35V20a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8.35a1 1 0 0 1 .59-.91l9-4.05a1 1 0 0 1 .82 0l9 4.05a1 1 0 0 1 .59.91zM6 18h12M6 14h12M6 10h12",
+    inbound: "M12 3v12m0 0 4-4m-4 4-4-4M4 21h16",
+    plus: "M12 5v14M5 12h14",
+  };
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={paths[name] || paths.box} />
+    </svg>
+  );
+};
+
 const Pricing = () => {
   const { t, language } = useLanguage();
   const lang = language === "es" ? "es" : "en";
@@ -20,16 +46,138 @@ const Pricing = () => {
   const faq = t("pricingPage.faq", { returnObjects: true }) || [];
   const notes = t("pricingPage.notes", { returnObjects: true }) || [];
 
+  const TABS = [
+    { id: "fulfillment", label: t("pricingPage.tabFulfillment"), ids: ["fba-prep", "pick-pack", "add-ons"] },
+    { id: "warehouse", label: t("pricingPage.tabWarehouse"), ids: ["storage", "receiving", "materials"] },
+  ];
+  const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const activeIds = TABS.find((tb) => tb.id === activeTab).ids;
+  const visibleSections = pricingSections.filter((s) => activeIds.includes(s.id));
+
+  const trustPills =
+    lang === "es"
+      ? ["Sin cuotas mensuales", "Sin contratos", "7 días de almacén gratis", "Descuentos por volumen"]
+      : ["No monthly fees", "No contracts", "7 days free storage", "Automatic volume discounts"];
+
   const description =
     lang === "es"
       ? "Precios de Ecom Logistics: preparación FBA, pick & pack 3PL, almacenamiento y carga en Hayward, CA. Tarifas transparentes con descuentos por volumen, sin cuotas mensuales ni costos ocultos."
       : "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and freight in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
 
-  // Render the price cell(s) for a row.
-  const tierPrices = (price, discount, unitSuffix) => {
-    const value = discount ? money(price * (1 - discount)) : money(price);
-    return `${value}${unitSuffix || ""}`;
-  };
+  // ---- Section renderers ---------------------------------------------------
+
+  const SectionHeader = ({ section }) => (
+    <div className="flex items-start gap-3 mb-5">
+      <span className="flex-shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-third/10 text-third-dark">
+        <Icon name={section.icon} />
+      </span>
+      <div>
+        <h3 className="text-xl sm:text-2xl font-bold text-primary leading-tight">
+          {section.title[lang]}
+        </h3>
+        {section.subtitle && (
+          <p className="text-gray-500 text-sm mt-1 max-w-2xl">
+            {section.subtitle[lang]}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
+  // Tiered section → one card per row, each showing the 3 volume tiers.
+  const TieredSection = ({ section }) => (
+    <div className="scroll-mt-28" id={section.id}>
+      <SectionHeader section={section} />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {section.rows.map((row, ri) => (
+          <div
+            key={ri}
+            className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-third/40 transition"
+          >
+            <p className="font-semibold text-primary mb-4">{row.label[lang]}</p>
+            <div className="grid grid-cols-3 gap-2">
+              {tiers.map((tier, ti) => {
+                const value = tier.discount
+                  ? money(row.price * (1 - tier.discount))
+                  : money(row.price);
+                const best = ti === 2;
+                return (
+                  <div
+                    key={ti}
+                    className={`rounded-xl px-2 py-3 text-center ${
+                      best ? "bg-third text-white shadow-sm" : "bg-gray-50"
+                    }`}
+                  >
+                    <p
+                      className={`text-[10px] uppercase tracking-wide font-semibold ${
+                        best ? "text-white/80" : "text-gray-400"
+                      }`}
+                    >
+                      {tier.badge}
+                    </p>
+                    <p
+                      className={`text-lg font-bold leading-tight mt-0.5 ${
+                        best ? "text-white" : "text-primary"
+                      }`}
+                    >
+                      {value}
+                    </p>
+                    <p
+                      className={`text-[10px] mt-0.5 ${
+                        best ? "text-white/70" : "text-gray-400"
+                      }`}
+                    >
+                      {tier.label}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-3">
+              {t("pricingPage.perUnitNote")} ({section.unit[lang]})
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Flat section → simple card grid (name + price).
+  const FlatSection = ({ section }) => (
+    <div className="scroll-mt-28" id={section.id}>
+      <SectionHeader section={section} />
+
+      {section.id === "storage" && (
+        <div className="rounded-2xl bg-gradient-to-r from-third to-third-dark text-white p-6 mb-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+          <span className="inline-block self-start sm:self-auto bg-white/20 backdrop-blur px-3 py-1 rounded-full text-sm font-bold whitespace-nowrap">
+            {t("pricingPage.storageOfferBadge")}
+          </span>
+          <p className="text-white/95 text-sm sm:text-base leading-relaxed">
+            {t("pricingPage.storageOfferText")}
+          </p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {section.rows.map((row, ri) => {
+          const isNum = typeof row.price === "number";
+          return (
+            <div
+              key={ri}
+              className="rounded-xl border border-gray-200 bg-white px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition"
+            >
+              <span className="text-gray-700 font-medium">{row.label[lang]}</span>
+              <span className="text-primary font-bold text-lg whitespace-nowrap">
+                {isNum
+                  ? `${money(row.price)}${row.suffix ? row.suffix[lang] : ""}`
+                  : row.price[lang]}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -60,10 +208,10 @@ const Pricing = () => {
             <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-5">
               {t("pricingPage.heroTitle")}
             </h1>
-            <p className="text-gray-200 text-base sm:text-lg max-w-3xl mx-auto mb-8">
+            <p className="text-gray-200 text-base sm:text-lg max-w-3xl mx-auto mb-7">
               {t("pricingPage.heroSubtitle")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
                 href="#contact-us"
                 className="bg-third hover:bg-third-dark text-white font-semibold px-8 py-3 rounded-xl transition duration-300"
@@ -76,6 +224,19 @@ const Pricing = () => {
               >
                 {t("pricingPage.ctaCall")} · {SITE.nap.phone}
               </a>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2.5">
+              {trustPills.map((pill, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1.5 bg-white/10 text-gray-100 text-xs sm:text-sm px-3 py-1.5 rounded-full"
+                >
+                  <svg className="w-3.5 h-3.5 text-third" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  {pill}
+                </span>
+              ))}
             </div>
           </div>
         </section>
@@ -93,12 +254,17 @@ const Pricing = () => {
               {tiers.map((tier, i) => (
                 <div
                   key={i}
-                  className={`rounded-2xl border p-6 ${
+                  className={`relative rounded-2xl border p-6 ${
                     i === 2
                       ? "border-third bg-white shadow-lg ring-2 ring-third/30"
                       : "border-gray-200 bg-white"
                   }`}
                 >
+                  {i === 2 && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-third text-white text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full">
+                      {t("pricingPage.bestValue")}
+                    </span>
+                  )}
                   <p className="text-primary font-bold text-lg">{tier.label}</p>
                   <p
                     className={`mt-2 inline-block px-3 py-1 rounded-full text-sm font-semibold ${
@@ -115,109 +281,55 @@ const Pricing = () => {
           </div>
         </section>
 
-        {/* Pricing sections */}
+        {/* Tabbed pricing */}
         <section className="px-6 sm:px-8 py-14">
-          <div className="max-w-5xl mx-auto space-y-12">
-            {pricingSections.map((section) => (
-              <div
-                key={section.id}
-                id={section.id}
-                className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm scroll-mt-24"
-              >
-                <div className="bg-primary px-6 py-5">
-                  <h3 className="text-white text-xl sm:text-2xl font-bold">
-                    {section.title[lang]}
-                  </h3>
-                  {section.subtitle && (
-                    <p className="text-gray-300 text-sm mt-1">
-                      {section.subtitle[lang]}
-                    </p>
-                  )}
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse min-w-[480px]">
-                    <thead>
-                      <tr className="bg-gray-50 text-gray-500 text-sm uppercase tracking-wide">
-                        <th className="px-6 py-3 font-semibold">
-                          {t("pricingPage.tableService")}
-                        </th>
-                        {section.tiered ? (
-                          tiers.map((tier, i) => (
-                            <th
-                              key={i}
-                              className="px-4 py-3 font-semibold text-right whitespace-nowrap"
-                            >
-                              {tier.label}
-                              <span className="block text-[11px] normal-case font-medium text-third-dark">
-                                {tier.badge}
-                              </span>
-                            </th>
-                          ))
-                        ) : (
-                          <th className="px-6 py-3 font-semibold text-right">
-                            {t("pricingPage.tablePrice")}
-                          </th>
-                        )}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {section.rows.map((row, ri) => {
-                        const unitSuffix =
-                          typeof row.price === "number" && section.unit
-                            ? section.unit[lang]
-                            : "";
-                        return (
-                          <tr key={ri} className="hover:bg-gray-50/70">
-                            <td className="px-6 py-4 text-gray-800">
-                              {row.label[lang]}
-                            </td>
-                            {section.tiered ? (
-                              tiers.map((tier, ti) => (
-                                <td
-                                  key={ti}
-                                  className={`px-4 py-4 text-right font-semibold whitespace-nowrap ${
-                                    ti === 2 ? "text-third-dark" : "text-primary"
-                                  }`}
-                                >
-                                  {tierPrices(row.price, tier.discount, unitSuffix)}
-                                </td>
-                              ))
-                            ) : (
-                              <td className="px-6 py-4 text-right font-semibold text-primary whitespace-nowrap">
-                                {typeof row.price === "number"
-                                  ? `${money(row.price)}${
-                                      row.suffix ? row.suffix[lang] : ""
-                                    }`
-                                  : row.price[lang]}
-                              </td>
-                            )}
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ))}
-
-            {/* Payment processing strip */}
-            <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-              <div className="bg-gray-100 px-6 py-4">
-                <h3 className="text-primary text-lg font-bold">
-                  {paymentFees.title[lang]}
-                </h3>
-              </div>
-              <div className="flex flex-col sm:flex-row">
-                {paymentFees.rows.map((row, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 px-6 py-4 flex items-center justify-between border-t sm:border-t-0 sm:border-l first:border-l-0 border-gray-100"
+          <div className="max-w-5xl mx-auto">
+            {/* Segmented control */}
+            <div className="flex justify-center mb-10">
+              <div className="inline-flex bg-gray-100 p-1.5 rounded-2xl">
+                {TABS.map((tb) => (
+                  <button
+                    key={tb.id}
+                    onClick={() => setActiveTab(tb.id)}
+                    className={`px-5 sm:px-7 py-2.5 rounded-xl text-sm sm:text-base font-semibold transition duration-200 ${
+                      activeTab === tb.id
+                        ? "bg-primary text-white shadow"
+                        : "text-gray-500 hover:text-primary"
+                    }`}
                   >
-                    <span className="text-gray-700">{row.label[lang]}</span>
-                    <span className="font-semibold text-primary">{row.price}</span>
-                  </div>
+                    {tb.label}
+                  </button>
                 ))}
+              </div>
+            </div>
+
+            <div className="space-y-12">
+              {visibleSections.map((section) =>
+                section.tiered ? (
+                  <TieredSection key={section.id} section={section} />
+                ) : (
+                  <FlatSection key={section.id} section={section} />
+                )
+              )}
+
+              {/* Payment processing strip */}
+              <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                <div className="bg-gray-100 px-6 py-4">
+                  <h3 className="text-primary text-lg font-bold">
+                    {paymentFees.title[lang]}
+                  </h3>
+                </div>
+                <div className="flex flex-col sm:flex-row">
+                  {paymentFees.rows.map((row, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 px-6 py-4 flex items-center justify-between border-t sm:border-t-0 sm:border-l first:border-l-0 border-gray-100"
+                    >
+                      <span className="text-gray-700">{row.label[lang]}</span>
+                      <span className="font-semibold text-primary">{row.price}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
