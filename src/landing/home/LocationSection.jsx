@@ -57,7 +57,7 @@ export default function LocationSection() {
               <div>
                 <h3 className="font-semibold text-lg mb-1">{t("locationPhoneLabel")}</h3>
                 <a
-                  href="tel:+15107157809"
+                  href="tel:+13412089445"
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   +1 (341) 208-9445

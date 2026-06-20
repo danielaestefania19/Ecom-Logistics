@@ -1,7 +1,8 @@
 import React from 'react';
 import { useEffect } from "react";
-import { Helmet } from 'react-helmet-async';
 import { useLocation } from "react-router-dom";
+import Seo from '../../seo/Seo';
+import { buildServiceSchema } from '../../seo/siteData';
 import Navbar from '../../home/Navbar';
 import Header from './Header';
 import Advantages from './Advantages';
@@ -16,9 +17,8 @@ import LocalMoving from './ LocalMoving';
 
 const AmazonPartner = () => {
     const location = useLocation();
-    useEffect(() => {
-        document.title = "Amazon Freight Partner | LTL & FTL Shipments | Ecom Logistics";
-    }, []);
+    const description =
+        "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner in Hayward, CA, we offer efficient, cost-effective freight to Amazon FBA warehouses and beyond.";
     useEffect(() => {
         if (location.hash === "#local-moving") {
             const element = document.getElementById("local-moving");
@@ -29,13 +29,19 @@ const AmazonPartner = () => {
             }
         }
     }, [location]);
-    <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping"></link>
 
     return (
         <>
-            <Helmet>
-                <link rel="canonical" href="https://www.ecomlogisticsus.com/amazon-freight-partner-shipping" />
-            </Helmet>
+            <Seo
+                title="Amazon Freight Partner | LTL & FTL Shipping | Ecom Logistics"
+                description={description}
+                path="/amazon-freight-partner-shipping"
+                schema={buildServiceSchema({
+                    name: "Amazon Freight Partner LTL & FTL Shipping",
+                    description,
+                    path: "/amazon-freight-partner-shipping",
+                })}
+            />
 
             <div className="bg-white text-gray-800">
                 <Navbar />

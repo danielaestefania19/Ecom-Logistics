@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import Seo from '../seo/Seo.jsx';
+import { SITE, localBusinessSchema } from '../seo/siteData.js';
 import Navbar from './Navbar.jsx';
 import Hero from './Hero.jsx';
 import Services from './Services.jsx';
@@ -26,14 +26,14 @@ import LocationSection from './LocationSection.jsx';
  * @returns {JSX.Element} The `Home` component containing the `Navbar` and `Hero`.
  */
 const Home = () => {
-  useEffect(() => {
-    document.title = "Ecom Logistics | Your Trusted Ecommerce Logistics Partner in CA"
-  }, []);
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://www.ecomlogisticsus.com/home"></link>
-      </Helmet>
+      <Seo
+        title="Ecom Logistics | E-commerce 3PL & FBA Prep Center in Hayward, CA"
+        description={SITE.defaultDescription}
+        path="/home"
+        schema={localBusinessSchema}
+      />
       <div className="bg-white text-gray-800">
         <Navbar />
         <Hero />

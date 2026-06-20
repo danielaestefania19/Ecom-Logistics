@@ -86,7 +86,7 @@ export const translations = {
     servicesDesc:
       "At Ecom Logistics, we offer a full spectrum of integrated solutions designed to streamline your operations and drive growth. Discover how our expert 3PL, FBA prep, and Freight shipping services can benefit your business.",
     servicesAll: "All Services",
-    ltlTitle: "Amazon LTL & FTL Shippings ",
+    ltlTitle: "Amazon LTL & FTL Shipping",
     ltlDesc:
       " Ecom Logistics provides reliable Less-Than-Truckload (LTL) and Full Truckload (FTL) shipping options to meet all your commercial freight needs. As an experienced Amazon Freight Partner, we ensure seamless and efficient delivery to Amazon fulfillment centers. Optimize your supply chain with our cost-effective transportation services.",
     fbaTitle: "FBA Prep Center",

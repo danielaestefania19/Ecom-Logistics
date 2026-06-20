@@ -1,7 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Seo from '../../seo/Seo';
+import { buildServiceSchema } from '../../seo/siteData';
 import Navbar from '../../home/Navbar';
 import Header from './Header';
 import Advantages from './Advantages';
@@ -17,9 +18,8 @@ import Footer from '../../home/Footer';
 
 const TiktokShop = () => {
   const location = useLocation();
-  useEffect(() => {
-    document.title = "3PL Services | E-commerce Fulfillment & Logistics Solutions"
-  }, []);
+  const description =
+    "Streamline your e-commerce with Ecom Logistics' 3PL services in Hayward, CA. Expert third-party fulfillment, warehousing & pick and pack for growing brands.";
   useEffect(() => {
     if (location.hash === "#free-packaging") {
       const element = document.getElementById("free-packaging");
@@ -30,14 +30,19 @@ const TiktokShop = () => {
       }
     }
   }, [location]);
-  <link rel="canonical" href="https://www.ecomlogisticsus.com/3pl-services"></link>
 
   return (
     <>
-      <Helmet>
-        <meta name="description" content="Streamline your e-commerce with Ecom Logistics' 3PL services. Expert third-party fulfillment, warehousing & pick and pack for growing brands."
-        />
-      </Helmet>
+      <Seo
+        title="3PL Services | E-commerce Fulfillment & Warehousing in CA"
+        description={description}
+        path="/3pl-services"
+        schema={buildServiceSchema({
+          name: "3PL E-commerce Fulfillment Services",
+          description,
+          path: "/3pl-services",
+        })}
+      />
       <div>
         <Navbar />
         <Header />

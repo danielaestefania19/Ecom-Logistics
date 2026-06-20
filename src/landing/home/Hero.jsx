@@ -1,6 +1,5 @@
 import { Button } from "@heroui/react";
 import ImageHero from "../../assets/ImageHero.jpg";
-import { Helmet } from "react-helmet-async";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const Hero = () => {
@@ -9,17 +8,6 @@ const Hero = () => {
 
   return (
     <div className="relative w-full min-h-[70vh] flex flex-col md:flex-row text-white bg-primary overflow-hidden">
-      <Helmet>
-        <meta
-          name="description"
-          content={
-            isSpanish
-              ? "Ecom Logistics ofrece soluciones logísticas 3PL integrales para e-commerce. Desde preparación de FBA y pick and pack, hasta envíos LTL y FTL de Amazon, optimizamos su cadena de suministro. ¡Crece con nosotros!"
-              : "Ecom Logistics offers end-to-end 3PL logistics for e-commerce. From 3PL pick and pack, Amazon prep center services to Amazon LTL & FTL shipments, we optimize your supply chain. Grow with us!"
-          }
-        />
-      </Helmet>
-
       <div className="relative z-10 w-full md:w-1/2 p-8 md:pl-28 md:pr-10 lg:pl-36 lg:pr-20 xl:pl-48 xl:pr-28 md:py-24 font-montserrat flex-1 md:flex md:flex-col md:justify-center md:items-start text-center md:text-left">
         {isSpanish ? (
           <h1 className="text-4xl md:text-6xl font-semibold mb-9">

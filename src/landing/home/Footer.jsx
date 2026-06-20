@@ -5,6 +5,7 @@ import tiktokicono from "../../assets/tiktokicono.png";
 import PriceList from "../../assets/PriceList.pdf";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../i18n/LanguageContext";
+import { SITE } from "../seo/siteData";
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -59,9 +60,17 @@ export default function Footer() {
           <div className="w-full sm:w-auto">
             <h4 className="font-semibold mb-3">{t("footerContact")}</h4>
             <p className="leading-relaxed">
-              25509 Industrial<br />
-              Blvd, Hayward CA<br />
-              94545 Suite E3<br />
+              {SITE.nap.streetAddress}<br />
+              {SITE.nap.addressLocality}, {SITE.nap.addressRegion} {SITE.nap.postalCode}
+            </p>
+            <p className="leading-relaxed mt-3">
+              <a href={SITE.nap.phoneHref} className="hover:underline">
+                {SITE.nap.phone}
+              </a>
+              <br />
+              <a href={`mailto:${SITE.nap.email}`} className="hover:underline">
+                {SITE.nap.email}
+              </a>
             </p>
           </div>
           <div className="w-full sm:w-auto">
@@ -99,7 +108,7 @@ export default function Footer() {
         <div className="border-t border-slate-600 w-3/4" />
       </div>
       <div className="text-center text-xs py-6">
-        ©2023 camps. {t("footerRights")}
+        ©{new Date().getFullYear()} {SITE.name}. {t("footerRights")}
       </div>
     </footer>
   );
