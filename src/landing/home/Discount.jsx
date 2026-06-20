@@ -28,7 +28,7 @@ const Discount = () => {
               >
                 <CardHeader className="flex items-center justify-between gap-6 sm:gap-6 w-full flex-nowrap">
                   <div className="flex items-center gap-4 flex-1">
-                    <Image height={50} src={entregagratis} width={50} />
+                    <Image height={50} src={entregagratis} width={50} alt="Free 7-day storage offer" />
                     <div className="flex flex-col text-left">
                       <p className="text-primary text-md font-bold">{t("discountCardTitle")}</p>
                       <p className="text-gray-500 text-sm">{t("discountCardSubtitle")}</p>

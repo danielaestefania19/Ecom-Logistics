@@ -1,5 +1,5 @@
 import { Button } from "@heroui/react";
-import ImageHero from "../../assets/ImageHero.jpg";
+import ImageHero from "../../assets/ImageHero.avif";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const Hero = () => {
@@ -66,8 +66,10 @@ const Hero = () => {
       <div className="w-full h-full md:hidden relative">
         <img
           src={ImageHero}
-          alt="Hero"
+          alt="Ecom Logistics warehouse — FBA prep and 3PL fulfillment in Hayward, CA"
           className="w-full h-auto object-cover"
+          fetchpriority="high"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-primary" />
       </div>

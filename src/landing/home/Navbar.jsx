@@ -84,43 +84,40 @@ function NavbarMenu() {
               >
                 {servicesItems.map((service) => (
                   <NavbarMenuItem key={service.key}>
-                    <Link
-                      as={ReactRouterLink}
+                    <ReactRouterLink
                       to={service.path}
-                      className="w-full text-white text-base pl-6 py-1"
-                      onPress={() => setIsMenuOpen(false)}
+                      className="w-full text-white text-base pl-6 py-1 block"
+                      onClick={() => setIsMenuOpen(false)}
                     >
                       {t(service.labelKey)}
-                    </Link>
+                    </ReactRouterLink>
                   </NavbarMenuItem>
                 ))}
               </div>
             </>
           ) : item === t("pricing") ? (
             <NavbarMenuItem>
-              <Link
-                as={ReactRouterLink}
+              <ReactRouterLink
                 to="/pricing"
-                className={`w-full text-white text-lg ${
+                className={`w-full text-white text-lg block ${
                   location.pathname === "/pricing" ? "text-third" : ""
                 }`}
-                onPress={() => setIsMenuOpen(false)}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item}
-              </Link>
+              </ReactRouterLink>
             </NavbarMenuItem>
           ) : (
             <NavbarMenuItem>
-              <Link
-                as={ReactRouterLink}
+              <ReactRouterLink
                 to={getRoutePath(item, t)}
-                className={`w-full text-white text-lg ${
+                className={`w-full text-white text-lg block ${
                   location.pathname === getRoutePath(item, t) ? "text-third" : ""
                 }`}
-                onPress={() => setIsMenuOpen(false)}
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item}
-              </Link>
+              </ReactRouterLink>
             </NavbarMenuItem>
           )}
         </React.Fragment>
@@ -256,30 +253,28 @@ const Navbar = () => {
               if (item === t("pricing")) {
                 return (
                   <NavbarItem key={i}>
-                    <Link
-                      as={ReactRouterLink}
+                    <ReactRouterLink
                       to="/pricing"
                       className={`text-white hover:text-gray-300 transition-colors ${
                         location.pathname === "/pricing" ? "text-third" : ""
                       }`}
                     >
                       {item}
-                    </Link>
+                    </ReactRouterLink>
                   </NavbarItem>
                 );
               }
 
               return (
                 <NavbarItem key={i}>
-                  <Link
-                    as={ReactRouterLink}
+                  <ReactRouterLink
                     to={getRoutePath(item, t)}
                     className={`text-white hover:text-gray-300 transition-colors ${
                       location.pathname === getRoutePath(item, t) ? "text-third" : ""
                     }`}
                   >
                     {item}
-                  </Link>
+                  </ReactRouterLink>
                 </NavbarItem>
               );
             })}
