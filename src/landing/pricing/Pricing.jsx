@@ -169,7 +169,7 @@ const Pricing = () => {
               <span className="text-gray-700 font-medium">{row.label[lang]}</span>
               <span className="text-primary font-bold text-lg whitespace-nowrap">
                 {isNum
-                  ? `${money(row.price)}${row.suffix ? row.suffix[lang] : ""}`
+                  ? `${money(row.price)}${row.suffix?.[lang] ?? ""}`
                   : row.price[lang]}
               </span>
             </div>
