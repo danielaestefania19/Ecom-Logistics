@@ -12,6 +12,10 @@ export const SITE = {
   // established Canadian 3PL (ecomlogistics.ca).
   name: "Ecom Logistics",
   legalName: "Ecom Logistics US",
+  // EXACT verified name on Google Business Profile. Used as the LocalBusiness
+  // schema name so the site entity matches the GBP listing 1:1 (NAP). Keep
+  // every citation/directory identical to this string.
+  gbpName: "California Amazon FBA Prep Center - Ecom Logistics",
   defaultTitle: "Ecom Logistics | E-commerce 3PL & FBA Prep Center in Hayward, CA",
   defaultDescription:
     "Ecom Logistics is a Hayward, CA based 3PL offering end-to-end e-commerce logistics: FBA prep, pick & pack fulfillment and Amazon LTL/FTL freight across the Bay Area and the USA.",
@@ -40,11 +44,17 @@ export const SITE = {
   mapsUrl:
     "https://www.google.com/maps?cid=3277432369041198767",
 
+  // Hours mirror Google Business Profile exactly (Mon–Fri 9–5, Sat 10–3).
   openingHours: [
     {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "08:00",
+      opens: "09:00",
       closes: "17:00",
+    },
+    {
+      days: ["Saturday"],
+      opens: "10:00",
+      closes: "15:00",
     },
   ],
 
@@ -80,7 +90,8 @@ export const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "@id": `${SITE.baseUrl}/#organization`,
-  name: SITE.name,
+  name: SITE.gbpName,
+  alternateName: SITE.name,
   legalName: SITE.legalName,
   url: SITE.baseUrl,
   image: `${SITE.baseUrl}${SITE.ogImage}`,

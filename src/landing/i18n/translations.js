@@ -74,8 +74,8 @@ export const translations = {
     locationSubtitle: "Visit our warehouse in Hayward, CA. We are conveniently located to serve your logistics needs.",
     locationAddressLabel: "Address",
     locationHoursLabel: "Business Hours",
-    locationHoursWeekdays: "Mon – Fri: 8:00 AM – 5:00 PM",
-    locationHoursWeekend: "Sat – Sun: Closed",
+    locationHoursWeekdays: "Mon – Fri: 9:00 AM – 5:00 PM",
+    locationHoursWeekend: "Sat: 10:00 AM – 3:00 PM · Sun: Closed",
     locationPhoneLabel: "Phone",
     locationDirections: "Get Directions",
 
@@ -854,8 +854,8 @@ export const translations = {
     locationSubtitle: "Visita nuestra bodega en Hayward, CA. Estamos estratégicamente ubicados para atender tus necesidades logísticas.",
     locationAddressLabel: "Dirección",
     locationHoursLabel: "Horario de Atención",
-    locationHoursWeekdays: "Lun – Vie: 8:00 AM – 5:00 PM",
-    locationHoursWeekend: "Sáb – Dom: Cerrado",
+    locationHoursWeekdays: "Lun – Vie: 9:00 AM – 5:00 PM",
+    locationHoursWeekend: "Sáb: 10:00 AM – 3:00 PM · Dom: Cerrado",
     locationPhoneLabel: "Teléfono",
     locationDirections: "Cómo llegar",
 
