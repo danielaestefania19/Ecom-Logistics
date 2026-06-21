@@ -169,6 +169,16 @@ export const translations = {
     footerFindUs: "Find Us",
     footerRights: "All rights reserved",
 
+    // AmazonBanner
+    amazonBannerBadge: "Amazon 2026",
+    amazonBannerTitle: "Amazon eliminated in-house FBA prep — sellers now need an external prep center",
+    amazonBannerSub: "Since January 2026, FBA sellers must use certified third-party prep centers to meet Amazon's compliance requirements. We're ready for you in the Bay Area.",
+    amazonBannerCta: "Get a Free Quote",
+
+    // TrustStrip
+    trustWorksOn: "Trusted by sellers on",
+    trustPills: ["No monthly fees", "No long-term contracts", "7 days free storage", "Volume discounts"],
+
     //AmazonPartner
     //Header:
     amazonHeader: {
@@ -1046,6 +1056,16 @@ export const translations = {
     footerContact: "Contáctanos",
     footerFindUs: "Encuéntranos",
     footerRights: "Todos los derechos reservados",
+
+    // AmazonBanner
+    amazonBannerBadge: "Amazon 2026",
+    amazonBannerTitle: "Amazon eliminó el prep in-house para FBA — los sellers ahora necesitan un centro externo",
+    amazonBannerSub: "Desde enero de 2026, los vendedores de FBA deben usar centros de preparación certificados para cumplir con los requisitos de Amazon. Estamos listos en Bay Area.",
+    amazonBannerCta: "Obtener Cotización",
+
+    // TrustStrip
+    trustWorksOn: "Vendedores en",
+    trustPills: ["Sin cuotas mensuales", "Sin contratos a largo plazo", "7 días de almacén gratis", "Descuentos por volumen"],
 
     //AmazonPartner
     //Header:

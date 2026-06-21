@@ -15,6 +15,8 @@ import Footer from './Footer.jsx';
 import FulfillmentPromise from './FulfillmentPromise.jsx';
 import FastDeliverySection from './FastDeliverySection.jsx';
 import LocationSection from './LocationSection.jsx';
+import AmazonBanner from './AmazonBanner.jsx';
+import TrustStrip from './TrustStrip.jsx';
 /**
  * Main component for the homepage.
  * 
@@ -37,6 +39,8 @@ const Home = () => {
       <div className="bg-white text-gray-800">
         <Navbar />
         <Hero />
+        <AmazonBanner />
+        <TrustStrip />
         <Services />
         <CoverageMap />
         <FastDeliverySection />
