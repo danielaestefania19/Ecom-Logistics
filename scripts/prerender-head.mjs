@@ -226,15 +226,38 @@ async function main() {
         "[prerender-head] No Supabase env vars at build time — skipping per-post heads."
       );
     } else {
-      const { createClient } = await import("@supabase/supabase-js");
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data: posts, error } = await supabase
-        .from("blog_posts")
-        .select(
-          "slug_en, slug_es, title_en, title_es, excerpt_en, excerpt_es, cover_image_url, published_at, published"
-        )
-        .eq("published", true);
-      if (error) throw error;
+      // Hit the Supabase REST API directly with global fetch. This avoids the
+      // @supabase/supabase-js client (whose realtime/websocket init can return
+      // an empty result inside a CI/Nixpacks build sandbox) and uses the exact
+      // anon-key REST call that RLS already exposes for published posts.
+      const select =
+        "slug_en,slug_es,title_en,title_es,excerpt_en,excerpt_es,cover_image_url,published_at";
+      const endpoint = `${supabaseUrl.replace(/\/$/, "")}/rest/v1/blog_posts?select=${select}&published=eq.true`;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 15000);
+      let posts = [];
+      try {
+        const res = await fetch(endpoint, {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+          },
+          signal: controller.signal,
+        });
+        if (!res.ok) {
+          throw new Error(
+            `Supabase REST ${res.status} ${res.statusText}`
+          );
+        }
+        posts = await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
+      console.log(
+        `[prerender-head] Fetched ${
+          Array.isArray(posts) ? posts.length : 0
+        } published post(s) from Supabase.`
+      );
 
       for (const post of posts ?? []) {
         const alternates = [];
