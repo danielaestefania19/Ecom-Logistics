@@ -229,7 +229,7 @@ const PostBody = ({ post, lang, backLabel }) => {
             <p className="text-lg font-bold text-white">{SITE.blogAuthor.name}</p>
             <p className="mt-1 text-sm leading-relaxed text-gray-400">
               {lang === "es"
-                ? "Lidera el contenido en Ecom Logistics y revisa cada tema y post sobre Amazon FBA, TikTok Shop y fulfillment 3PL antes de publicarlo."
+                ? "Sofia es experta en e-commerce y noticias del sector en Ecom Logistics. Investiga, analiza y redacta los mejores posts sobre Amazon FBA, TikTok Shop y fulfillment 3PL para nuestros lectores."
                 : SITE.blogAuthor.bio}
             </p>
           </div>

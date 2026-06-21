@@ -69,8 +69,8 @@ export const SITE = {
   // weight than an Organization byline).
   blogAuthor: {
     name: "Sofia Trinei",
-    role: "Content Lead, Ecom Logistics",
-    bio: "Sofia leads content at Ecom Logistics, reviewing every topic and post on Amazon FBA, TikTok Shop and 3PL fulfillment before it ships.",
+    role: "E-commerce & Industry News Expert, Ecom Logistics",
+    bio: "Sofia is an e-commerce and industry-news expert at Ecom Logistics. She researches, analyzes and writes the best posts on Amazon FBA, TikTok Shop and 3PL fulfillment for our readers.",
     photo: "/blog-authors/sofia-trinei.jpg",
   },
 };
