@@ -27,38 +27,39 @@ const slugifyHeading = (children) => {
     .replace(/\s+/g, "-");
 };
 
-// Markdown → styled elements on the dark theme. Kept readable: generous spacing,
-// teal links/accents, no decorative noise.
+// Markdown → styled elements for the light reading area (dark text on white).
+// The post header stays on the dark brand background; only the article body
+// sits on a white sheet for comfortable long-form reading.
 const mdComponents = {
-  h1: (p) => <h1 className="mt-10 mb-4 text-3xl font-bold text-white" {...p} />,
+  h1: (p) => <h1 className="mt-10 mb-4 text-3xl font-bold text-gray-900" {...p} />,
   h2: ({ children, ...p }) => (
-    <h2 id={slugifyHeading(children)} className="mt-10 mb-4 scroll-mt-24 text-2xl font-bold text-white" {...p}>
+    <h2 id={slugifyHeading(children)} className="mt-10 mb-4 scroll-mt-24 text-2xl font-bold text-gray-900" {...p}>
       {children}
     </h2>
   ),
   h3: ({ children, ...p }) => (
-    <h3 id={slugifyHeading(children)} className="mt-8 mb-3 scroll-mt-24 text-xl font-bold text-white" {...p}>
+    <h3 id={slugifyHeading(children)} className="mt-8 mb-3 scroll-mt-24 text-xl font-bold text-gray-900" {...p}>
       {children}
     </h3>
   ),
-  p: (p) => <p className="mb-5 leading-relaxed text-gray-200" {...p} />,
-  ul: (p) => <ul className="mb-5 ml-5 list-disc space-y-2 text-gray-200 marker:text-third" {...p} />,
-  ol: (p) => <ol className="mb-5 ml-5 list-decimal space-y-2 text-gray-200 marker:text-third" {...p} />,
+  p: (p) => <p className="mb-5 leading-relaxed text-gray-700" {...p} />,
+  ul: (p) => <ul className="mb-5 ml-5 list-disc space-y-2 text-gray-700 marker:text-third" {...p} />,
+  ol: (p) => <ol className="mb-5 ml-5 list-decimal space-y-2 text-gray-700 marker:text-third" {...p} />,
   li: (p) => <li className="leading-relaxed" {...p} />,
-  a: (p) => <a className="text-third underline underline-offset-2 hover:text-white" {...p} />,
-  strong: (p) => <strong className="font-bold text-white" {...p} />,
+  a: (p) => <a className="font-medium text-third underline underline-offset-2 hover:text-third-dark" {...p} />,
+  strong: (p) => <strong className="font-bold text-gray-900" {...p} />,
   blockquote: (p) => (
-    <blockquote className="my-6 border-l-4 border-third bg-white/[0.03] py-2 pl-5 pr-4 italic text-gray-300" {...p} />
+    <blockquote className="my-6 border-l-4 border-third bg-third/[0.06] py-2 pl-5 pr-4 italic text-gray-600" {...p} />
   ),
-  code: (p) => <code className="rounded bg-white/10 px-1.5 py-0.5 text-sm text-third" {...p} />,
+  code: (p) => <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm text-third-dark" {...p} />,
   table: (p) => (
     <div className="my-6 overflow-x-auto">
-      <table className="w-full border-collapse text-left text-sm text-gray-200" {...p} />
+      <table className="w-full border-collapse text-left text-sm text-gray-700" {...p} />
     </div>
   ),
-  th: (p) => <th className="border border-white/15 bg-white/5 px-3 py-2 font-semibold text-white" {...p} />,
-  td: (p) => <td className="border border-white/10 px-3 py-2" {...p} />,
-  hr: () => <hr className="my-10 border-white/10" />,
+  th: (p) => <th className="border border-gray-200 bg-gray-50 px-3 py-2 font-semibold text-gray-900" {...p} />,
+  td: (p) => <td className="border border-gray-200 px-3 py-2" {...p} />,
+  hr: () => <hr className="my-10 border-gray-200" />,
 };
 
 const BlogPost = () => {
@@ -226,8 +227,8 @@ const PostBody = ({ post, lang, backLabel }) => {
         </div>
       )}
 
-      {/* Body */}
-      <div className="px-6 sm:px-8 py-12">
+      {/* Body — light reading sheet for comfortable long-form reading */}
+      <div className="bg-white px-6 sm:px-8 pt-12 pb-8">
         <div className="max-w-3xl mx-auto">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
             {content}
@@ -235,9 +236,9 @@ const PostBody = ({ post, lang, backLabel }) => {
         </div>
       </div>
 
-      {/* Author */}
-      <div className="px-6 sm:px-8 pb-4">
-        <div className="max-w-3xl mx-auto flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+      {/* Author — continues the white sheet */}
+      <div className="bg-white px-6 sm:px-8 pb-12">
+        <div className="max-w-3xl mx-auto flex items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5">
           <img
             src={SITE.blogAuthor.photo}
             alt={SITE.blogAuthor.name}
@@ -245,14 +246,14 @@ const PostBody = ({ post, lang, backLabel }) => {
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
-            className="h-16 w-16 flex-shrink-0 rounded-full border border-white/15 object-cover"
+            className="h-16 w-16 flex-shrink-0 rounded-full border border-gray-200 object-cover"
           />
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-third">
               {lang === "es" ? "Escrito y revisado por" : "Written and reviewed by"}
             </p>
-            <p className="text-lg font-bold text-white">{SITE.blogAuthor.name}</p>
-            <p className="mt-1 text-sm leading-relaxed text-gray-400">
+            <p className="text-lg font-bold text-gray-900">{SITE.blogAuthor.name}</p>
+            <p className="mt-1 text-sm leading-relaxed text-gray-600">
               {lang === "es"
                 ? "Sofia es experta en e-commerce y noticias del sector en Ecom Logistics. Investiga, analiza y redacta los mejores posts sobre Amazon FBA, TikTok Shop y fulfillment 3PL para nuestros lectores."
                 : SITE.blogAuthor.bio}
@@ -262,7 +263,7 @@ const PostBody = ({ post, lang, backLabel }) => {
       </div>
 
       {/* CTA */}
-      <div className="px-6 sm:px-8 pb-16">
+      <div className="px-6 sm:px-8 pt-14 pb-16">
         <div className="max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-third to-third-dark p-7 sm:p-9 text-center">
           <h2 className="text-2xl font-bold text-white mb-3">
             {lang === "es"
