@@ -20,8 +20,13 @@ const root = resolve(__dirname, "..");
 const dist = join(root, "dist");
 
 async function main() {
-  const { SITE, localBusinessSchema, buildServiceSchema, buildFaqSchema } =
-    await import("../src/landing/seo/siteData.js");
+  const {
+    SITE,
+    localBusinessSchema,
+    buildServiceSchema,
+    buildFaqSchema,
+    buildBlogPostingSchema,
+  } = await import("../src/landing/seo/siteData.js");
   const { translations } = await import(
     "../src/landing/i18n/translations.js"
   );
@@ -127,24 +132,54 @@ async function main() {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
 
-  const buildHead = ({ path, title, description, schema, type = "website" }) => {
+  const buildHead = ({
+    path,
+    title,
+    description,
+    schema,
+    type = "website",
+    image,
+    locale = "en_US",
+    alternates = [],
+  }) => {
     const url = `${SITE.baseUrl}${path}`;
     const metaDescription = description || SITE.defaultDescription;
-    const ogImage = `${SITE.baseUrl}${SITE.ogImage}`;
+    const ogImage = image
+      ? image.startsWith("http")
+        ? image
+        : `${SITE.baseUrl}${image}`
+      : `${SITE.baseUrl}${SITE.ogImage}`;
     const pageTitle = title || SITE.defaultTitle;
     const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+    const altTags = alternates.map(
+      (a) =>
+        `<link data-rh="true" rel="alternate" hreflang="${esc(
+          a.lang
+        )}" href="${esc(a.href)}">`
+    );
+    if (alternates.length > 0) {
+      const xDefault =
+        alternates.find((a) => a.lang === "en") || alternates[0];
+      altTags.push(
+        `<link data-rh="true" rel="alternate" hreflang="x-default" href="${esc(
+          xDefault.href
+        )}">`
+      );
+    }
 
     const tags = [
       `<title data-rh="true">${esc(pageTitle)}</title>`,
       `<meta data-rh="true" name="description" content="${esc(metaDescription)}">`,
       `<link data-rh="true" rel="canonical" href="${esc(url)}">`,
+      ...altTags,
       `<meta data-rh="true" property="og:type" content="${esc(type)}">`,
       `<meta data-rh="true" property="og:site_name" content="${esc(SITE.name)}">`,
       `<meta data-rh="true" property="og:title" content="${esc(pageTitle)}">`,
       `<meta data-rh="true" property="og:description" content="${esc(metaDescription)}">`,
       `<meta data-rh="true" property="og:url" content="${esc(url)}">`,
       `<meta data-rh="true" property="og:image" content="${esc(ogImage)}">`,
-      `<meta data-rh="true" property="og:locale" content="en_US">`,
+      `<meta data-rh="true" property="og:locale" content="${esc(locale)}">`,
       `<meta data-rh="true" name="twitter:card" content="summary_large_image">`,
       `<meta data-rh="true" name="twitter:title" content="${esc(pageTitle)}">`,
       `<meta data-rh="true" name="twitter:description" content="${esc(metaDescription)}">`,
@@ -159,14 +194,12 @@ async function main() {
     return tags.join("\n    ");
   };
 
-  const renderPage = (route) => {
-    const head = buildHead(route);
-    // Remove the static <title> from index.html, then inject our head block
-    // right before </head>.
+  const renderHtmlWithHead = (head) => {
     let html = baseHtml.replace(/\s*<title>[\s\S]*?<\/title>/i, "");
-    html = html.replace(/<\/head>/i, `    ${head}\n  </head>`);
-    return html;
+    return html.replace(/<\/head>/i, `    ${head}\n  </head>`);
   };
+
+  const renderPage = (route) => renderHtmlWithHead(buildHead(route));
 
   let count = 0;
   for (const route of routes) {
@@ -175,6 +208,75 @@ async function main() {
     await mkdir(outDir, { recursive: true });
     await writeFile(join(outDir, "index.html"), html, "utf8");
     count++;
+  }
+
+  // --- Per-post static heads (blog) ---------------------------------------
+  // Fetch published posts from Supabase at build time and write a static
+  // dist/blog/<slug>/index.html per language, each with a post-specific head
+  // (title, description, canonical, OG/Twitter, hreflang EN↔ES, BlogPosting
+  // JSON-LD). `serve` serves these files directly; the serve.json rewrite only
+  // covers posts published AFTER the last build (react-helmet fixes those
+  // client-side). Fully non-fatal: a Supabase hiccup never breaks the deploy.
+  let postCount = 0;
+  try {
+    const supabaseUrl = process.env.VITE_SUPABASE_URL;
+    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseKey) {
+      console.warn(
+        "[prerender-head] No Supabase env vars at build time — skipping per-post heads."
+      );
+    } else {
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      const { data: posts, error } = await supabase
+        .from("blog_posts")
+        .select(
+          "slug_en, slug_es, title_en, title_es, excerpt_en, excerpt_es, cover_image_url, published_at, published"
+        )
+        .eq("published", true);
+      if (error) throw error;
+
+      for (const post of posts ?? []) {
+        const alternates = [];
+        if (post.slug_en)
+          alternates.push({
+            lang: "en",
+            href: `${SITE.baseUrl}/blog/${post.slug_en}`,
+          });
+        if (post.slug_es)
+          alternates.push({
+            lang: "es",
+            href: `${SITE.baseUrl}/blog/${post.slug_es}`,
+          });
+
+        for (const lang of ["en", "es"]) {
+          const slug = post[`slug_${lang}`];
+          if (!slug) continue;
+          const title = post[`title_${lang}`] || post.title_en;
+          const excerpt =
+            post[`excerpt_${lang}`] || post.excerpt_en || title;
+          const head = buildHead({
+            path: `/blog/${slug}`,
+            title: `${title} | Ecom Logistics`,
+            description: excerpt,
+            type: "article",
+            image: post.cover_image_url || undefined,
+            locale: lang === "es" ? "es_ES" : "en_US",
+            alternates,
+            schema: buildBlogPostingSchema(post, lang),
+          });
+          const outDir = join(dist, "blog", slug);
+          await mkdir(outDir, { recursive: true });
+          await writeFile(join(outDir, "index.html"), renderHtmlWithHead(head), "utf8");
+          postCount++;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn(
+      "[prerender-head] Non-fatal: per-post heads skipped:",
+      err?.message || err
+    );
   }
 
   // Root index.html (/) redirects client-side to /home → give it the home head.
@@ -195,7 +297,7 @@ async function main() {
   await writeFile(join(dist, "404.html"), notFoundHtml, "utf8");
 
   console.log(
-    `[prerender-head] Injected head for ${count} routes + root index.html + 404.html.`
+    `[prerender-head] Injected head for ${count} routes + ${postCount} blog post pages + root index.html + 404.html.`
   );
 }
 

@@ -15,6 +15,7 @@ import { SITE } from "./siteData";
  * @param {string}  [type]       Open Graph type. Defaults to "website".
  * @param {object|object[]} [schema] One or more JSON-LD objects to inject.
  * @param {string}  [lang]       Document language ("en" | "es"). Defaults to "en".
+ * @param {{lang:string, href:string}[]} [alternates] hreflang alternates (e.g. EN/ES versions).
  */
 const Seo = ({
   title,
@@ -24,6 +25,7 @@ const Seo = ({
   type = "website",
   schema,
   lang = "en",
+  alternates = [],
 }) => {
   const url = `${SITE.baseUrl}${path}`;
   const metaDescription = description || SITE.defaultDescription;
@@ -41,6 +43,25 @@ const Seo = ({
       <title>{title || SITE.defaultTitle}</title>
       <meta name="description" content={metaDescription} />
       <link rel="canonical" href={url} />
+
+      {/* hreflang alternates (bilingual EN/ES) */}
+      {alternates.map((a) => (
+        <link
+          key={a.lang}
+          rel="alternate"
+          hrefLang={a.lang}
+          href={a.href}
+        />
+      ))}
+      {alternates.length > 0 && (
+        <link
+          rel="alternate"
+          hrefLang="x-default"
+          href={
+            (alternates.find((a) => a.lang === "en") || alternates[0]).href
+          }
+        />
+      )}
 
       {/* Open Graph */}
       <meta property="og:type" content={type} />

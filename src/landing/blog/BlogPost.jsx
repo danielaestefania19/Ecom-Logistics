@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useParams, useNavigate, Link as ReactRouterLink } from "react-router-dom";
 import Seo from "../seo/Seo";
-import { SITE } from "../seo/siteData";
+import { SITE, buildBlogPostingSchema } from "../seo/siteData";
 import { useLanguage } from "../i18n/LanguageContext";
 import Navbar from "../home/Navbar";
 import Footer from "../home/Footer";
@@ -131,6 +131,16 @@ const PostBody = ({ post, lang, backLabel }) => {
   const excerpt = localized(post, "excerpt", lang);
   const content = localized(post, "content", lang);
   const slug = postSlug(post, lang);
+
+  // hreflang alternates: link the EN and ES versions of this same post.
+  const alternates = [];
+  if (post.slug_en)
+    alternates.push({ lang: "en", href: `${SITE.baseUrl}/blog/${post.slug_en}` });
+  if (post.slug_es)
+    alternates.push({ lang: "es", href: `${SITE.baseUrl}/blog/${post.slug_es}` });
+
+  const schema = buildBlogPostingSchema(post, lang);
+
   const date = post.published_at
     ? new Date(post.published_at).toLocaleDateString(
         lang === "es" ? "es-ES" : "en-US",
@@ -147,6 +157,8 @@ const PostBody = ({ post, lang, backLabel }) => {
         image={post.cover_image_url}
         type="article"
         lang={lang}
+        schema={schema}
+        alternates={alternates}
       />
 
       {/* Header */}

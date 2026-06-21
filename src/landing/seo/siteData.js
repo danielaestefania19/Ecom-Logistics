@@ -138,6 +138,50 @@ export function buildServiceSchema({ name, description, path }) {
   };
 }
 
+// Build a BlogPosting schema for an individual blog post in a given language.
+// `post` is a row from blog_posts; `lang` is "en" | "es".
+export function buildBlogPostingSchema(post, lang = "en") {
+  if (!post) return null;
+  const l = lang === "es" ? "es" : "en";
+  const title = post[`title_${l}`] || post.title_en;
+  const excerpt = post[`excerpt_${l}`] || post.excerpt_en || "";
+  const slug = post[`slug_${l}`] || post.slug_en;
+  const url = `${SITE.baseUrl}/blog/${slug}`;
+  const image = post.cover_image_url
+    ? post.cover_image_url.startsWith("http")
+      ? post.cover_image_url
+      : `${SITE.baseUrl}${post.cover_image_url}`
+    : `${SITE.baseUrl}${SITE.ogImage}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description: excerpt,
+    image,
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: l === "es" ? "es-ES" : "en-US",
+    ...(post.published_at
+      ? { datePublished: post.published_at, dateModified: post.published_at }
+      : {}),
+    author: {
+      "@type": "Organization",
+      name: SITE.name,
+      url: SITE.baseUrl,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE.baseUrl}/#organization`,
+      name: SITE.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE.baseUrl}/Icon-ecologistic.png`,
+      },
+    },
+  };
+}
+
 // Build a FAQPage schema from an array of { question, answer }.
 export function buildFaqSchema(faqs = []) {
   if (!faqs.length) return null;
