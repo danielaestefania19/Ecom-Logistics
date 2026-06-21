@@ -151,7 +151,7 @@ const PostBody = ({ post, lang, backLabel }) => {
   return (
     <article>
       <Seo
-        title={`${title} | Ecom Logistics`}
+        title={title}
         description={excerpt || title}
         path={`/blog/${slug}`}
         image={post.cover_image_url}

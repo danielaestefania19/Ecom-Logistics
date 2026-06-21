@@ -42,6 +42,8 @@ const Seo = ({
       <html lang={lang} />
       <title>{title || SITE.defaultTitle}</title>
       <meta name="description" content={metaDescription} />
+      <meta name="author" content={SITE.name} />
+      <meta name="robots" content="index, follow" />
       <link rel="canonical" href={url} />
 
       {/* hreflang alternates (bilingual EN/ES) */}

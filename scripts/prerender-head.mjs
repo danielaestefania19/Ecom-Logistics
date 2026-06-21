@@ -171,6 +171,8 @@ async function main() {
     const tags = [
       `<title data-rh="true">${esc(pageTitle)}</title>`,
       `<meta data-rh="true" name="description" content="${esc(metaDescription)}">`,
+      `<meta data-rh="true" name="author" content="${esc(SITE.name)}">`,
+      `<meta data-rh="true" name="robots" content="index, follow">`,
       `<link data-rh="true" rel="canonical" href="${esc(url)}">`,
       ...altTags,
       `<meta data-rh="true" property="og:type" content="${esc(type)}">`,
@@ -290,7 +292,7 @@ async function main() {
             post[`excerpt_${lang}`] || post.excerpt_en || title;
           const head = buildHead({
             path: `/blog/${slug}`,
-            title: `${title} | Ecom Logistics`,
+            title,
             description: excerpt,
             type: "article",
             image: post.cover_image_url || undefined,
