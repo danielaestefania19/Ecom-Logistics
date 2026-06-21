@@ -218,10 +218,19 @@ async function main() {
   // covers posts published AFTER the last build (react-helmet fixes those
   // client-side). Fully non-fatal: a Supabase hiccup never breaks the deploy.
   let postCount = 0;
+  const diag = {
+    ranAt: new Date().toISOString(),
+    hasSupabaseUrl: Boolean(process.env.VITE_SUPABASE_URL),
+    hasSupabaseKey: Boolean(process.env.VITE_SUPABASE_ANON_KEY),
+    fetched: null,
+    slugs: [],
+    error: null,
+  };
   try {
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseKey) {
+      diag.error = "missing-env-vars";
       console.warn(
         "[prerender-head] No Supabase env vars at build time — skipping per-post heads."
       );
@@ -253,6 +262,7 @@ async function main() {
       } finally {
         clearTimeout(timer);
       }
+      diag.fetched = Array.isArray(posts) ? posts.length : 0;
       console.log(
         `[prerender-head] Fetched ${
           Array.isArray(posts) ? posts.length : 0
@@ -291,16 +301,28 @@ async function main() {
           const outDir = join(dist, "blog", slug);
           await mkdir(outDir, { recursive: true });
           await writeFile(join(outDir, "index.html"), renderHtmlWithHead(head), "utf8");
+          diag.slugs.push(slug);
           postCount++;
         }
       }
     }
   } catch (err) {
+    diag.error = err?.message || String(err);
     console.warn(
       "[prerender-head] Non-fatal: per-post heads skipped:",
       err?.message || err
     );
   }
+  // Diagnostic file (curlable at /prerender-status.json) — lets us see exactly
+  // what happened to per-post generation in the live build without log access.
+  diag.postCount = postCount;
+  try {
+    await writeFile(
+      join(dist, "prerender-status.json"),
+      JSON.stringify(diag, null, 2),
+      "utf8"
+    );
+  } catch {}
 
   // Root index.html (/) redirects client-side to /home → give it the home head.
   const homeRoute = routes.find((r) => r.path === "/home");
