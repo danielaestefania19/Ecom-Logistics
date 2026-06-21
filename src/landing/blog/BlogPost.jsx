@@ -159,6 +159,7 @@ const PostBody = ({ post, lang, backLabel }) => {
         lang={lang}
         schema={schema}
         alternates={alternates}
+        author={SITE.blogAuthor.name}
       />
 
       {/* Header */}
@@ -206,6 +207,32 @@ const PostBody = ({ post, lang, backLabel }) => {
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
             {content}
           </ReactMarkdown>
+        </div>
+      </div>
+
+      {/* Author */}
+      <div className="px-6 sm:px-8 pb-4">
+        <div className="max-w-3xl mx-auto flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+          <img
+            src={SITE.blogAuthor.photo}
+            alt={SITE.blogAuthor.name}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+            className="h-16 w-16 flex-shrink-0 rounded-full border border-white/15 object-cover"
+          />
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-third">
+              {lang === "es" ? "Escrito y revisado por" : "Written and reviewed by"}
+            </p>
+            <p className="text-lg font-bold text-white">{SITE.blogAuthor.name}</p>
+            <p className="mt-1 text-sm leading-relaxed text-gray-400">
+              {lang === "es"
+                ? "Lidera el contenido en Ecom Logistics y revisa cada tema y post sobre Amazon FBA, TikTok Shop y fulfillment 3PL antes de publicarlo."
+                : SITE.blogAuthor.bio}
+            </p>
+          </div>
         </div>
       </div>
 

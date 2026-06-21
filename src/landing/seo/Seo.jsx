@@ -26,6 +26,7 @@ const Seo = ({
   schema,
   lang = "en",
   alternates = [],
+  author = SITE.name,
 }) => {
   const url = `${SITE.baseUrl}${path}`;
   const metaDescription = description || SITE.defaultDescription;
@@ -42,7 +43,7 @@ const Seo = ({
       <html lang={lang} />
       <title>{title || SITE.defaultTitle}</title>
       <meta name="description" content={metaDescription} />
-      <meta name="author" content={SITE.name} />
+      <meta name="author" content={author} />
       <meta name="robots" content="index, follow" />
       <link rel="canonical" href={url} />
 

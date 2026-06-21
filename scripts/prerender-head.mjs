@@ -141,6 +141,7 @@ async function main() {
     image,
     locale = "en_US",
     alternates = [],
+    author = SITE.name,
   }) => {
     const url = `${SITE.baseUrl}${path}`;
     const metaDescription = description || SITE.defaultDescription;
@@ -171,7 +172,7 @@ async function main() {
     const tags = [
       `<title data-rh="true">${esc(pageTitle)}</title>`,
       `<meta data-rh="true" name="description" content="${esc(metaDescription)}">`,
-      `<meta data-rh="true" name="author" content="${esc(SITE.name)}">`,
+      `<meta data-rh="true" name="author" content="${esc(author)}">`,
       `<meta data-rh="true" name="robots" content="index, follow">`,
       `<link data-rh="true" rel="canonical" href="${esc(url)}">`,
       ...altTags,
@@ -298,6 +299,7 @@ async function main() {
             image: post.cover_image_url || undefined,
             locale: lang === "es" ? "es_ES" : "en_US",
             alternates,
+            author: SITE.blogAuthor.name,
             schema: buildBlogPostingSchema(post, lang),
           });
           const outDir = join(dist, "blog", slug);

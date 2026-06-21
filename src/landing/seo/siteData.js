@@ -63,6 +63,16 @@ export const SITE = {
     instagram: "https://www.instagram.com/ecomlogistics",
     tiktok: "https://www.tiktok.com/@ecomlogistics",
   },
+
+  // Blog author. Sofia reviews every topic and approves each post before it
+  // ships, so she is credited as the author (a Person carries more E-E-A-T
+  // weight than an Organization byline).
+  blogAuthor: {
+    name: "Sofia Trinei",
+    role: "Content Lead, Ecom Logistics",
+    bio: "Sofia leads content at Ecom Logistics, reviewing every topic and post on Amazon FBA, TikTok Shop and 3PL fulfillment before it ships.",
+    photo: "/blog-authors/sofia-trinei.jpg",
+  },
 };
 
 // Human-readable single-line address (for footers, contact blocks).
@@ -166,9 +176,15 @@ export function buildBlogPostingSchema(post, lang = "en") {
       ? { datePublished: post.published_at, dateModified: post.published_at }
       : {}),
     author: {
-      "@type": "Organization",
-      name: SITE.name,
-      url: SITE.baseUrl,
+      "@type": "Person",
+      name: SITE.blogAuthor.name,
+      jobTitle: SITE.blogAuthor.role,
+      image: `${SITE.baseUrl}${SITE.blogAuthor.photo}`,
+      worksFor: {
+        "@type": "Organization",
+        name: SITE.name,
+        url: SITE.baseUrl,
+      },
     },
     publisher: {
       "@type": "Organization",
