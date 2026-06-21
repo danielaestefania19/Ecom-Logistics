@@ -7,6 +7,8 @@ import PrepCenter from "./landing/services/PrepCenter/PrepCenter.jsx";
 import TikTokShop from "./landing/services/TikTokShop/TikTokShop.jsx";
 import AboutUs from "./landing/AboutUs/AboutUs.jsx";
 import Pricing from "./landing/pricing/Pricing.jsx";
+import BlogPage from "./landing/blog/BlogPage.jsx";
+import BlogPost from "./landing/blog/BlogPost.jsx";
 import NotFound from "./landing/NotFound.jsx";
 
 /**
@@ -26,6 +28,8 @@ function App() {
         <Route path="/3pl-services" element={<TikTokShop />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </LanguageProvider>

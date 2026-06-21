@@ -33,6 +33,8 @@ function getRoutePath(label, t) {
       return "/home";
     case t("aboutUs"):
       return "/about-us";
+    case t("blog"):
+      return "/blog";
     default:
       return "/";
   }
@@ -44,7 +46,7 @@ function NavbarMenu() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blog")];
 
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
@@ -185,7 +187,7 @@ const Navbar = () => {
   const { t, language, setLanguage } = useLanguage();
   const getFlag = (lang) => (lang === "es" ? "🇪🇸" : "🇺🇸");
 
-  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs")];
+  const menuItems = [t("home"), t("services"), t("pricing"), t("aboutUs"), t("blog")];
 
   return (
     <div>

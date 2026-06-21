@@ -68,15 +68,15 @@ const Pricing = () => {
 
   const SectionHeader = ({ section }) => (
     <div className="flex items-start gap-3 mb-5">
-      <span className="flex-shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-third/10 text-third-dark">
+      <span className="flex-shrink-0 grid place-items-center w-11 h-11 rounded-xl bg-third/20 text-third">
         <Icon name={section.icon} />
       </span>
       <div>
-        <h3 className="text-xl sm:text-2xl font-bold text-primary leading-tight">
+        <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight">
           {section.title[lang]}
         </h3>
         {section.subtitle && (
-          <p className="text-gray-500 text-sm mt-1 max-w-2xl">
+          <p className="text-white/50 text-sm mt-1 max-w-2xl">
             {section.subtitle[lang]}
           </p>
         )}
@@ -92,9 +92,9 @@ const Pricing = () => {
         {section.rows.map((row, ri) => (
           <div
             key={ri}
-            className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-third/40 transition"
+            className="rounded-2xl border border-white/10 bg-[#0d1117] p-5 hover:border-third/40 transition"
           >
-            <p className="font-semibold text-primary mb-4">{row.label[lang]}</p>
+            <p className="font-semibold text-white mb-4">{row.label[lang]}</p>
             <div className="grid grid-cols-3 gap-2">
               {tiers.map((tier, ti) => {
                 const value = tier.discount
@@ -105,26 +105,26 @@ const Pricing = () => {
                   <div
                     key={ti}
                     className={`rounded-xl px-2 py-3 text-center ${
-                      best ? "bg-third text-white shadow-sm" : "bg-gray-50"
+                      best ? "bg-third text-white shadow-sm" : "bg-white/5"
                     }`}
                   >
                     <p
                       className={`text-[10px] uppercase tracking-wide font-semibold ${
-                        best ? "text-white/80" : "text-gray-400"
+                        best ? "text-white/80" : "text-white/40"
                       }`}
                     >
                       {tier.badge}
                     </p>
                     <p
                       className={`text-lg font-bold leading-tight mt-0.5 ${
-                        best ? "text-white" : "text-primary"
+                        best ? "text-white" : "text-white"
                       }`}
                     >
                       {value}
                     </p>
                     <p
                       className={`text-[10px] mt-0.5 ${
-                        best ? "text-white/70" : "text-gray-400"
+                        best ? "text-white/70" : "text-white/35"
                       }`}
                     >
                       {tier.label}
@@ -133,7 +133,7 @@ const Pricing = () => {
                 );
               })}
             </div>
-            <p className="text-[11px] text-gray-400 mt-3">
+            <p className="text-[11px] text-white/35 mt-3">
               {t("pricingPage.perUnitNote")} ({section.unit[lang]})
             </p>
           </div>
@@ -164,10 +164,10 @@ const Pricing = () => {
           return (
             <div
               key={ri}
-              className="rounded-xl border border-gray-200 bg-white px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition"
+              className="rounded-xl border border-white/10 bg-[#0d1117] px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition"
             >
-              <span className="text-gray-700 font-medium">{row.label[lang]}</span>
-              <span className="text-primary font-bold text-lg whitespace-nowrap">
+              <span className="text-white/75 font-medium">{row.label[lang]}</span>
+              <span className="text-white font-bold text-lg whitespace-nowrap">
                 {isNum
                   ? `${money(row.price)}${row.suffix?.[lang] ?? ""}`
                   : row.price[lang]}
@@ -196,7 +196,7 @@ const Pricing = () => {
         ].filter(Boolean)}
       />
 
-      <div className="bg-white text-gray-800">
+      <div className="bg-primary text-white">
         <Navbar />
 
         {/* Hero */}
@@ -208,7 +208,7 @@ const Pricing = () => {
             <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-5">
               {t("pricingPage.heroTitle")}
             </h1>
-            <p className="text-gray-200 text-base sm:text-lg max-w-3xl mx-auto mb-7">
+            <p className="text-white/70 text-base sm:text-lg max-w-3xl mx-auto mb-7">
               {t("pricingPage.heroSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -220,7 +220,7 @@ const Pricing = () => {
               </a>
               <a
                 href={SITE.nap.phoneHref}
-                className="border border-white/70 hover:bg-white hover:text-primary text-white font-semibold px-8 py-3 rounded-xl transition duration-300"
+                className="border border-white/30 hover:bg-white hover:text-primary text-white font-semibold px-8 py-3 rounded-xl transition duration-300"
               >
                 {t("pricingPage.ctaCall")} · {SITE.nap.phone}
               </a>
@@ -229,7 +229,7 @@ const Pricing = () => {
               {trustPills.map((pill, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1.5 bg-white/10 text-gray-100 text-xs sm:text-sm px-3 py-1.5 rounded-full"
+                  className="inline-flex items-center gap-1.5 bg-white/10 text-white/80 text-xs sm:text-sm px-3 py-1.5 rounded-full"
                 >
                   <svg className="w-3.5 h-3.5 text-third" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M20 6 9 17l-5-5" />
@@ -242,12 +242,12 @@ const Pricing = () => {
         </section>
 
         {/* Volume tiers explainer */}
-        <section className="px-6 sm:px-8 py-12 bg-gray-50 border-b border-gray-200">
+        <section className="px-6 sm:px-8 py-12 bg-[#0a0f14] border-y border-white/[0.07]">
           <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               {t("pricingPage.volumeTitle")}
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-white/60 max-w-2xl mx-auto mb-8">
               {t("pricingPage.volumeSubtitle")}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -256,8 +256,8 @@ const Pricing = () => {
                   key={i}
                   className={`relative rounded-2xl border p-6 ${
                     i === 2
-                      ? "border-third bg-white shadow-lg ring-2 ring-third/30"
-                      : "border-gray-200 bg-white"
+                      ? "border-third bg-[#0d1117] shadow-lg ring-2 ring-third/30"
+                      : "border-white/10 bg-[#0d1117]"
                   }`}
                 >
                   {i === 2 && (
@@ -265,12 +265,12 @@ const Pricing = () => {
                       {t("pricingPage.bestValue")}
                     </span>
                   )}
-                  <p className="text-primary font-bold text-lg">{tier.label}</p>
+                  <p className="text-white font-bold text-lg">{tier.label}</p>
                   <p
                     className={`mt-2 inline-block px-3 py-1 rounded-full text-sm font-semibold ${
                       tier.discount
-                        ? "bg-third/15 text-third-dark"
-                        : "bg-gray-100 text-gray-600"
+                        ? "bg-third/20 text-third"
+                        : "bg-white/10 text-white/60"
                     }`}
                   >
                     {tier.badge}
@@ -286,15 +286,15 @@ const Pricing = () => {
           <div className="max-w-5xl mx-auto">
             {/* Segmented control */}
             <div className="flex justify-center mb-10">
-              <div className="inline-flex bg-gray-100 p-1.5 rounded-2xl">
+              <div className="inline-flex bg-white/[0.07] p-1.5 rounded-2xl">
                 {TABS.map((tb) => (
                   <button
                     key={tb.id}
                     onClick={() => setActiveTab(tb.id)}
                     className={`px-5 sm:px-7 py-2.5 rounded-xl text-sm sm:text-base font-semibold transition duration-200 ${
                       activeTab === tb.id
-                        ? "bg-primary text-white shadow"
-                        : "text-gray-500 hover:text-primary"
+                        ? "bg-third text-white shadow"
+                        : "text-white/50 hover:text-white"
                     }`}
                   >
                     {tb.label}
@@ -313,9 +313,9 @@ const Pricing = () => {
               )}
 
               {/* Payment processing strip */}
-              <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-                <div className="bg-gray-100 px-6 py-4">
-                  <h3 className="text-primary text-lg font-bold">
+              <div className="rounded-2xl border border-white/10 overflow-hidden">
+                <div className="bg-white/[0.05] px-6 py-4">
+                  <h3 className="text-white text-lg font-bold">
                     {paymentFees.title[lang]}
                   </h3>
                 </div>
@@ -323,10 +323,10 @@ const Pricing = () => {
                   {paymentFees.rows.map((row, i) => (
                     <div
                       key={i}
-                      className="flex-1 px-6 py-4 flex items-center justify-between border-t sm:border-t-0 sm:border-l first:border-l-0 border-gray-100"
+                      className="flex-1 px-6 py-4 flex items-center justify-between border-t sm:border-t-0 sm:border-l first:border-l-0 border-white/[0.06]"
                     >
-                      <span className="text-gray-700">{row.label[lang]}</span>
-                      <span className="font-semibold text-primary">{row.price}</span>
+                      <span className="text-white/65">{row.label[lang]}</span>
+                      <span className="font-semibold text-white">{row.price}</span>
                     </div>
                   ))}
                 </div>
@@ -338,52 +338,52 @@ const Pricing = () => {
         {/* What's included + oversize */}
         <section className="px-6 sm:px-8 pb-16">
           <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-2xl bg-gray-50 border border-gray-200 p-7">
-              <h3 className="text-primary text-xl font-bold mb-4">
+            <div className="rounded-2xl bg-[#0d1117] border border-white/10 p-7">
+              <h3 className="text-white text-xl font-bold mb-4">
                 {t("pricingPage.noteTitle")}
               </h3>
               <ul className="space-y-3">
                 {notes.map((note, i) => (
-                  <li key={i} className="flex items-start gap-3 text-gray-700">
+                  <li key={i} className="flex items-start gap-3 text-white/70">
                     <span className="mt-1 h-2 w-2 rounded-full bg-third flex-shrink-0" />
                     <span>{note}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl bg-primary text-white p-7">
+            <div className="rounded-2xl bg-gradient-to-br from-third/20 to-third-dark/30 border border-third/30 p-7">
               <h3 className="text-xl font-bold mb-3 text-third">
                 {t("pricingPage.oversizeTitle")}
               </h3>
-              <p className="text-gray-200 leading-relaxed">
+              <p className="text-white/75 leading-relaxed">
                 {t("pricingPage.oversizeText")}
               </p>
             </div>
           </div>
-          <p className="max-w-5xl mx-auto text-xs text-gray-400 mt-6 text-center">
+          <p className="max-w-5xl mx-auto text-xs text-white/30 mt-6 text-center">
             {t("pricingPage.finePrint")}
           </p>
         </section>
 
         {/* Pricing FAQ */}
-        <section className="px-6 sm:px-8 pb-16 bg-gray-50 pt-14">
+        <section className="px-6 sm:px-8 pb-16 bg-[#0a0f14] pt-14 border-t border-white/[0.07]">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8">
               {t("pricingPage.faqTitle")}
             </h2>
             <div className="space-y-4">
               {faq.map((item, i) => (
                 <details
                   key={i}
-                  className="group rounded-xl bg-white border border-gray-200 p-5"
+                  className="group rounded-xl bg-[#0d1117] border border-white/10 p-5 hover:border-third/30 transition"
                 >
-                  <summary className="flex cursor-pointer items-center justify-between font-semibold text-primary list-none">
+                  <summary className="flex cursor-pointer items-center justify-between font-semibold text-white list-none">
                     {item.question}
                     <span className="ml-4 text-third transition-transform group-open:rotate-45 text-2xl leading-none">
                       +
                     </span>
                   </summary>
-                  <p className="mt-3 text-gray-600 leading-relaxed">
+                  <p className="mt-3 text-white/60 leading-relaxed">
                     {item.answer}
                   </p>
                 </details>

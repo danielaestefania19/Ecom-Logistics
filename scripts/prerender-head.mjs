@@ -102,6 +102,13 @@ async function main() {
         buildFaqSchema(en.pricingPage?.faq),
       ].filter(Boolean),
     },
+    {
+      path: "/blog",
+      title: "Blog | FBA Prep, 3PL & Amazon Logistics | Ecom Logistics",
+      description:
+        "Ecom Logistics blog: guides and news on Amazon FBA prep, 3PL fulfillment, TikTok Shop and freight to Amazon warehouses from Hayward, CA.",
+      schema: localBusinessSchema,
+    },
   ];
 
   const indexPath = join(dist, "index.html");
