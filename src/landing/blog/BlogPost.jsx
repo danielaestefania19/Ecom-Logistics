@@ -10,12 +10,37 @@ import Footer from "../home/Footer";
 import { categoryLabel } from "./blogCategories";
 import { fetchPostBySlug, localized, postSlug } from "./blogApi";
 
+// Slugify heading text into a stable anchor id so the in-post table of
+// contents can jump to each section. Mirrors the rule the blog-writer skill
+// uses to build the TOC links: lowercase, strip accents, drop punctuation,
+// spaces → hyphens.
+const slugifyHeading = (children) => {
+  const text = React.Children.toArray(children)
+    .map((c) => (typeof c === "string" ? c : c?.props?.children ?? ""))
+    .join("");
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+};
+
 // Markdown → styled elements on the dark theme. Kept readable: generous spacing,
 // teal links/accents, no decorative noise.
 const mdComponents = {
   h1: (p) => <h1 className="mt-10 mb-4 text-3xl font-bold text-white" {...p} />,
-  h2: (p) => <h2 className="mt-10 mb-4 text-2xl font-bold text-white" {...p} />,
-  h3: (p) => <h3 className="mt-8 mb-3 text-xl font-bold text-white" {...p} />,
+  h2: ({ children, ...p }) => (
+    <h2 id={slugifyHeading(children)} className="mt-10 mb-4 scroll-mt-24 text-2xl font-bold text-white" {...p}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...p }) => (
+    <h3 id={slugifyHeading(children)} className="mt-8 mb-3 scroll-mt-24 text-xl font-bold text-white" {...p}>
+      {children}
+    </h3>
+  ),
   p: (p) => <p className="mb-5 leading-relaxed text-gray-200" {...p} />,
   ul: (p) => <ul className="mb-5 ml-5 list-disc space-y-2 text-gray-200 marker:text-third" {...p} />,
   ol: (p) => <ol className="mb-5 ml-5 list-decimal space-y-2 text-gray-200 marker:text-third" {...p} />,
