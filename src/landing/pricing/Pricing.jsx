@@ -77,28 +77,28 @@ const Pricing = () => {
       <SectionHeader section={section} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {section.rows.map((row, ri) => (
-          <div key={ri} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-third/40 transition">
-            <p className="font-semibold text-primary mb-4">{row.label[lang]}</p>
+          <div key={ri} className="rounded-2xl border border-white/10 bg-[#0d1117] p-5 hover:border-third/40 transition">
+            <p className="font-semibold text-white mb-4">{row.label[lang]}</p>
             <div className="grid grid-cols-3 gap-2">
               {tiers.map((tier, ti) => {
                 const value = tier.discount ? money(row.price * (1 - tier.discount)) : money(row.price);
                 const best = ti === 2;
                 return (
-                  <div key={ti} className={`rounded-xl px-2 py-3 text-center ${best ? "bg-third text-white shadow-sm" : "bg-gray-50"}`}>
-                    <p className={`text-[10px] uppercase tracking-wide font-semibold ${best ? "text-white/80" : "text-gray-400"}`}>
+                  <div key={ti} className={`rounded-xl px-2 py-3 text-center ${best ? "bg-third text-white shadow-sm" : "bg-white/5"}`}>
+                    <p className={`text-[10px] uppercase tracking-wide font-semibold ${best ? "text-white/80" : "text-white/40"}`}>
                       {tier.badge}
                     </p>
-                    <p className={`text-lg font-bold leading-tight mt-0.5 ${best ? "text-white" : "text-primary"}`}>
+                    <p className={`text-lg font-bold leading-tight mt-0.5 ${best ? "text-white" : "text-white"}`}>
                       {value}
                     </p>
-                    <p className={`text-[10px] mt-0.5 ${best ? "text-white/70" : "text-gray-400"}`}>
+                    <p className={`text-[10px] mt-0.5 ${best ? "text-white/70" : "text-white/35"}`}>
                       {tier.label}
                     </p>
                   </div>
                 );
               })}
             </div>
-            <p className="text-[11px] text-gray-400 mt-3">
+            <p className="text-[11px] text-white/35 mt-3">
               {t("pricingPage.perUnitNote")} ({section.unit[lang]})
             </p>
           </div>
@@ -124,9 +124,9 @@ const Pricing = () => {
         {section.rows.map((row, ri) => {
           const isNum = typeof row.price === "number";
           return (
-            <div key={ri} className="rounded-xl border border-gray-200 bg-white px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition">
-              <span className="text-gray-700 font-medium">{row.label[lang]}</span>
-              <span className="text-primary font-bold text-lg whitespace-nowrap">
+            <div key={ri} className="rounded-xl border border-white/10 bg-[#0d1117] px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition">
+              <span className="text-white/75 font-medium">{row.label[lang]}</span>
+              <span className="text-white font-bold text-lg whitespace-nowrap">
                 {isNum ? `${money(row.price)}${row.suffix?.[lang] ?? ""}` : row.price[lang]}
               </span>
             </div>

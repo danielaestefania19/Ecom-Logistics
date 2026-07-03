@@ -8,7 +8,7 @@ const AmazonBanner = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="bg-gradient-to-r from-primary via-[#0d1b2a] to-[#21414F] border-b border-third/30 px-6 sm:px-8 py-7 sm:py-8">
+    <section className="bg-primary border-b border-third/30 px-6 sm:px-8 py-7 sm:py-8">
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
         {/* Badge */}
         <span className="flex-shrink-0 inline-flex items-center gap-1.5 bg-third text-white text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
