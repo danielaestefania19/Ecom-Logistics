@@ -1,7 +1,7 @@
 // ─── UPDATE THESE URLS with your real Asana form links ───────────────────────
 const ASANA_FORMS = {
   fbaPrep: {
-    url: "https://form.asana.com/?k=REPLACE_WITH_FBA_PREP_FORM_URL",
+    url: "https://form.asana.com/?k=FW4fsAi_3Y7_rixXFdnVNg&d=1210257610652957",
     title: "FBA Prep",
     subtitle: "Amazon FBA preparation & labeling",
     description:
@@ -15,7 +15,7 @@ const ASANA_FORMS = {
     badge: "FBA",
   },
   fulfillment: {
-    url: "https://form.asana.com/?k=REPLACE_WITH_3PL_FULFILLMENT_FORM_URL",
+    url: "https://form.asana.com/?k=nxer9v8txHc7yV4FbS8KdQ&d=1210257610652957",
     title: "3PL Fulfillment",
     subtitle: "Pick, pack & ship orders",
     description:
@@ -29,7 +29,7 @@ const ASANA_FORMS = {
     badge: "3PL",
   },
   freight: {
-    url: "https://form.asana.com/?k=REPLACE_WITH_FREIGHT_FORM_URL",
+    url: "https://form.asana.com/?k=tqtFuAjToOMH6tIoK9tnOw&d=1210257610652957",
     title: "Amazon Freight",
     subtitle: "LTL & FTL shipments to Amazon FC",
     description:
