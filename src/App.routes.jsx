@@ -16,6 +16,7 @@ import NotFound      from "./landing/NotFound.jsx";
 import { AuthProvider } from "./portal/AuthContext.jsx";
 import ProtectedRoute   from "./portal/ProtectedRoute.jsx";
 import Login            from "./portal/pages/Login.jsx";
+import SetPassword      from "./portal/pages/SetPassword.jsx";
 import PortalLayout     from "./portal/components/PortalLayout.jsx";
 import ServiceRequest   from "./portal/pages/ServiceRequest.jsx";
 import Orders           from "./portal/pages/Orders.jsx";
@@ -61,7 +62,8 @@ function App() {
         </Route>
 
         {/* ── Client portal ── */}
-        <Route path="/portal/login"    element={<Login />} />
+        <Route path="/portal/login"       element={<Login />} />
+        <Route path="/portal/set-password" element={<SetPassword />} />
         <Route path="/portal"          element={<Navigate to="/portal/services" replace />} />
         <Route path="/portal/services" element={<PortalPages Page={ServiceRequest} />} />
         <Route path="/portal/orders"   element={<PortalPages Page={Orders} />} />
