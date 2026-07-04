@@ -20,6 +20,7 @@ import PortalLayout     from "./portal/components/PortalLayout.jsx";
 import ServiceRequest   from "./portal/pages/ServiceRequest.jsx";
 import Orders           from "./portal/pages/Orders.jsx";
 import Billing          from "./portal/pages/Billing.jsx";
+import Admin            from "./portal/pages/Admin.jsx";
 
 // Layout wrapper that provides i18n to all landing pages
 const LandingLayout = () => (
@@ -65,6 +66,7 @@ function App() {
         <Route path="/portal/services" element={<PortalPages Page={ServiceRequest} />} />
         <Route path="/portal/orders"   element={<PortalPages Page={Orders} />} />
         <Route path="/portal/billing"  element={<PortalPages Page={Billing} />} />
+        <Route path="/portal/admin"   element={<PortalPages Page={Admin} />} />
 
         {/* ── 404 ── */}
         <Route path="*" element={<NotFound />} />

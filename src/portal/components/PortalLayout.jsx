@@ -34,6 +34,17 @@ const NAV = [
   },
 ];
 
+const ADMIN_NAV = {
+  to: "/portal/admin",
+  label: "Clients",
+  icon: (
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+};
+
 const PortalLayout = ({ children }) => {
   const { user, clientProfile, signOut } = useAuth();
   const navigate  = useNavigate();
@@ -76,6 +87,29 @@ const PortalLayout = ({ children }) => {
             {item.label}
           </NavLink>
         ))}
+
+        {/* Admin-only link */}
+        {clientProfile?.is_admin && (
+          <>
+            <div className="pt-3 pb-1 px-4">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/25">Admin</span>
+            </div>
+            <NavLink
+              to={ADMIN_NAV.to}
+              onClick={() => setMobileOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition duration-150 ${
+                  isActive
+                    ? "bg-third text-white"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`
+              }
+            >
+              {ADMIN_NAV.icon}
+              {ADMIN_NAV.label}
+            </NavLink>
+          </>
+        )}
       </nav>
 
       {/* User info + logout */}
