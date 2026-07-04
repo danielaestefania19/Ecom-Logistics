@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
 
 // ─── Stage config ──────────────────────────────────────────────────────────────
@@ -213,11 +212,20 @@ const Orders = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error: fnError } = await supabase.functions.invoke("asana-orders", {
-        headers: { Authorization: `Bearer ${session?.access_token}` },
+      const supabaseUrl  = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseAnon = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      const res = await fetch(`${supabaseUrl}/functions/v1/asana-orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+          "apikey": supabaseAnon,
+        },
       });
 
-      if (fnError) throw new Error(fnError.message || "Edge function error");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
       if (data?.error) throw new Error(data.error);
 
       const tasks = data?.orders ?? [];
