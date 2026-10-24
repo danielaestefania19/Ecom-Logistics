@@ -107,14 +107,16 @@ function EditModal({ client, onClose, onSaved }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error: err } = await supabase.from("clients").update({
+    const { data, error: err } = await supabase.from("clients").update({
       full_name: form.full_name || null,
       company: form.company || null,
       asana_project_id: form.asana_project_id || null,
       stripe_customer_id: form.stripe_customer_id || null,
-    }).eq("id", client.id);
+    }).eq("id", client.id).select("id");
     setLoading(false);
     if (err) { setError(err.message); return; }
+    // RLS-blocked updates return no error and zero rows.
+    if (!data?.length) { setError("Changes were not saved (permission denied)."); return; }
     onSaved();
     onClose();
   };
@@ -205,31 +207,22 @@ function ClientRow({ client, onEdit }) {
 
 // ─── Main Admin component ───────────────────────────────────────────────────────
 const Admin = () => {
-  const { session, clientProfile } = useAuth();
+  const { session } = useAuth();
   const [clients, setClients]     = useState([]);
   const [loading, setLoading]     = useState(true);
+  const [listError, setListError] = useState(null);
   const [editTarget, setEditTarget] = useState(null);
-
-  // Guard: non-admins see a forbidden message
-  if (clientProfile && !clientProfile.is_admin) {
-    return (
-      <div className="text-center py-20">
-        <p className="text-primary font-semibold">Access denied</p>
-        <p className="text-gray-400 text-sm mt-1">This page is for admins only.</p>
-      </div>
-    );
-  }
 
   const fetchClients = useCallback(async () => {
     setLoading(true);
-    // Join with auth.users to get email — use a view or RPC
-    // For simplicity we fetch clients + look up emails via a secure RPC
+    setListError(null);
     const { data, error } = await supabase
       .from("clients")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (!error) setClients(data ?? []);
+    if (error) setListError(error.message);
+    else setClients(data ?? []);
     setLoading(false);
   }, []);
 
@@ -270,7 +263,11 @@ const Admin = () => {
           <div className="px-5 py-8 text-center text-gray-400 text-sm animate-pulse">Loading clients…</div>
         )}
 
-        {!loading && clients.length === 0 && (
+        {!loading && listError && (
+          <div className="px-5 py-8 text-center text-red-600 text-sm">Could not load clients: {listError}</div>
+        )}
+
+        {!loading && !listError && clients.length === 0 && (
           <div className="px-5 py-8 text-center text-gray-400 text-sm">No clients yet. Send your first invitation above.</div>
         )}
 

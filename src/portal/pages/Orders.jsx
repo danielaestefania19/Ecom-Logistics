@@ -27,10 +27,8 @@ const STAGE_DOT = {
 function parseOrder(task) {
   const fields = task.fields || {};
 
-  // Derive the status to display — prefer "Estado del Cliente", fall back to section name
   const rawStatus =
     fields["Estado del Cliente"] ||
-    fields["Type"] ||
     task.currentSection ||
     "Received";
 

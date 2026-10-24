@@ -1,33 +1,33 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
+import { useAuth } from "../AuthContext";
+
+// Read before supabase-js consumes the hash, e.g. #error=access_denied&error_code=otp_expired
+const hashError = (() => {
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  return params.get("error_description") || params.get("error");
+})();
+
+const LINK_TIMEOUT_MS = 8000;
 
 const SetPassword = () => {
   const navigate = useNavigate();
+  const { session } = useAuth();
   const [password, setPassword]       = useState("");
   const [confirm, setConfirm]         = useState("");
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState(null);
-  const [sessionReady, setSessionReady] = useState(false);
+  const [timedOut, setTimedOut]       = useState(false);
 
-  // Supabase automatically parses the #access_token from the URL hash.
-  // Wait for the auth listener to confirm the session is set.
+  const sessionReady = !!session;
+  const linkInvalid = !sessionReady && (hashError || timedOut);
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setSessionReady(true);
-      } else {
-        // Listen for the token exchange triggered by the URL hash
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-          if (session) {
-            setSessionReady(true);
-            subscription.unsubscribe();
-          }
-        });
-        return () => subscription.unsubscribe();
-      }
-    });
-  }, []);
+    if (sessionReady) return;
+    const t = setTimeout(() => setTimedOut(true), LINK_TIMEOUT_MS);
+    return () => clearTimeout(t);
+  }, [sessionReady]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +72,22 @@ const SetPassword = () => {
             Choose a secure password to access your client portal.
           </p>
 
-          {!sessionReady ? (
+          {linkInvalid ? (
+            <div className="text-center py-4">
+              <p className="text-red-600 text-sm font-medium mb-2">
+                This link is invalid or has expired.
+              </p>
+              <p className="text-gray-500 text-sm mb-5">
+                Request a new link and use it within 24 hours.
+              </p>
+              <Link
+                to="/portal/login?reset=1"
+                className="inline-block bg-primary hover:bg-third text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition"
+              >
+                Send me a new link
+              </Link>
+            </div>
+          ) : !sessionReady ? (
             <div className="text-center py-6">
               <div className="inline-block w-6 h-6 border-2 border-third border-t-transparent rounded-full animate-spin mb-3" />
               <p className="text-gray-400 text-sm">Verifying your invitation…</p>

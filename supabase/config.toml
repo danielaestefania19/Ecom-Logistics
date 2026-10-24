@@ -1,0 +1,11 @@
+project_id = "sootmcdjtrjrkmrasjhe"
+
+# These functions validate the caller's JWT themselves (see each index.ts).
+[functions.asana-orders]
+verify_jwt = false
+
+[functions.admin-invite-user]
+verify_jwt = false
+
+[functions.stripe-invoices]
+verify_jwt = true

@@ -3,51 +3,69 @@ import { supabase } from "../lib/supabaseClient";
 
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser]               = useState(null);
-  const [session, setSession]         = useState(null);
-  const [clientProfile, setClientProfile] = useState(null);
-  const [loading, setLoading]         = useState(true);
+const roleOf = (profile) => profile?.role ?? (profile?.is_admin ? "admin" : "client");
 
-  const loadProfile = async (userId) => {
-    const { data } = await supabase
+export const AuthProvider = ({ children }) => {
+  const [session, setSession]             = useState(null);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [clientProfile, setClientProfile] = useState(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+
+  const user = session?.user ?? null;
+  const userId = user?.id ?? null;
+
+  useEffect(() => {
+    // onAuthStateChange fires INITIAL_SESSION on subscribe, so getSession() isn't needed.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      setSessionLoading(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      setClientProfile(null);
+      return;
+    }
+    let cancelled = false;
+    setProfileLoading(true);
+    supabase
       .from("clients")
       .select("*")
       .eq("id", userId)
-      .single();
-    setClientProfile(data ?? null);
-  };
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) loadProfile(session.user.id);
-      setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) loadProfile(session.user.id);
-        else setClientProfile(null);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) console.error("Failed to load client profile:", error.message);
+        setClientProfile(data ?? null);
+        setProfileLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [userId]);
 
   const signIn = (email, password) =>
     supabase.auth.signInWithPassword({ email, password });
 
   const signOut = () => supabase.auth.signOut();
 
-  return (
-    <AuthContext.Provider value={{ user, session, clientProfile, loading, signIn, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const sendPasswordReset = (email) =>
+    supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/portal/set-password`,
+    });
+
+  const value = {
+    user,
+    session,
+    clientProfile,
+    role: clientProfile ? roleOf(clientProfile) : null,
+    loading: sessionLoading || profileLoading,
+    signIn,
+    signOut,
+    sendPasswordReset,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

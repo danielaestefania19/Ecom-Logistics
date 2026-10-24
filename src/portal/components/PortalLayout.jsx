@@ -46,7 +46,7 @@ const ADMIN_NAV = {
 };
 
 const PortalLayout = ({ children }) => {
-  const { user, clientProfile, signOut } = useAuth();
+  const { user, clientProfile, role, signOut } = useAuth();
   const navigate  = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -89,7 +89,7 @@ const PortalLayout = ({ children }) => {
         ))}
 
         {/* Admin-only link */}
-        {clientProfile?.is_admin && (
+        {role === "admin" && (
           <>
             <div className="pt-3 pb-1 px-4">
               <span className="text-[10px] font-bold uppercase tracking-widest text-white/25">Admin</span>

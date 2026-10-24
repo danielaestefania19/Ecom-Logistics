@@ -31,8 +31,8 @@ const LandingLayout = () => (
 );
 
 // Layout wrapper for protected portal pages
-const PortalPages = ({ Page }) => (
-  <ProtectedRoute>
+const PortalPages = ({ Page, roles }) => (
+  <ProtectedRoute roles={roles}>
     <PortalLayout>
       <Page />
     </PortalLayout>
@@ -68,7 +68,7 @@ function App() {
         <Route path="/portal/services" element={<PortalPages Page={ServiceRequest} />} />
         <Route path="/portal/orders"   element={<PortalPages Page={Orders} />} />
         <Route path="/portal/billing"  element={<PortalPages Page={Billing} />} />
-        <Route path="/portal/admin"   element={<PortalPages Page={Admin} />} />
+        <Route path="/portal/admin"    element={<PortalPages Page={Admin} roles={["admin"]} />} />
 
         {/* ── 404 ── */}
         <Route path="*" element={<NotFound />} />
