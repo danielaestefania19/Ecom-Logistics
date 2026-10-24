@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
+import { useT } from "../i18n";
 
 // Read before supabase-js consumes the hash, e.g. #error=access_denied&error_code=otp_expired
 const hashError = (() => {
@@ -14,6 +15,7 @@ const LINK_TIMEOUT_MS = 8000;
 const SetPassword = () => {
   const navigate = useNavigate();
   const { session } = useAuth();
+  const { t } = useT();
   const [password, setPassword]       = useState("");
   const [confirm, setConfirm]         = useState("");
   const [loading, setLoading]         = useState(false);
@@ -34,11 +36,11 @@ const SetPassword = () => {
     setError(null);
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      setError(t("setPassword.errors.tooShort"));
       return;
     }
     if (password !== confirm) {
-      setError("Passwords don't match.");
+      setError(t("setPassword.errors.mismatch"));
       return;
     }
 
@@ -51,8 +53,7 @@ const SetPassword = () => {
       return;
     }
 
-    // Password set — go to portal
-    navigate("/portal/services", { replace: true });
+    navigate("/portal", { replace: true });
   };
 
   return (
@@ -61,62 +62,52 @@ const SetPassword = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <span className="text-third text-xs font-bold uppercase tracking-widest block mb-1">
-            Client Portal
+            {t("nav.clientPortal")}
           </span>
           <h1 className="text-white text-2xl font-bold">Ecom Logistics</h1>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl px-8 py-8">
-          <h2 className="text-primary font-bold text-xl mb-1">Set your password</h2>
-          <p className="text-gray-500 text-sm mb-6">
-            Choose a secure password to access your client portal.
-          </p>
+          <h2 className="text-primary font-bold text-xl mb-1">{t("setPassword.title")}</h2>
+          <p className="text-gray-500 text-sm mb-6">{t("setPassword.subtitle")}</p>
 
           {linkInvalid ? (
             <div className="text-center py-4">
-              <p className="text-red-600 text-sm font-medium mb-2">
-                This link is invalid or has expired.
-              </p>
-              <p className="text-gray-500 text-sm mb-5">
-                Request a new link and use it within 24 hours.
-              </p>
+              <p className="text-red-600 text-sm font-medium mb-2">{t("setPassword.invalidLink")}</p>
+              <p className="text-gray-500 text-sm mb-5">{t("setPassword.invalidHint")}</p>
               <Link
                 to="/portal/login?reset=1"
                 className="inline-block bg-primary hover:bg-third text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition"
               >
-                Send me a new link
+                {t("setPassword.newLink")}
               </Link>
             </div>
           ) : !sessionReady ? (
             <div className="text-center py-6">
               <div className="inline-block w-6 h-6 border-2 border-third border-t-transparent rounded-full animate-spin mb-3" />
-              <p className="text-gray-400 text-sm">Verifying your invitation…</p>
+              <p className="text-gray-400 text-sm">{t("setPassword.verifying")}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1">
-                  New Password
-                </label>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">{t("setPassword.newPassword")}</label>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 8 characters"
+                  placeholder={t("setPassword.newPasswordHint")}
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-third/30 focus:border-third transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1">
-                  Confirm Password
-                </label>
+                <label className="block text-xs font-semibold text-gray-500 mb-1">{t("setPassword.confirm")}</label>
                 <input
                   type="password"
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
-                  placeholder="Repeat your password"
+                  placeholder={t("setPassword.confirmHint")}
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-third/30 focus:border-third transition"
                 />
@@ -131,7 +122,7 @@ const SetPassword = () => {
                 disabled={loading || !password || !confirm}
                 className="w-full bg-primary hover:bg-third text-white font-semibold text-sm py-3 rounded-xl transition duration-200 disabled:opacity-50"
               >
-                {loading ? "Saving…" : "Set Password & Enter Portal"}
+                {loading ? t("common.saving") : t("setPassword.submit")}
               </button>
             </form>
           )}

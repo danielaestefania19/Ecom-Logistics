@@ -13,24 +13,36 @@ import BlogPost      from "./landing/blog/BlogPost.jsx";
 import NotFound      from "./landing/NotFound.jsx";
 
 // Client portal
-import { AuthProvider } from "./portal/AuthContext.jsx";
+import { AuthProvider, useAuth } from "./portal/AuthContext.jsx";
+import { PortalI18nProvider } from "./portal/i18n.jsx";
 import ProtectedRoute   from "./portal/ProtectedRoute.jsx";
 import Login            from "./portal/pages/Login.jsx";
 import SetPassword      from "./portal/pages/SetPassword.jsx";
 import PortalLayout     from "./portal/components/PortalLayout.jsx";
 import ServiceRequest   from "./portal/pages/ServiceRequest.jsx";
 import Orders           from "./portal/pages/Orders.jsx";
+import NewOrder         from "./portal/pages/NewOrder.jsx";
+import OrderDetail      from "./portal/pages/OrderDetail.jsx";
 import Billing          from "./portal/pages/Billing.jsx";
 import Admin            from "./portal/pages/Admin.jsx";
+import Board            from "./portal/pages/staff/Board.jsx";
+import Schedule         from "./portal/pages/staff/Schedule.jsx";
+import Arrivals         from "./portal/pages/staff/Arrivals.jsx";
 
-// Layout wrapper that provides i18n to all landing pages
+const STAFF = ["staff", "admin"];
+
 const LandingLayout = () => (
   <LanguageProvider>
     <Outlet />
   </LanguageProvider>
 );
 
-// Layout wrapper for protected portal pages
+const PortalShell = () => (
+  <PortalI18nProvider>
+    <Outlet />
+  </PortalI18nProvider>
+);
+
 const PortalPages = ({ Page, roles }) => (
   <ProtectedRoute roles={roles}>
     <PortalLayout>
@@ -39,16 +51,15 @@ const PortalPages = ({ Page, roles }) => (
   </ProtectedRoute>
 );
 
-/**
- * Main routing configuration.
- * - Landing routes: wrapped in LanguageProvider (EN/ES i18n)
- * - Portal routes (/portal/*): protected by Supabase Auth, no i18n needed
- */
+const PortalHome = () => {
+  const { role } = useAuth();
+  return <Navigate to={STAFF.includes(role) ? "/portal/ops" : "/portal/orders"} replace />;
+};
+
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* ── Landing pages (i18n) ── */}
         <Route element={<LandingLayout />}>
           <Route path="/"                                element={<Navigate to="/home" />} />
           <Route path="/home"                            element={<Home />} />
@@ -61,16 +72,21 @@ function App() {
           <Route path="/blog/:slug"                      element={<BlogPost />} />
         </Route>
 
-        {/* ── Client portal ── */}
-        <Route path="/portal/login"       element={<Login />} />
-        <Route path="/portal/set-password" element={<SetPassword />} />
-        <Route path="/portal"          element={<Navigate to="/portal/services" replace />} />
-        <Route path="/portal/services" element={<PortalPages Page={ServiceRequest} />} />
-        <Route path="/portal/orders"   element={<PortalPages Page={Orders} />} />
-        <Route path="/portal/billing"  element={<PortalPages Page={Billing} />} />
-        <Route path="/portal/admin"    element={<PortalPages Page={Admin} roles={["admin"]} />} />
+        <Route element={<PortalShell />}>
+          <Route path="/portal/login"         element={<Login />} />
+          <Route path="/portal/set-password"  element={<SetPassword />} />
+          <Route path="/portal"               element={<ProtectedRoute><PortalHome /></ProtectedRoute>} />
+          <Route path="/portal/services"      element={<PortalPages Page={ServiceRequest} />} />
+          <Route path="/portal/orders"        element={<PortalPages Page={Orders} />} />
+          <Route path="/portal/orders/new"    element={<PortalPages Page={NewOrder} />} />
+          <Route path="/portal/orders/:id"    element={<PortalPages Page={OrderDetail} />} />
+          <Route path="/portal/billing"       element={<PortalPages Page={Billing} />} />
+          <Route path="/portal/ops"           element={<PortalPages Page={Board} roles={STAFF} />} />
+          <Route path="/portal/ops/arrivals"  element={<PortalPages Page={Arrivals} roles={STAFF} />} />
+          <Route path="/portal/ops/schedule"  element={<PortalPages Page={Schedule} roles={STAFF} />} />
+          <Route path="/portal/admin"         element={<PortalPages Page={Admin} roles={["admin"]} />} />
+        </Route>
 
-        {/* ── 404 ── */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>

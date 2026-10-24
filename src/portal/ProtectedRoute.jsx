@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children, roles }) => {
 
   if (!user) return <Navigate to="/portal/login" replace />;
 
-  if (roles && !roles.includes(role)) return <Navigate to="/portal/services" replace />;
+  if (roles && !roles.includes(role)) return <Navigate to="/portal" replace />;
 
   return children;
 };

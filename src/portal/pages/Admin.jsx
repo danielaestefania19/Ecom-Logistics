@@ -97,7 +97,7 @@ function InviteForm({ session, onSuccess }) {
 
 // ─── Edit client modal ──────────────────────────────────────────────────────────
 function EditModal({ client, onClose, onSaved }) {
-  const [form, setForm]       = useState({ full_name: client.full_name ?? "", company: client.company ?? "", asana_project_id: client.asana_project_id ?? "", stripe_customer_id: client.stripe_customer_id ?? "" });
+  const [form, setForm]       = useState({ full_name: client.full_name ?? "", company: client.company ?? "", role: client.role ?? "client", asana_project_id: client.asana_project_id ?? "", stripe_customer_id: client.stripe_customer_id ?? "" });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState(null);
 
@@ -110,6 +110,7 @@ function EditModal({ client, onClose, onSaved }) {
     const { data, error: err } = await supabase.from("clients").update({
       full_name: form.full_name || null,
       company: form.company || null,
+      role: form.role,
       asana_project_id: form.asana_project_id || null,
       stripe_customer_id: form.stripe_customer_id || null,
     }).eq("id", client.id).select("id");
@@ -140,6 +141,14 @@ function EditModal({ client, onClose, onSaved }) {
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Company</label>
             <input name="company" value={form.company} onChange={handle} className={inputCls} placeholder="Acme LLC" />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 mb-1">Role</label>
+            <select name="role" value={form.role} onChange={handle} className={inputCls}>
+              <option value="client">Client — sees only their own orders</option>
+              <option value="staff">Staff — warehouse / operations</option>
+              <option value="admin">Admin — staff + client management</option>
+            </select>
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Asana Project ID</label>
@@ -178,6 +187,9 @@ function ClientRow({ client, onEdit }) {
       </div>
       <div className="col-span-3 min-w-0">
         <p className="text-sm text-gray-600 truncate">{client.company || <span className="text-gray-300">—</span>}</p>
+        {client.role !== "client" && (
+          <span className="text-[10px] font-bold uppercase tracking-wide text-third">{client.role}</span>
+        )}
       </div>
       <div className="col-span-2 min-w-0">
         {client.asana_project_id

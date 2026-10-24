@@ -46,6 +46,7 @@ export const pricingSections = [
     unit: { en: "/unit", es: "/unidad" },
     rows: [
       {
+        id: "prep_standard",
         label: {
           en: "Basic Prep – Standard (Single FNSKU)",
           es: "Prep Básico – Estándar (FNSKU único)",
@@ -53,6 +54,7 @@ export const pricingSections = [
         price: 0.7,
       },
       {
+        id: "prep_oversize",
         label: {
           en: "Basic Prep – Oversize (Single FNSKU)",
           es: "Prep Básico – Oversize (FNSKU único)",
@@ -60,6 +62,7 @@ export const pricingSections = [
         price: 1.3,
       },
       {
+        id: "prep_polybag",
         label: {
           en: "Basic Prep + Polybag (Standard)",
           es: "Prep Básico + Polybag (Estándar)",
@@ -67,6 +70,7 @@ export const pricingSections = [
         price: 0.95,
       },
       {
+        id: "prep_bubble",
         label: {
           en: "Basic Prep + Bubble Wrap (Max 12 in)",
           es: "Prep Básico + Burbuja (Máx 12 in)",
@@ -74,6 +78,7 @@ export const pricingSections = [
         price: 1.5,
       },
       {
+        id: "prep_bundle",
         label: {
           en: "Bundle (Up to 5 Units / Bundle)",
           es: "Bundle (Hasta 5 Unidades / Bundle)",
@@ -137,10 +142,12 @@ export const pricingSections = [
     },
     rows: [
       {
+        id: "case_receiving",
         label: { en: "Case Receiving Fee", es: "Recepción por Caja" },
         ...flat(3),
       },
       {
+        id: "pallet_receiving",
         label: {
           en: "Pallet Receiving & Outbound",
           es: "Recepción y Salida por Pallet",
@@ -187,10 +194,12 @@ export const pricingSections = [
         ...flat(4, { en: "/box", es: "/caja" }),
       },
       {
+        id: "pallet_standard",
         label: { en: "Standard Pallet (40x48)", es: "Pallet Estándar (40x48)" },
         ...flat(20),
       },
       {
+        id: "pallet_wrap",
         label: { en: "Pallet Wrapping", es: "Emplayado de Pallet" },
         ...flat(20, { en: "/pallet", es: "/pallet" }),
       },
@@ -207,10 +216,12 @@ export const pricingSections = [
     },
     rows: [
       {
+        id: "coupon_insert",
         label: { en: "Promotional Coupon Insert", es: "Inserto de Cupón Promocional" },
         ...flat(0.5, { en: "/unit", es: "/unidad" }),
       },
       {
+        id: "filler",
         label: { en: "Filler / Dunnage", es: "Relleno / Filler" },
         ...flat(0.5, { en: "/unit", es: "/unidad" }),
       },

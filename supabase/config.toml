@@ -9,3 +9,14 @@ verify_jwt = false
 
 [functions.stripe-invoices]
 verify_jwt = true
+
+# Accepts user JWTs and the service-role key (internal calls); checks access itself.
+[functions.asana-sync]
+verify_jwt = false
+
+[functions.tracking-register]
+verify_jwt = true
+
+# Called by EasyPost; authenticated by HMAC signature.
+[functions.tracking-webhook]
+verify_jwt = false
