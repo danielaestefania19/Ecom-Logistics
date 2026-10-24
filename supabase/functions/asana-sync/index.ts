@@ -85,18 +85,14 @@ Deno.serve(async (req: Request) => {
 
     let taskGid = order.asana_task_gid as string | null;
     if (!taskGid) {
-      const task = await asana("POST", "/tasks", {
-        name,
-        notes,
-        completed,
-        memberships: [{ project: cfg.project_gid, section: sectionGid }],
-      });
-      taskGid = task.gid;
+      // Asana requires `projects` on create; the section is set afterwards via addTask.
+      const task = await asana("POST", "/tasks", { name, notes, completed, projects: [cfg.project_gid] });
+      taskGid = task.gid as string;
       await admin.from("orders").update({ asana_task_gid: taskGid }).eq("id", order.id);
     } else {
       await asana("PUT", `/tasks/${taskGid}`, { name, notes, completed });
-      if (sectionGid) await asana("POST", `/sections/${sectionGid}/addTask`, { task: taskGid });
     }
+    if (sectionGid) await asana("POST", `/sections/${sectionGid}/addTask`, { task: taskGid });
 
     return json({ ok: true, task_gid: taskGid });
   } catch (err) {

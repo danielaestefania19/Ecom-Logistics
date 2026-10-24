@@ -167,7 +167,8 @@ const OrderDetail = () => {
 
       <div className="grid lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
-          {isStaff && !closed && (
+          {/* Cancelled orders stay movable so staff can reopen them; only paid is final. */}
+          {isStaff && order.stage !== "paid" && (
             <Card title={t("staff.moveStage")}>
               <StageActions order={order} onChanged={load} />
             </Card>
