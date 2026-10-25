@@ -17,6 +17,17 @@ verify_jwt = false
 [functions.tracking-register]
 verify_jwt = true
 
+# Amazon SP-API connection flow. Start/disconnect resolve the caller themselves (see _shared/auth.ts).
+[functions.amazon-oauth-start]
+verify_jwt = true
+
+[functions.amazon-disconnect]
+verify_jwt = true
+
+# Browser redirect from Seller Central; authenticated by the one-shot `state` nonce.
+[functions.amazon-oauth-callback]
+verify_jwt = false
+
 # Called by EasyPost; authenticated by HMAC signature.
 [functions.tracking-webhook]
 verify_jwt = false

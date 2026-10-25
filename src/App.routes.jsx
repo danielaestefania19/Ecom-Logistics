@@ -33,6 +33,7 @@ import Inventory        from "./portal/pages/Inventory.jsx";
 import Fulfillments     from "./portal/pages/Fulfillments.jsx";
 import NewFulfillment   from "./portal/pages/NewFulfillment.jsx";
 import FulfillmentDetail from "./portal/pages/FulfillmentDetail.jsx";
+import Amazon           from "./portal/pages/Amazon.jsx";
 
 const STAFF = ["staff", "admin"];
 
@@ -90,7 +91,8 @@ function App() {
           <Route path="/portal/fulfillment"   element={<PortalPages Page={Fulfillments} />} />
           <Route path="/portal/fulfillment/new" element={<PortalPages Page={NewFulfillment} roles={STAFF} />} />
           <Route path="/portal/fulfillment/:id" element={<PortalPages Page={FulfillmentDetail} />} />
-          <Route path="/portal/ops/picklist"  element={<PortalPages Page={PickList} roles={STAFF} />} />
+          <Route path="/portal/amazon"        element={<PortalPages Page={Amazon} />} />
+          <Route path="/portal/ops/picklist" element={<PortalPages Page={PickList} roles={STAFF} />} />
           <Route path="/portal/ops"           element={<PortalPages Page={Board} roles={STAFF} />} />
           <Route path="/portal/ops/arrivals"  element={<PortalPages Page={Arrivals} roles={STAFF} />} />
           <Route path="/portal/ops/schedule"  element={<PortalPages Page={Schedule} roles={STAFF} />} />

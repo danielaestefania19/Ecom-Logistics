@@ -21,6 +21,7 @@ const ICONS = {
   stack: icon(<><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="m2 17 10 5 10-5M2 12l10 5 10-5" /></>),
   send: icon(<path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />),
   list: icon(<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />),
+  link: icon(<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />),
 };
 
 const CLIENT_NAV = [
@@ -28,6 +29,7 @@ const CLIENT_NAV = [
   { to: "/portal/orders", key: "nav.myOrders", icon: "box", end: true },
   { to: "/portal/inventory", key: "nav.inventory", icon: "stack", only3pl: true },
   { to: "/portal/fulfillment", key: "nav.fulfillment", icon: "send", only3pl: true, end: true },
+  { to: "/portal/amazon", key: "nav.amazon", icon: "link" },
   { to: "/portal/services", key: "nav.services", icon: "grid" },
   { to: "/portal/billing", key: "nav.billing", icon: "card" },
 ];
@@ -38,6 +40,7 @@ const STAFF_NAV = [
   { to: "/portal/ops/schedule", key: "nav.schedule", icon: "calendar" },
   { to: "/portal/orders", key: "nav.allOrders", icon: "box", end: true },
   { to: "/portal/orders/new", key: "nav.newOrder", icon: "plus" },
+  { to: "/portal/amazon", key: "nav.amazon", icon: "link" },
 ];
 
 const STAFF_3PL_NAV = [

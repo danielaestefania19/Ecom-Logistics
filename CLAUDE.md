@@ -136,6 +136,16 @@ public/
 
 ---
 
+## Client Portal & Amazon SP-API
+
+The portal lives under `/portal/**` (roles `client|staff|admin`, Supabase auth, own i18n in `src/portal/strings.js`). Backend logic runs in Supabase Edge Functions (`supabase/functions/`), not on Railway.
+
+**Amazon SP-API (Phase 1 built: connect a seller store via OAuth):**
+- `amazon-oauth-start` → Seller Central consent URL (staff can generate it for a client); `amazon-oauth-callback` exchanges the code; `amazon-disconnect` drops the token.
+- Refresh tokens are stored in Supabase Vault via service-role-only RPCs (`amazon_store_refresh_token`, etc.); `_shared/spapi.ts` handles LWA tokens and `spapiFetch()` (no AWS SigV4 needed).
+- Edge function secrets: `LWA_CLIENT_ID`, `LWA_CLIENT_SECRET`, `SPAPI_APPLICATION_ID`; set `SPAPI_APP_PUBLISHED=true` once the app is public (until then the consent URL uses `version=beta`).
+- Planned next: orders/inventory sync, FBA Inbound v2024-03-20 wizard, labels and tracking.
+
 ## Environment Variables (Railway)
 
 ```
