@@ -46,7 +46,10 @@ const PickList = () => {
         map.set(p.id, row);
       }
     }
-    return [...map.values()].sort((a, b) => (a.location || "~").localeCompare(b.location || "~") || a.sku.localeCompare(b.sku));
+    return [...map.values()].sort((a, b) => {
+      if (!a.location !== !b.location) return a.location ? -1 : 1;
+      return (a.location ?? "").localeCompare(b.location ?? "", undefined, { numeric: true }) || a.sku.localeCompare(b.sku);
+    });
   }, [orders]);
 
   const pending = orders.filter((o) => o.status === "pending");

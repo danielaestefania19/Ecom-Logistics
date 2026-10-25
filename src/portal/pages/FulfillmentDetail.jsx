@@ -148,7 +148,8 @@ function LabelFiles({ f, canUpload, onChanged }) {
 
   return (
     <div className="space-y-3">
-      {files.length === 0 && <p className="text-sm text-amber-800 bg-amber-50 rounded-lg px-3 py-2">{t("fulfillment.labelMissing")}</p>}
+      {files.length === 0 && canUpload && <p className="text-sm text-amber-800 bg-amber-50 rounded-lg px-3 py-2">{t("fulfillment.labelMissing")}</p>}
+      {files.length === 0 && !canUpload && <p className="text-sm text-gray-400">{t("files.none")}</p>}
       <ul className="divide-y divide-gray-100">
         {files.map((file) => (
           <li key={file.id} className="py-2 flex items-center justify-between gap-3">

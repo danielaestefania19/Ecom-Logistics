@@ -72,11 +72,25 @@ export const TrackingBadge = ({ status }) => {
   );
 };
 
+// Messages raised by our Postgres functions, shown in the viewer's language.
+const DB_ERRORS = {
+  "count every SKU before adding it to inventory": "dbErrors.countFirst",
+  "add the shipping label or a tracking number before shipping": "dbErrors.labelFirst",
+  "not enough stock to release this order": "dbErrors.noStockRelease",
+  "stock cannot go below zero": "dbErrors.negativeStock",
+  "a reason is required": "dbErrors.reasonRequired",
+  "staff only": "dbErrors.staffOnly",
+  "this client is not set up for 3PL": "dbErrors.not3pl",
+  "choose a 3PL client": "dbErrors.choose3pl",
+  "at least one SKU line is required": "dbErrors.noLines",
+};
+
 export const ErrorBanner = ({ message, onRetry }) => {
   const { t } = useT();
+  const key = DB_ERRORS[message] ?? (/^cannot move from /.test(message ?? "") ? "dbErrors.badTransition" : null);
   return (
     <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-3 text-sm">
-      <p className="flex-1 text-red-700">{message}</p>
+      <p className="flex-1 text-red-700">{key ? t(key) : message}</p>
       {onRetry && (
         <button onClick={onRetry} className="text-xs font-semibold text-red-600 underline underline-offset-2">
           {t("common.retry")}
