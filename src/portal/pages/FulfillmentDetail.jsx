@@ -14,6 +14,7 @@ import {
   uploadFulfillmentFile,
 } from "../lib/orders";
 import { btnPrimary, btnSecondary, Card, ErrorBanner, Field, FulfillmentBadge, inputCls, PageHeader, Spinner } from "../components/ui";
+import PickVerify from "../components/scan/PickVerify";
 
 const NOTE_KEYS = new Set(["order_created", "insufficient_stock"]);
 
@@ -186,7 +187,7 @@ const FulfillmentDetail = () => {
     const { data, error: err } = await supabase
       .from("fulfillment_orders")
       .select(`*, clients(company, full_name, email),
-               fulfillment_lines(id, qty, products(sku, name, location, fragile)),
+               fulfillment_lines(id, qty, products(id, sku, name, location, fragile, barcode)),
                fulfillment_files(*), fulfillment_events(*)`)
       .eq("id", id)
       .maybeSingle();
@@ -230,6 +231,11 @@ const FulfillmentDetail = () => {
           {isStaff && open && (
             <Card title={t("fulfillment.moveStatus")}>
               <StatusActions f={f} onChanged={load} />
+            </Card>
+          )}
+          {isStaff && (f.status === "picking" || f.status === "packed") && (
+            <Card title={t("scan.pickTitle")}>
+              <PickVerify f={f} />
             </Card>
           )}
           <Card title={t("fulfillment.productsCount", { n: units })}>

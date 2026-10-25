@@ -6,7 +6,7 @@ import { btnPrimary, ErrorBanner } from "../ui";
 const toState = (items) =>
   Object.fromEntries(items.map((i) => [i.id, { received: i.received_qty ?? "", damaged: i.damaged_qty ?? 0 }]));
 
-const ItemsTable = ({ items, editable, onSaved, showPrep = true }) => {
+const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false }) => {
   const { t } = useT();
   const [counts, setCounts] = useState(() => toState(items));
   const [saving, setSaving] = useState(false);
@@ -66,6 +66,7 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true }) => {
               <th className="py-2 pr-3 font-semibold text-right">{t("item.expected")}</th>
               <th className="py-2 pr-3 font-semibold text-right">{t("item.received")}</th>
               <th className="py-2 font-semibold text-right">{t("item.damaged")}</th>
+              {showPrepped && <th className="py-2 pl-3 font-semibold text-right">{t("item.prepped")}</th>}
             </tr>
           </thead>
           <tbody>
@@ -108,6 +109,11 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true }) => {
                       <span className={i.damaged_qty ? "text-red-600 font-semibold" : ""}>{i.damaged_qty || "—"}</span>
                     )}
                   </td>
+                  {showPrepped && (
+                    <td className={`py-3 pl-3 text-right font-semibold ${i.prepped_qty >= i.expected_qty ? "text-green-700" : "text-amber-700"}`}>
+                      {i.prepped_qty}/{i.expected_qty}
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -120,6 +126,7 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true }) => {
                 {counted ? totals.received : "—"}
               </td>
               <td className="py-3 text-right">{totals.damaged || "—"}</td>
+              {showPrepped && <td className="py-3 pl-3 text-right">{items.reduce((n, i) => n + i.prepped_qty, 0)}</td>}
             </tr>
           </tfoot>
         </table>

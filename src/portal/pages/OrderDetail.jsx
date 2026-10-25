@@ -13,6 +13,8 @@ import ItemsTable from "../components/order/ItemsTable";
 import TrackingPanel from "../components/order/TrackingPanel";
 import FilesPanel from "../components/order/FilesPanel";
 import { Checklist, NoteForm, OrderAdminFields, StageActions } from "../components/order/StaffPanel";
+import ScanPanel from "../components/order/ScanPanel";
+import { scanModeFor } from "../lib/scan";
 
 const PROGRESS_INDEX = {
   awaiting_inventory: 0,
@@ -188,8 +190,19 @@ const OrderDetail = () => {
               <StageActions order={order} onChanged={load} />
             </Card>
           )}
+          {isStaff && scanModeFor(order) && (
+            <Card title={t("scan.title")}>
+              <ScanPanel order={order} onChanged={load} />
+            </Card>
+          )}
           <Card title={t("orderDetail.products")}>
-            <ItemsTable items={order.order_items} editable={isStaff && RECEIVING_STAGES.has(order.stage)} onSaved={load} showPrep={order.type !== "3pl"} />
+            <ItemsTable
+              items={order.order_items}
+              editable={isStaff && RECEIVING_STAGES.has(order.stage)}
+              onSaved={load}
+              showPrep={order.type !== "3pl"}
+              showPrepped={order.type === "prep" && ["scheduled", "prepped", "shipped", "in_storage"].includes(order.stage)}
+            />
           </Card>
           <Card title={t("orderDetail.tracking")}>
             <TrackingPanel
