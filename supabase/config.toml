@@ -24,6 +24,10 @@ verify_jwt = false
 [functions.convert-lead]
 verify_jwt = true
 
+# Called by database triggers through pg_net; authenticated by the shared notify_hook_secret.
+[functions.notify]
+verify_jwt = false
+
 # Called by EasyPost; authenticated by HMAC signature.
 [functions.tracking-webhook]
 verify_jwt = false

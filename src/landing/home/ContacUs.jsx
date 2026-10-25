@@ -18,7 +18,6 @@ import { getAllStates, getCitiesByState } from "../i18n/citiesAndSates";
 
 const LEAD_INTAKE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/lead-intake`;
 const CHANNELS = ["amazon", "shopify", "tiktok", "walmart", "other"];
-const CATEGORIES = ["health_beauty", "supplements", "apparel", "home_kitchen", "electronics", "toys", "sports", "pet", "other"];
 
 const EMPTY_FORM = {
   firstName: "",
@@ -36,8 +35,6 @@ const EMPTY_FORM = {
   city: "",
   heardFrom: "",
   salesChannels: [],
-  sellerIdOrStore: "",
-  productCategory: "",
   hazmat: false,
   fragile: false,
   jobTitle: "",
@@ -474,31 +471,6 @@ const ContactUs = () => {
                 <Checkbox key={c} value={c}>{t(`channel_${c}`)}</Checkbox>
               ))}
             </CheckboxGroup>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <Input
-              name="sellerIdOrStore"
-              value={formData.sellerIdOrStore}
-              onChange={handleChange}
-              placeholder={t("formSellerId")}
-              variant="bordered"
-              color="primary"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <Select
-              selectedKeys={formData.productCategory ? [formData.productCategory] : []}
-              onSelectionChange={(keys) => handleSelectChange("productCategory", [...keys][0] ?? "")}
-              placeholder={t("formProductCategory")}
-              variant="bordered"
-              color="primary"
-            >
-              {CATEGORIES.map((c) => (
-                <SelectItem key={c}>{t(`category_${c}`)}</SelectItem>
-              ))}
-            </Select>
           </div>
 
           <div className="md:col-span-2 flex flex-wrap gap-6">
