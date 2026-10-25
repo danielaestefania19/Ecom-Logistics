@@ -8,31 +8,48 @@ import {
   AutocompleteItem,
   Button,
   Spinner,
+  Checkbox,
+  CheckboxGroup,
 } from "@heroui/react";
 import { toast } from "react-toastify";
 import check from "../../assets/check.png";
 import { useLanguage } from "../i18n/LanguageContext";
 import { getAllStates, getCitiesByState } from "../i18n/citiesAndSates";
 
+const LEAD_INTAKE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/lead-intake`;
+const CHANNELS = ["amazon", "shopify", "tiktok", "walmart", "other"];
+const CATEGORIES = ["health_beauty", "supplements", "apparel", "home_kitchen", "electronics", "toys", "sports", "pet", "other"];
+
+const EMPTY_FORM = {
+  firstName: "",
+  lastName: "",
+  companyName: "",
+  companyWebsite: "",
+  email: "",
+  phone: "",
+  serviceType: "",
+  unitsPerMonth: "",
+  shipmentsPerMonth: "",
+  message: "",
+  language: "",
+  state: "",
+  city: "",
+  heardFrom: "",
+  salesChannels: [],
+  sellerIdOrStore: "",
+  productCategory: "",
+  hazmat: false,
+  fragile: false,
+  jobTitle: "",
+  whatsapp: "",
+  preferredContact: "",
+  faxNumber: "",
+};
+
 const ContactUs = () => {
   const { t } = useLanguage();
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    companyName: "",
-    companyWebsite: "",
-    email: "",
-    phone: "",
-    serviceType: "",
-    unitsPerMonth: "",
-    shipmentsPerMonth: "",
-    message: "",
-    language: "",
-    state: "",
-    city: "",
-    heardFrom: "",
-  });
+  const [formData, setFormData] = useState(EMPTY_FORM);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -144,14 +161,11 @@ const ContactUs = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(
-        "https://function-bun-production-ba48.up.railway.app/api/send-email",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(LEAD_INTAKE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         toast.update(toastId, {
@@ -163,22 +177,7 @@ const ContactUs = () => {
           hideProgressBar: true,
           style: { background: "#ffffff", color: "#19203C" },
         });
-        setFormData({
-          firstName: "",
-          lastName: "",
-          companyName: "",
-          companyWebsite: "",
-          email: "",
-          phone: "",
-          serviceType: "",
-          unitsPerMonth: "",
-          shipmentsPerMonth: "",
-          message: "",
-          language: "",
-          state: "",
-          city: "",
-          heardFrom: "",
-        });
+        setFormData(EMPTY_FORM);
         setSelectedState("");
         setCities([]);
       } else {
@@ -459,6 +458,108 @@ const ContactUs = () => {
               <p className="text-red-500 text-sm">{errors.heardFrom}</p>
             )}
           </div>
+
+          {/* Business */}
+          <p className="md:col-span-2 text-sm font-semibold text-primary mt-2">{t("formSectionBusiness")}</p>
+
+          <div className="md:col-span-2 flex flex-col gap-1">
+            <CheckboxGroup
+              label={t("formSalesChannels")}
+              orientation="horizontal"
+              color="primary"
+              value={formData.salesChannels}
+              onValueChange={(v) => handleSelectChange("salesChannels", v)}
+            >
+              {CHANNELS.map((c) => (
+                <Checkbox key={c} value={c}>{t(`channel_${c}`)}</Checkbox>
+              ))}
+            </CheckboxGroup>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Input
+              name="sellerIdOrStore"
+              value={formData.sellerIdOrStore}
+              onChange={handleChange}
+              placeholder={t("formSellerId")}
+              variant="bordered"
+              color="primary"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Select
+              selectedKeys={formData.productCategory ? [formData.productCategory] : []}
+              onSelectionChange={(keys) => handleSelectChange("productCategory", [...keys][0] ?? "")}
+              placeholder={t("formProductCategory")}
+              variant="bordered"
+              color="primary"
+            >
+              {CATEGORIES.map((c) => (
+                <SelectItem key={c}>{t(`category_${c}`)}</SelectItem>
+              ))}
+            </Select>
+          </div>
+
+          <div className="md:col-span-2 flex flex-wrap gap-6">
+            <Checkbox color="primary" isSelected={formData.hazmat} onValueChange={(v) => handleSelectChange("hazmat", v)}>
+              {t("formHazmat")}
+            </Checkbox>
+            <Checkbox color="primary" isSelected={formData.fragile} onValueChange={(v) => handleSelectChange("fragile", v)}>
+              {t("formFragile")}
+            </Checkbox>
+          </div>
+
+          {/* Contact preferences */}
+          <p className="md:col-span-2 text-sm font-semibold text-primary mt-2">{t("formSectionContact")}</p>
+
+          <div className="flex flex-col gap-1">
+            <Input
+              name="jobTitle"
+              value={formData.jobTitle}
+              onChange={handleChange}
+              placeholder={t("formJobTitle")}
+              variant="bordered"
+              color="primary"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <Input
+              name="whatsapp"
+              value={formData.whatsapp}
+              onChange={handleChange}
+              placeholder={t("formWhatsapp")}
+              variant="bordered"
+              color="primary"
+            />
+          </div>
+
+          <div className="md:col-span-2 flex flex-col gap-1">
+            <Select
+              selectedKeys={formData.preferredContact ? [formData.preferredContact] : []}
+              onSelectionChange={(keys) => handleSelectChange("preferredContact", [...keys][0] ?? "")}
+              placeholder={t("formPreferredContact")}
+              variant="bordered"
+              color="primary"
+            >
+              <SelectItem key="email">{t("contact_email")}</SelectItem>
+              <SelectItem key="phone">{t("contact_phone")}</SelectItem>
+              <SelectItem key="whatsapp">WhatsApp</SelectItem>
+            </Select>
+          </div>
+
+          {/* Honeypot: hidden from people, filled by bots; the server drops those submits. */}
+          <input
+            type="text"
+            name="faxNumber"
+            value={formData.faxNumber}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+          />
 
           {/* Message */}
           <div className="md:col-span-2 flex flex-col gap-1">

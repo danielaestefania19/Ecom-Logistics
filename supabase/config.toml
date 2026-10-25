@@ -17,6 +17,13 @@ verify_jwt = false
 [functions.tracking-register]
 verify_jwt = true
 
+# Public website contact form; validates input and drops honeypot/duplicate submits.
+[functions.lead-intake]
+verify_jwt = false
+
+[functions.convert-lead]
+verify_jwt = true
+
 # Called by EasyPost; authenticated by HMAC signature.
 [functions.tracking-webhook]
 verify_jwt = false

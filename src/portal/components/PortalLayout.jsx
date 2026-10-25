@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
 import { useT } from "../i18n";
+import { needsAttention, OPEN_LEAD } from "../lib/leads";
+import { subscribeToChanges } from "../lib/orders";
 
 const icon = (d) => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -21,6 +24,8 @@ const ICONS = {
   stack: icon(<><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="m2 17 10 5 10-5M2 12l10 5 10-5" /></>),
   send: icon(<path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />),
   list: icon(<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />),
+  target: icon(<><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></>),
+  building: icon(<><rect x="4" y="3" width="16" height="18" rx="1" /><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3" /></>),
 };
 
 const CLIENT_NAV = [
@@ -30,6 +35,7 @@ const CLIENT_NAV = [
   { to: "/portal/fulfillment", key: "nav.fulfillment", icon: "send", only3pl: true, end: true },
   { to: "/portal/services", key: "nav.services", icon: "grid" },
   { to: "/portal/billing", key: "nav.billing", icon: "card" },
+  { to: "/portal/profile", key: "nav.profile", icon: "building" },
 ];
 
 const STAFF_NAV = [
@@ -39,6 +45,8 @@ const STAFF_NAV = [
   { to: "/portal/orders", key: "nav.allOrders", icon: "box", end: true },
   { to: "/portal/orders/new", key: "nav.newOrder", icon: "plus" },
 ];
+
+const SALES_NAV = [{ to: "/portal/leads", key: "nav.leads", icon: "target", badgeKey: "leads" }];
 
 const STAFF_3PL_NAV = [
   { to: "/portal/fulfillment", key: "nav.fulfillment", icon: "send", end: true },
@@ -53,7 +61,30 @@ const linkCls = ({ isActive }) =>
     isActive ? "bg-third text-white" : "text-white/60 hover:text-white hover:bg-white/5"
   }`;
 
-function NavSection({ title, items, onNavigate }) {
+// Staff-only count of leads waiting too long for contact or follow-up, kept live for the nav badge.
+function useLeadAttentionCount(enabled) {
+  const [count, setCount] = useState(0);
+  const load = useCallback(async () => {
+    const { data } = await supabase
+      .from("leads")
+      .select("status, created_at, last_contacted_at, next_follow_up_at")
+      .in("status", OPEN_LEAD);
+    setCount((data ?? []).filter((l) => needsAttention(l)).length);
+  }, []);
+  useEffect(() => {
+    if (!enabled) return;
+    load();
+    const timer = setInterval(load, 10 * 60_000);
+    const unsubscribe = subscribeToChanges("nav-leads", [{ table: "leads" }], load);
+    return () => {
+      clearInterval(timer);
+      unsubscribe();
+    };
+  }, [enabled, load]);
+  return count;
+}
+
+function NavSection({ title, items, onNavigate, badges = {} }) {
   const { t } = useT();
   return (
     <>
@@ -66,6 +97,9 @@ function NavSection({ title, items, onNavigate }) {
         <NavLink key={item.to} to={item.to} end={item.end} onClick={onNavigate} className={linkCls}>
           {ICONS[item.icon]}
           {t(item.key)}
+          {badges[item.badgeKey] > 0 && (
+            <span className="ml-auto text-[11px] font-bold bg-red-500 text-white rounded-full px-2 py-0.5">{badges[item.badgeKey]}</span>
+          )}
         </NavLink>
       ))}
     </>
@@ -77,6 +111,7 @@ function SidebarContent({ onNavigate }) {
   const { t, lang, setLang } = useT();
   const navigate = useNavigate();
   const isStaff = role === "staff" || role === "admin";
+  const leadAttention = useLeadAttentionCount(isStaff);
 
   const displayName = clientProfile?.full_name || user?.email?.split("@")[0] || "—";
   const company = clientProfile?.company || "";
@@ -98,6 +133,7 @@ function SidebarContent({ onNavigate }) {
       <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         {isStaff ? (
           <>
+            <NavSection title={t("nav.sales")} items={SALES_NAV} onNavigate={onNavigate} badges={{ leads: leadAttention }} />
             <NavSection title={t("nav.operations")} items={STAFF_NAV} onNavigate={onNavigate} />
             <NavSection title="3PL" items={STAFF_3PL_NAV} onNavigate={onNavigate} />
           </>

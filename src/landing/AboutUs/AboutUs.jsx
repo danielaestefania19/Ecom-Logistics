@@ -8,7 +8,7 @@ import VideoSection from './VideoSection.jsx';
 import SuccessSection from './SuccessSection.jsx';
 import Footer from '../home/Footer.jsx';
 import WhoWeAre from './WhoWeAre.jsx';
-import ContactUs from './ContacUs.jsx';
+import ContactUs from '../home/ContacUs.jsx';
 import ContactInfo from './ContactInfo.jsx';
 /**
  * Main component for the homepage.

@@ -6,6 +6,7 @@ import { useT } from "../i18n";
 import { estimateOrder, EXTRAS, PREP_TYPES } from "../lib/estimate";
 import { registerTracking, syncAsana, uploadOrderFile } from "../lib/orders";
 import { btnPrimary, btnSecondary, Card, ErrorBanner, Field, inputCls, PageHeader } from "../components/ui";
+import CompanyProfileForm from "../components/CompanyProfileForm";
 
 const emptyItem = () => ({ sku: "", fnsku: "", product_name: "", prep_type: "standard", expected_qty: "" });
 
@@ -122,6 +123,16 @@ const NewOrder = () => {
 
     navigate(`/portal/orders/${orderId}?created=1${uploadFailed ? "&uploadFailed=1" : ""}`, { replace: true });
   };
+
+  // Clients complete their company profile once before the first order.
+  if (!isStaff && clientProfile && !clientProfile.profile_completed_at) {
+    return (
+      <div>
+        <PageHeader title={t("profile.firstTitle")} subtitle={t("profile.firstSubtitle")} />
+        <CompanyProfileForm intro={t("profile.firstIntro")} />
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={submit} className="max-w-5xl">

@@ -168,7 +168,8 @@ export async function openOrderFile(path) {
 
 // Refetch whenever any of the given tables change; RLS limits what each viewer receives.
 export function subscribeToChanges(channelName, tables, onChange) {
-  const channel = supabase.channel(channelName);
+  // Unique topic per subscriber: the same view can be mounted twice (desktop + mobile nav).
+  const channel = supabase.channel(`${channelName}-${Math.random().toString(36).slice(2, 10)}`);
   for (const { table, filter } of tables) {
     channel.on("postgres_changes", { event: "*", schema: "public", table, ...(filter ? { filter } : {}) }, onChange);
   }

@@ -33,6 +33,9 @@ import Inventory        from "./portal/pages/Inventory.jsx";
 import Fulfillments     from "./portal/pages/Fulfillments.jsx";
 import NewFulfillment   from "./portal/pages/NewFulfillment.jsx";
 import FulfillmentDetail from "./portal/pages/FulfillmentDetail.jsx";
+import Leads            from "./portal/pages/staff/Leads.jsx";
+import LeadDetail       from "./portal/pages/staff/LeadDetail.jsx";
+import Profile          from "./portal/pages/Profile.jsx";
 
 const STAFF = ["staff", "admin"];
 
@@ -91,6 +94,9 @@ function App() {
           <Route path="/portal/fulfillment/new" element={<PortalPages Page={NewFulfillment} roles={STAFF} />} />
           <Route path="/portal/fulfillment/:id" element={<PortalPages Page={FulfillmentDetail} />} />
           <Route path="/portal/ops/picklist"  element={<PortalPages Page={PickList} roles={STAFF} />} />
+          <Route path="/portal/leads"         element={<PortalPages Page={Leads} roles={STAFF} />} />
+          <Route path="/portal/leads/:id"     element={<PortalPages Page={LeadDetail} roles={STAFF} />} />
+          <Route path="/portal/profile"       element={<PortalPages Page={Profile} />} />
           <Route path="/portal/ops"           element={<PortalPages Page={Board} roles={STAFF} />} />
           <Route path="/portal/ops/arrivals"  element={<PortalPages Page={Arrivals} roles={STAFF} />} />
           <Route path="/portal/ops/schedule"  element={<PortalPages Page={Schedule} roles={STAFF} />} />

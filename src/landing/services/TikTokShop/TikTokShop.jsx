@@ -12,7 +12,7 @@ import FreePackagingSection from './FreePackagingSection';
 import Request from './Request';
 import YouTubeSection from './YoutubeSection';
 import FreeStorageOffer from './FreeStorageOffer';
-import ContactUs from './ContacUs';
+import ContactUs from '../../home/ContacUs';
 import FAQ from './FAQ';
 import Footer from '../../home/Footer';
 

@@ -24,6 +24,9 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const [profileVersion, setProfileVersion] = useState(0);
+  const refreshProfile = () => setProfileVersion((v) => v + 1);
+
   useEffect(() => {
     if (!userId) {
       setClientProfile(null);
@@ -43,7 +46,7 @@ export const AuthProvider = ({ children }) => {
         setProfileFor(userId);
       });
     return () => { cancelled = true; };
-  }, [userId]);
+  }, [userId, profileVersion]);
 
   const signIn = (email, password) =>
     supabase.auth.signInWithPassword({ email, password });
@@ -64,6 +67,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signOut,
     sendPasswordReset,
+    refreshProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
