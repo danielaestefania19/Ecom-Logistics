@@ -113,6 +113,8 @@ export const STRINGS = {
         done: "Shipment created successfully on Amazon.",
         backToOrder: "Back to order",
         errorOccurred: "An error occurred. Please try again.",
+        downloadLabels: "Download Labels",
+        labelsFetched: "Labels downloaded — see Files section",
       },
     },
     stage: {
@@ -669,6 +671,8 @@ export const STRINGS = {
         done: "Envío creado exitosamente en Amazon.",
         backToOrder: "Volver a la orden",
         errorOccurred: "Ocurrió un error. Por favor intenta de nuevo.",
+        downloadLabels: "Descargar Etiquetas",
+        labelsFetched: "Etiquetas descargadas — ver sección Archivos",
       },
     },
     stage: {

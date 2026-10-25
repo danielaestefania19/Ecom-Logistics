@@ -274,7 +274,21 @@ Deno.serve(async (req: Request) => {
           .eq("id", plan.order_id);
       }
 
-      return json({ ok: true, status: "completed" });
+      // Fetch labels and tracking (best-effort — don't fail the step if unavailable yet)
+      const labelResult = await fetchLabelsAndTracking(admin, connectionId, {
+        ...plan,
+        current_step: "done",
+        status: "completed",
+      });
+
+      return json({ ok: true, status: "completed", ...labelResult });
+    }
+
+    // ── GET_LABELS: manual retry for label download ───────────────────────────
+    if (step === "get_labels") {
+      if (plan.status !== "completed") return json({ error: "Plan not completed yet" }, 400);
+      const result = await fetchLabelsAndTracking(admin, connectionId, plan);
+      return json({ ok: true, ...result });
     }
 
     return json({ error: `Unknown step: ${step}` }, 400);
@@ -284,6 +298,91 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Internal error" }, 500);
   }
 });
+
+async function fetchLabelsAndTracking(
+  admin: ReturnType<typeof adminClient>,
+  connectionId: string,
+  plan: { id: string; inbound_plan_id: string | null; order_id: string | null }
+) {
+  if (!plan.inbound_plan_id || !plan.order_id) return {};
+
+  // 1. List shipments
+  let shipmentList: { shipmentId: string }[] = [];
+  try {
+    const res = await spapiFetch<{ inboundPlanShipments?: { shipmentId: string }[] }>(
+      connectionId,
+      `${INBOUND}/inboundPlans/${plan.inbound_plan_id}/shipments`
+    );
+    shipmentList = res.inboundPlanShipments ?? [];
+    await admin
+      .from("amazon_inbound_plans")
+      .update({ shipments_json: shipmentList, updated_at: new Date().toISOString() })
+      .eq("id", plan.id);
+  } catch { /* ignore — shipments endpoint may not be available in sandbox */ }
+
+  let labelsCount = 0;
+  let trackingCount = 0;
+
+  for (const s of shipmentList) {
+    // 2. Labels PDF
+    try {
+      const lblRes = await spapiFetch<{ downloadURL?: string }>(
+        connectionId,
+        `${INBOUND}/inboundPlans/${plan.inbound_plan_id}/shipments/${s.shipmentId}/labels`
+      );
+      if (lblRes.downloadURL) {
+        const pdfRes = await fetch(lblRes.downloadURL);
+        if (pdfRes.ok) {
+          const buf = await pdfRes.arrayBuffer();
+          const storagePath = `${plan.order_id}/${Date.now()}-FBA_labels_${s.shipmentId}.pdf`;
+          const { error: uploadErr } = await admin.storage
+            .from("order-files")
+            .upload(storagePath, buf, { contentType: "application/pdf" });
+          if (!uploadErr) {
+            await admin.from("order_files").insert({
+              order_id: plan.order_id,
+              kind: "labels",
+              storage_path: storagePath,
+              file_name: `FBA_labels_${s.shipmentId}.pdf`,
+            });
+            labelsCount++;
+          }
+        }
+      }
+    } catch { /* labels may not be ready immediately after confirmation */ }
+
+    // 3. Tracking numbers (partnered SPD only)
+    try {
+      const trkRes = await spapiFetch<{ trackingDetails?: { trackingId?: string; carrierName?: string }[] }>(
+        connectionId,
+        `${INBOUND}/inboundPlans/${plan.inbound_plan_id}/shipments/${s.shipmentId}/trackingDetails`
+      );
+      for (const t of trkRes.trackingDetails ?? []) {
+        if (t.trackingId) {
+          await admin.from("shipments_inbound").upsert(
+            {
+              order_id: plan.order_id,
+              tracking_number: t.trackingId,
+              carrier: t.carrierName ?? null,
+              status: "unknown",
+            },
+            { onConflict: "order_id,tracking_number", ignoreDuplicates: true }
+          );
+          trackingCount++;
+        }
+      }
+    } catch { /* LTL shipments have no per-package tracking — ignore */ }
+  }
+
+  if (labelsCount > 0 || shipmentList.length > 0) {
+    await admin
+      .from("amazon_inbound_plans")
+      .update({ labels_fetched_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+      .eq("id", plan.id);
+  }
+
+  return { labels_downloaded: labelsCount, tracking_numbers: trackingCount };
+}
 
 function nextStepAfter(current: string): string {
   const seq = [

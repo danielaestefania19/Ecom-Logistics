@@ -240,6 +240,15 @@ const AmazonInbound = () => {
         {currentStep === "done" && (
           <div className="text-center py-6">
             <p className="text-green-700 font-semibold text-lg mb-2">✓ {t("amazon.inbound.done")}</p>
+            <div className="mt-4 mb-4">
+              {plan?.labels_fetched_at ? (
+                <p className="text-xs text-gray-400">{t("amazon.inbound.labelsFetched")}</p>
+              ) : (
+                <button className={btnSecondary} disabled={busy} onClick={() => advance("get_labels")}>
+                  {busy ? t("amazon.inbound.polling") : t("amazon.inbound.downloadLabels")}
+                </button>
+              )}
+            </div>
             <Link to={backTo} className="text-sm text-third hover:underline">{t("amazon.inbound.backToOrder")}</Link>
           </div>
         )}
