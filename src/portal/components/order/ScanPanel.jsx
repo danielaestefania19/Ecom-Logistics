@@ -32,6 +32,13 @@ const ScanPanel = ({ order, onChanged }) => {
 
   useEffect(() => () => clearTimeout(refreshTimer.current), []);
 
+  // Units-per-scan is for full cases at receiving; FNSKU checks are always one label at a time.
+  useEffect(() => {
+    setMultiplier(1);
+    setLast(null);
+    setResult(null);
+  }, [mode]);
+
   // Reload the order shortly after scanning stops instead of after every beep.
   const scheduleRefresh = () => {
     clearTimeout(refreshTimer.current);

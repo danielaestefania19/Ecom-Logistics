@@ -19,19 +19,23 @@ const ScanInput = ({ onScan, result, busy, hint }) => {
     if (!busy) ref.current?.focus();
   }, [busy, result]);
 
-  const submit = (e) => {
+  // Handle the scanner's terminator key directly instead of relying on implicit form submission,
+  // which was skipped right after the "link this code" box closed. Some scanners end with Tab.
+  const onKeyDown = (e) => {
+    if (e.key !== "Enter" && e.key !== "Tab") return;
     e.preventDefault();
-    const code = normalizeCode(value);
+    const code = normalizeCode(e.currentTarget.value);
     setValue("");
     if (code) onScan(code);
   };
 
   return (
     <div className="space-y-3">
-      <form onSubmit={submit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <input
           ref={ref}
           value={value}
+          onKeyDown={onKeyDown}
           onChange={(e) => setValue(e.target.value)}
           autoFocus
           autoComplete="off"
