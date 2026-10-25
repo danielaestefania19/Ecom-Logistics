@@ -1,0 +1,25 @@
+name: Supabase keep-alive
+
+# Free-tier Supabase projects pause after ~7 days without API activity, which takes
+# down the blog and the client portal. One cheap read per day keeps it active.
+on:
+  schedule:
+    - cron: "17 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: https://sootmcdjtrjrkmrasjhe.supabase.co
+      # Publishable anon key (already shipped in the site's JS); RLS limits it to published blog posts.
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvb3RtY2RqdHJqcmttcmFzamhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5Nzg2MDAsImV4cCI6MjA5NzU1NDYwMH0.27ts0wY-UMFwaD62FhQrqgPgdet43wMp6Bv2l6C__uM
+    steps:
+      - name: Read one published blog post
+        run: |
+          status=$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 10 \
+            "$SUPABASE_URL/rest/v1/blog_posts?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          echo "Supabase responded HTTP $status"
+          test "$status" = "200"
