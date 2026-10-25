@@ -189,7 +189,7 @@ const OrderDetail = () => {
             </Card>
           )}
           <Card title={t("orderDetail.products")}>
-            <ItemsTable items={order.order_items} editable={isStaff && RECEIVING_STAGES.has(order.stage)} onSaved={load} />
+            <ItemsTable items={order.order_items} editable={isStaff && RECEIVING_STAGES.has(order.stage)} onSaved={load} showPrep={order.type !== "3pl"} />
           </Card>
           <Card title={t("orderDetail.tracking")}>
             <TrackingPanel

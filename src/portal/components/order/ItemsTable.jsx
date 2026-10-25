@@ -6,7 +6,7 @@ import { btnPrimary, ErrorBanner } from "../ui";
 const toState = (items) =>
   Object.fromEntries(items.map((i) => [i.id, { received: i.received_qty ?? "", damaged: i.damaged_qty ?? 0 }]));
 
-const ItemsTable = ({ items, editable, onSaved }) => {
+const ItemsTable = ({ items, editable, onSaved, showPrep = true }) => {
   const { t } = useT();
   const [counts, setCounts] = useState(() => toState(items));
   const [saving, setSaving] = useState(false);
@@ -62,7 +62,7 @@ const ItemsTable = ({ items, editable, onSaved }) => {
           <thead>
             <tr className="text-left text-[11px] uppercase tracking-wide text-gray-400">
               <th className="py-2 pr-3 font-semibold">{t("item.sku")}</th>
-              <th className="py-2 pr-3 font-semibold">{t("item.prepType")}</th>
+              {showPrep && <th className="py-2 pr-3 font-semibold">{t("item.prepType")}</th>}
               <th className="py-2 pr-3 font-semibold text-right">{t("item.expected")}</th>
               <th className="py-2 pr-3 font-semibold text-right">{t("item.received")}</th>
               <th className="py-2 font-semibold text-right">{t("item.damaged")}</th>
@@ -78,7 +78,7 @@ const ItemsTable = ({ items, editable, onSaved }) => {
                     <p className="font-semibold text-primary">{i.sku}</p>
                     <p className="text-xs text-gray-400">{[i.fnsku, i.product_name].filter(Boolean).join(" · ")}</p>
                   </td>
-                  <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>
+                  {showPrep && <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>}
                   <td className="py-3 pr-3 text-right font-medium">{i.expected_qty}</td>
                   <td className="py-3 pr-3 text-right">
                     {editable ? (
@@ -114,7 +114,7 @@ const ItemsTable = ({ items, editable, onSaved }) => {
           </tbody>
           <tfoot>
             <tr className="border-t border-gray-200 font-bold text-primary">
-              <td className="py-3" colSpan={2}>{t("item.total")}</td>
+              <td className="py-3" colSpan={showPrep ? 2 : 1}>{t("item.total")}</td>
               <td className="py-3 pr-3 text-right">{totals.expected}</td>
               <td className={`py-3 pr-3 text-right ${counted && totals.received !== totals.expected ? "text-red-600" : ""}`}>
                 {counted ? totals.received : "—"}

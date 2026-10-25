@@ -151,9 +151,11 @@ export function OrderAdminFields({ order, onChanged }) {
 
   return (
     <form onSubmit={save} className="space-y-4">
-      <Field label={t("order.prepDay")}>
-        <input type="date" className={inputCls} value={form.prep_day} onChange={(e) => set("prep_day", e.target.value)} />
-      </Field>
+      {order.type !== "3pl" && (
+        <Field label={t("order.prepDay")}>
+          <input type="date" className={inputCls} value={form.prep_day} onChange={(e) => set("prep_day", e.target.value)} />
+        </Field>
+      )}
       <Field label={t("order.quoteUrl")}>
         <input className={inputCls} value={form.quote_url} onChange={(e) => set("quote_url", e.target.value)} placeholder="https://invoice.stripe.com/…" />
       </Field>

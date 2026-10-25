@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [session, setSession]             = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
   const [clientProfile, setClientProfile] = useState(null);
-  const [profileLoading, setProfileLoading] = useState(false);
+  // Which user the current profile belongs to; until it matches, role-gated routes must wait.
+  const [profileFor, setProfileFor] = useState(null);
 
   const user = session?.user ?? null;
   const userId = user?.id ?? null;
@@ -26,10 +27,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!userId) {
       setClientProfile(null);
+      setProfileFor(null);
       return;
     }
     let cancelled = false;
-    setProfileLoading(true);
     supabase
       .from("clients")
       .select("*")
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         if (cancelled) return;
         if (error) console.error("Failed to load client profile:", error.message);
         setClientProfile(data ?? null);
-        setProfileLoading(false);
+        setProfileFor(userId);
       });
     return () => { cancelled = true; };
   }, [userId]);
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     session,
     clientProfile,
     role: clientProfile ? roleOf(clientProfile) : null,
-    loading: sessionLoading || profileLoading,
+    loading: sessionLoading || (!!userId && profileFor !== userId),
     signIn,
     signOut,
     sendPasswordReset,

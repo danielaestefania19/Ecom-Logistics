@@ -107,6 +107,8 @@ export const STRINGS = {
       declarationTitle: "Confirmation",
       declaration:
         "I confirm the quantities and instructions in this order are accurate and that the goods meet Amazon's requirements. Ecom Logistics will report any discrepancy found at receiving before prepping.",
+      declaration3pl:
+        "I confirm the quantities in this shipment are accurate. Ecom Logistics will count it at receiving and report any discrepancy before adding it to my inventory.",
       signer: "Your full name",
       submitting: "Submitting…",
       submit: "Submit order",
@@ -556,6 +558,8 @@ export const STRINGS = {
       declarationTitle: "Confirmación",
       declaration:
         "Confirmo que las cantidades e instrucciones de esta orden son correctas y que la mercancía cumple los requisitos de Amazon. Ecom Logistics reportará cualquier diferencia encontrada en la recepción antes de preparar.",
+      declaration3pl:
+        "Confirmo que las cantidades de este envío son correctas. Ecom Logistics lo contará al recibirlo y reportará cualquier diferencia antes de sumarlo a mi inventario.",
       signer: "Tu nombre completo",
       submitting: "Enviando…",
       submit: "Enviar orden",

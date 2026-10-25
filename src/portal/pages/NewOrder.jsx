@@ -369,7 +369,7 @@ const NewOrder = () => {
                 checked={form.declaration_accepted}
                 onChange={(e) => set("declaration_accepted", e.target.checked)}
               />
-              {t("newOrder.declaration")}
+              {is3pl ? t("newOrder.declaration3pl") : t("newOrder.declaration")}
             </label>
             <div className="mt-4">
               <Field label={t("newOrder.signer")} required>
