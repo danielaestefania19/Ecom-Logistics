@@ -213,6 +213,16 @@ const OrderDetail = () => {
         <div className="space-y-6">
           <Card title={t("orderDetail.summary")}>
             <Summary order={order} />
+            {isStaff && order.type !== "3pl" && order.shipment_creator !== "customer" && (
+              <div className="border-t border-gray-100 mt-4 pt-4">
+                <Link
+                  to={`/portal/amazon/inbound/new?orderId=${order.id}`}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-third hover:underline"
+                >
+                  {t("amazon.inbound.createFba")} →
+                </Link>
+              </div>
+            )}
           </Card>
           {isStaff && (
             <>

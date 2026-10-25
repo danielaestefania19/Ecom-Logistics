@@ -41,6 +41,7 @@ const STAFF_NAV = [
   { to: "/portal/orders", key: "nav.allOrders", icon: "box", end: true },
   { to: "/portal/orders/new", key: "nav.newOrder", icon: "plus" },
   { to: "/portal/amazon", key: "nav.amazon", icon: "link" },
+  { to: "/portal/ops/amazon", key: "nav.amazonOps", icon: "link" },
 ];
 
 const STAFF_3PL_NAV = [

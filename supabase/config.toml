@@ -28,6 +28,14 @@ verify_jwt = true
 [functions.amazon-oauth-callback]
 verify_jwt = false
 
+# Called manually from the portal or by cron; auth by JWT or service-role key.
+[functions.amazon-sync]
+verify_jwt = false
+
+# FBA Inbound wizard steps; staff/admin only (checked inside the function).
+[functions.amazon-inbound]
+verify_jwt = true
+
 # Called by EasyPost; authenticated by HMAC signature.
 [functions.tracking-webhook]
 verify_jwt = false
