@@ -97,7 +97,7 @@ function InviteForm({ session, onSuccess }) {
 
 // ─── Edit client modal ──────────────────────────────────────────────────────────
 function EditModal({ client, onClose, onSaved }) {
-  const [form, setForm]       = useState({ full_name: client.full_name ?? "", company: client.company ?? "", role: client.role ?? "client", asana_project_id: client.asana_project_id ?? "", stripe_customer_id: client.stripe_customer_id ?? "" });
+  const [form, setForm]       = useState({ full_name: client.full_name ?? "", company: client.company ?? "", role: client.role ?? "client", services: client.services ?? ["prep"], asana_project_id: client.asana_project_id ?? "", stripe_customer_id: client.stripe_customer_id ?? "" });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState(null);
 
@@ -111,6 +111,7 @@ function EditModal({ client, onClose, onSaved }) {
       full_name: form.full_name || null,
       company: form.company || null,
       role: form.role,
+      services: form.services,
       asana_project_id: form.asana_project_id || null,
       stripe_customer_id: form.stripe_customer_id || null,
     }).eq("id", client.id).select("id");
@@ -151,6 +152,27 @@ function EditModal({ client, onClose, onSaved }) {
             </select>
           </div>
           <div>
+            <span className="block text-xs font-semibold text-gray-500 mb-1">Services</span>
+            <div className="flex gap-4">
+              {["prep", "3pl"].map((svc) => (
+                <label key={svc} className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    className="accent-third"
+                    checked={form.services.includes(svc)}
+                    onChange={(e) =>
+                      setForm((f) => ({
+                        ...f,
+                        services: e.target.checked ? [...f.services, svc] : f.services.filter((x) => x !== svc),
+                      }))
+                    }
+                  />
+                  {svc === "prep" ? "FBA Prep" : "3PL (inventory & fulfillment)"}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Asana Project ID</label>
             <input name="asana_project_id" value={form.asana_project_id} onChange={handle} className={inputCls} placeholder="1234567890123456" />
           </div>
@@ -187,9 +209,9 @@ function ClientRow({ client, onEdit }) {
       </div>
       <div className="col-span-3 min-w-0">
         <p className="text-sm text-gray-600 truncate">{client.company || <span className="text-gray-300">—</span>}</p>
-        {client.role !== "client" && (
-          <span className="text-[10px] font-bold uppercase tracking-wide text-third">{client.role}</span>
-        )}
+        <span className="text-[10px] font-bold uppercase tracking-wide text-third">
+          {[client.role !== "client" && client.role, ...(client.services ?? []).filter((x) => x === "3pl")].filter(Boolean).join(" · ")}
+        </span>
       </div>
       <div className="col-span-2 min-w-0">
         {client.asana_project_id

@@ -11,7 +11,7 @@ const STAGE_ES: Record<string, string> = {
   discrepancy: "Discrepancia",
   scheduled: "Programada",
   prepped: "Preparada",
-  in_storage: "En storage",
+  in_storage: "En storage / inventario",
   shipped: "Enviada a Amazon",
   invoiced: "Facturada",
   paid: "Pagada",
@@ -48,7 +48,7 @@ Deno.serve(async (req: Request) => {
 
     const { data: order, error } = await admin
       .from("orders")
-      .select(`id, order_number, stage, ship_method, shipment_creator, eta, prep_day, total_cases, pallets,
+      .select(`id, order_number, type, stage, ship_method, shipment_creator, eta, prep_day, total_cases, pallets,
                invoice_number, estimated_cost, asana_task_gid,
                clients(company, full_name, email),
                order_items(sku, expected_qty, received_qty, prep_type),
@@ -62,12 +62,14 @@ Deno.serve(async (req: Request) => {
     const shipments = (order.shipments_inbound ?? []) as Array<{ tracking_number: string; carrier: string | null; status: string }>;
     const units = items.reduce((n, i) => n + i.expected_qty, 0);
 
-    const name = `#${order.order_number} · ${client.company || client.email || "Cliente"} · PREP · ${units} u`;
+    const name = `#${order.order_number} · ${client.company || client.email || "Cliente"} · ${order.type === "3pl" ? "3PL" : "PREP"} · ${units} u`;
     const notes = [
       `Etapa: ${STAGE_ES[order.stage] ?? order.stage}`,
       `Cliente: ${client.company ?? "—"} (${client.full_name ?? "—"}, ${client.email ?? "—"})`,
       `Llegada estimada: ${order.eta ?? "—"} · Día de prep: ${order.prep_day ?? "—"}`,
-      `Envío a Amazon: ${String(order.ship_method).toUpperCase()} · Shipment creado por: ${order.shipment_creator}`,
+      order.type === "3pl"
+        ? "Servicio: 3PL (envío de inventario; al guardarse se suma al stock)"
+        : `Envío a Amazon: ${String(order.ship_method).toUpperCase()} · Shipment creado por: ${order.shipment_creator}`,
       `Cajas: ${order.total_cases} · Pallets: ${order.pallets}`,
       `Factura: ${order.invoice_number ?? "—"} · Estimado: ${order.estimated_cost != null ? `$${order.estimated_cost}` : "—"}`,
       "",

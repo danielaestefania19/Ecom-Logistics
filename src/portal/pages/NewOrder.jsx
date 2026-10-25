@@ -18,6 +18,7 @@ const NewOrder = () => {
   const navigate = useNavigate();
   const isStaff = role === "staff" || role === "admin";
 
+  const [type, setType] = useState("prep");
   const [items, setItems] = useState([emptyItem()]);
   const [form, setForm] = useState({
     client_id: "",
@@ -42,13 +43,18 @@ const NewOrder = () => {
     if (!isStaff) return;
     supabase
       .from("clients")
-      .select("id, company, full_name, email")
+      .select("id, company, full_name, email, services")
       .eq("role", "client")
       .order("company")
       .then(({ data }) => setClients(data ?? []));
   }, [isStaff]);
 
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+  const services = isStaff
+    ? clients.find((c) => c.id === form.client_id)?.services ?? ["prep"]
+    : clientProfile?.services ?? ["prep"];
+  const canDo3pl = services.includes("3pl");
+  const is3pl = type === "3pl" && canDo3pl;
   const setItem = (idx, key, value) =>
     setItems((list) => list.map((it, i) => (i === idx ? { ...it, [key]: value } : it)));
   const toggleExtra = (x) =>
@@ -57,12 +63,12 @@ const NewOrder = () => {
   const estimate = useMemo(
     () =>
       estimateOrder({
-        items,
+        items: is3pl ? [] : items,
         totalCases: Number(form.total_cases) || 0,
         pallets: Number(form.pallets) || 0,
         extras: form.extras,
       }),
-    [items, form.total_cases, form.pallets, form.extras]
+    [is3pl, items, form.total_cases, form.pallets, form.extras]
   );
 
   const submit = async (e) => {
@@ -77,8 +83,9 @@ const NewOrder = () => {
 
     setSubmitting(true);
     const tracking = splitTracking(form.tracking);
-    const { data: orderId, error: rpcError } = await supabase.rpc("create_prep_order", {
+    const { data: orderId, error: rpcError } = await supabase.rpc("create_order", {
       p_order: {
+        type: is3pl ? "3pl" : "prep",
         client_id: isStaff ? form.client_id : null,
         shipment_creator: form.shipment_creator,
         ship_method: form.ship_method,
@@ -103,7 +110,7 @@ const NewOrder = () => {
 
     // The order exists from here on; label upload problems are reported on the order page instead.
     let uploadFailed = false;
-    for (const file of labelFiles) {
+    for (const file of is3pl ? [] : labelFiles) {
       try {
         await uploadOrderFile(orderId, file, "labels");
       } catch {
@@ -119,8 +126,8 @@ const NewOrder = () => {
   return (
     <form onSubmit={submit} className="max-w-5xl">
       <PageHeader
-        title={t("newOrder.title")}
-        subtitle={t("newOrder.subtitle")}
+        title={is3pl ? t("newOrder.title3pl") : t("newOrder.title")}
+        subtitle={is3pl ? t("newOrder.subtitle3pl") : t("newOrder.subtitle")}
         action={<Link to="/portal/orders" className={btnSecondary}>{t("common.cancel")}</Link>}
       />
 
@@ -141,6 +148,20 @@ const NewOrder = () => {
             </Card>
           )}
 
+          {canDo3pl && (
+            <Card title={t("newOrder.typeSection")}>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {["prep", "3pl"].map((k) => (
+                  <label key={k} className={`cursor-pointer px-4 py-3 rounded-xl border text-sm ${type === k ? "border-third bg-third/5 text-third font-semibold" : "border-gray-200 text-gray-600"}`}>
+                    <input type="radio" className="sr-only" name="order_type" checked={type === k} onChange={() => setType(k)} />
+                    <span className="block">{t(`newOrder.type.${k}`)}</span>
+                    <span className="block text-xs font-normal text-gray-400 mt-0.5">{t(`newOrder.typeHint.${k}`)}</span>
+                  </label>
+                ))}
+              </div>
+            </Card>
+          )}
+
           <Card
             title={t("newOrder.products")}
             action={
@@ -157,22 +178,32 @@ const NewOrder = () => {
                       <input className={inputCls} value={it.sku} onChange={(e) => setItem(idx, "sku", e.target.value)} />
                     </Field>
                   </div>
-                  <div className="sm:col-span-3">
-                    <Field label={t("item.fnsku")}>
-                      <input className={inputCls} value={it.fnsku} onChange={(e) => setItem(idx, "fnsku", e.target.value)} placeholder="X00…" />
-                    </Field>
-                  </div>
-                  <div className="sm:col-span-3">
-                    <Field label={t("item.prepType")}>
-                      <select className={inputCls} value={it.prep_type} onChange={(e) => setItem(idx, "prep_type", e.target.value)}>
-                        {PREP_TYPES.map((p) => (
-                          <option key={p} value={p}>{t(`prepType.${p}`)}</option>
-                        ))}
-                      </select>
-                    </Field>
-                  </div>
+                  {is3pl ? (
+                    <div className="col-span-2 sm:col-span-6">
+                      <Field label={t("item.productName")}>
+                        <input className={inputCls} value={it.product_name} onChange={(e) => setItem(idx, "product_name", e.target.value)} />
+                      </Field>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="sm:col-span-3">
+                        <Field label={t("item.fnsku")}>
+                          <input className={inputCls} value={it.fnsku} onChange={(e) => setItem(idx, "fnsku", e.target.value)} placeholder="X00…" />
+                        </Field>
+                      </div>
+                      <div className="sm:col-span-3">
+                        <Field label={t("item.prepType")}>
+                          <select className={inputCls} value={it.prep_type} onChange={(e) => setItem(idx, "prep_type", e.target.value)}>
+                            {PREP_TYPES.map((p) => (
+                              <option key={p} value={p}>{t(`prepType.${p}`)}</option>
+                            ))}
+                          </select>
+                        </Field>
+                      </div>
+                    </>
+                  )}
                   <div className="sm:col-span-2">
-                    <Field label={it.prep_type === "bundle" ? t("item.bundles") : t("item.units")} required>
+                    <Field label={!is3pl && it.prep_type === "bundle" ? t("item.bundles") : t("item.units")} required>
                       <input
                         className={inputCls}
                         type="number"
@@ -195,14 +226,16 @@ const NewOrder = () => {
                       </button>
                     )}
                   </div>
-                  <div className="col-span-2 sm:col-span-12">
-                    <input
-                      className={inputCls}
-                      value={it.product_name}
-                      onChange={(e) => setItem(idx, "product_name", e.target.value)}
-                      placeholder={t("item.productNamePlaceholder")}
-                    />
-                  </div>
+                  {!is3pl && (
+                    <div className="col-span-2 sm:col-span-12">
+                      <input
+                        className={inputCls}
+                        value={it.product_name}
+                        onChange={(e) => setItem(idx, "product_name", e.target.value)}
+                        placeholder={t("item.productNamePlaceholder")}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -224,9 +257,18 @@ const NewOrder = () => {
                   <textarea className={inputCls} rows={2} value={form.tracking} onChange={(e) => set("tracking", e.target.value)} placeholder="1Z999AA10123456784, 9400…" />
                 </Field>
               </div>
+              {is3pl && (
+                <div className="sm:col-span-3">
+                  <Field label={t("order.notes")}>
+                    <textarea className={inputCls} rows={3} value={form.client_notes} onChange={(e) => set("client_notes", e.target.value)} />
+                  </Field>
+                </div>
+              )}
             </div>
           </Card>
 
+          {!is3pl && (
+          <>
           <Card title={t("newOrder.outbound")}>
             <div className="space-y-5">
               <fieldset>
@@ -289,6 +331,8 @@ const NewOrder = () => {
               </Field>
             </div>
           </Card>
+          </>
+          )}
         </div>
 
         <div className="space-y-6 lg:sticky lg:top-6">

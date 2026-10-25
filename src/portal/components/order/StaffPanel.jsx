@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useAuth } from "../../AuthContext";
 import { useT } from "../../i18n";
-import { NEXT_STAGES, setStage, syncAsana } from "../../lib/orders";
+import { nextStages, setStage, syncAsana } from "../../lib/orders";
 import { btnPrimary, btnSecondary, ErrorBanner, Field, inputCls } from "../ui";
 
-const STAGE_ORDER = ["received", "prepped", "shipped", "invoiced"];
+const STAGE_ORDER = ["received", "prepped", "in_storage", "shipped", "invoiced"];
 
 export function StageActions({ order, onChanged }) {
   const { t } = useT();
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
-  const next = NEXT_STAGES[order.stage] ?? [];
+  const next = nextStages(order);
 
   const move = async (stage) => {
     setBusy(stage);
@@ -48,7 +48,11 @@ export function StageActions({ order, onChanged }) {
             disabled={!!busy}
             className={i === 0 && stage !== "cancelled" ? btnPrimary : btnSecondary}
           >
-            {busy === stage ? t("common.saving") : `→ ${t(`stage.${stage}`)}`}
+            {busy === stage
+              ? t("common.saving")
+              : order.type === "3pl" && stage === "in_storage"
+                ? `→ ${t("staff.addToInventory")}`
+                : `→ ${t(`stage.${stage}`)}`}
           </button>
         ))}
       </div>

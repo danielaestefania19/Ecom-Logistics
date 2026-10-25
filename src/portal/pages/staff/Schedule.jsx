@@ -73,6 +73,7 @@ const Schedule = () => {
     const { data, error: err } = await supabase
       .from("orders")
       .select("id, order_number, stage, prep_day, clients(company, email), order_items(expected_qty)")
+      .eq("type", "prep")
       .in("stage", ["received", "scheduled", "prepped"])
       .order("created_at");
     if (err) setError(err.message);

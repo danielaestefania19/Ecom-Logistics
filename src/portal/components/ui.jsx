@@ -1,4 +1,4 @@
-import { STAGE_STYLE, TRACKING_STYLE } from "../lib/orders";
+import { FULFILLMENT_STYLE, STAGE_STYLE, TRACKING_STYLE } from "../lib/orders";
 import { useT } from "../i18n";
 
 export const inputCls =
@@ -38,6 +38,28 @@ export const StageBadge = ({ stage }) => {
     <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${STAGE_STYLE[stage] ?? ""}`}>
       {t(`stage.${stage}`)}
     </span>
+  );
+};
+
+export const FulfillmentBadge = ({ status }) => {
+  const { t } = useT();
+  return (
+    <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${FULFILLMENT_STYLE[status] ?? ""}`}>
+      {t(`fulfillment.status.${status}`)}
+    </span>
+  );
+};
+
+// Staff pick a 3PL client; clients only ever see themselves, so they get no picker.
+export const ClientPicker = ({ clients, value, onChange, allowAll }) => {
+  const { t } = useT();
+  return (
+    <select className={`${inputCls} max-w-xs`} value={value} onChange={(e) => onChange(e.target.value)}>
+      <option value="">{allowAll ? t("threePl.allClients") : t("newOrder.selectClient")}</option>
+      {clients.map((c) => (
+        <option key={c.id} value={c.id}>{c.company || c.full_name || c.email}</option>
+      ))}
+    </select>
   );
 };
 

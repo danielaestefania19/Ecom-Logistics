@@ -6,6 +6,7 @@ const RATE = Object.fromEntries(
 
 export const PREP_TYPES = ["standard", "oversize", "polybag", "bubble", "bundle"];
 export const EXTRAS = ["pallet", "pallet_wrap", "coupon_insert", "filler"];
+export const PACKAGING = ["small_medium_box", "large_box", "bubble_mailer", "poly_mailer"];
 
 // Same flooring as the public /pricing page, so the portal never quotes less discount than advertised.
 const floorCents = (n) => Math.floor(n * 100) / 100;
@@ -39,4 +40,20 @@ export function estimateOrder({ items, totalCases = 0, pallets = 0, extras = [] 
 
   const priced = lines.map((l) => ({ ...l, total: roundCents(l.qty * l.rate) }));
   return { units, discount, lines: priced, total: roundCents(priced.reduce((n, l) => n + l.total, 0)) };
+}
+
+// 3PL month to date: pick & pack per shipped order (tier set by the month's order count) + storage held.
+export function estimateMonth({ shippedPackagings = [], bins = 0, shelves = 0, pallets = 0 }) {
+  const orders = shippedPackagings.length;
+  const discount = volumeDiscount(orders);
+  const lines = [];
+  for (const p of PACKAGING) {
+    const qty = shippedPackagings.filter((x) => x === p).length;
+    if (qty) lines.push({ key: `pick_${p}`, qty, rate: floorCents(RATE[`pick_${p}`] * (1 - discount)) });
+  }
+  for (const [key, qty] of [["storage_bin", bins], ["storage_shelf", shelves], ["storage_pallet", pallets]]) {
+    if (qty > 0) lines.push({ key, qty: Number(qty), rate: RATE[key] });
+  }
+  const priced = lines.map((l) => ({ ...l, total: roundCents(l.qty * l.rate) }));
+  return { orders, discount, lines: priced, total: roundCents(priced.reduce((n, l) => n + l.total, 0)) };
 }

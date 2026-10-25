@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
-import { BOARD_STAGES, NEXT_STAGES, orderCode, orderUnits, setStage, subscribeToChanges } from "../../lib/orders";
+import { BOARD_STAGES, nextStages, orderCode, orderUnits, setStage, subscribeToChanges } from "../../lib/orders";
 import { btnPrimary, ErrorBanner, inputCls, PageHeader, Spinner, TrackingBadge } from "../../components/ui";
 
 function BoardCard({ order, onMoved }) {
   const { t, fmtDate } = useT();
   const [busy, setBusy] = useState(false);
-  const next = (NEXT_STAGES[order.stage] ?? []).find((s) => s !== "cancelled" && s !== "quote");
+  const next = nextStages(order).find((s) => s !== "cancelled" && s !== "quote");
   const shipments = order.shipments_inbound ?? [];
   const day = (d) => fmtDate(`${d}T12:00:00`, { month: "short", day: "numeric" });
 
@@ -28,7 +28,10 @@ function BoardCard({ order, onMoved }) {
     <div className="bg-white border border-gray-200 rounded-xl p-3 hover:border-third/50 transition">
       <Link to={`/portal/orders/${order.id}`} className="block">
         <div className="flex items-start justify-between gap-2">
-          <p className="text-sm font-bold text-primary">{orderCode(order)}</p>
+          <p className="text-sm font-bold text-primary">
+            {orderCode(order)}
+            {order.type === "3pl" && <span className="ml-1.5 text-[10px] font-bold text-third bg-third/10 px-1.5 py-0.5 rounded">3PL</span>}
+          </p>
           <span className="text-xs font-semibold text-gray-500">{t("orders.units", { n: orderUnits(order) })}</span>
         </div>
         <p className="text-xs text-gray-600 truncate mt-0.5">{order.clients?.company || order.clients?.email}</p>
@@ -44,7 +47,7 @@ function BoardCard({ order, onMoved }) {
       </div>
       {next && (
         <button onClick={advance} disabled={busy} className="mt-3 w-full text-xs font-semibold text-third border border-third/30 rounded-lg py-2 hover:bg-third/5 disabled:opacity-50">
-          {busy ? "…" : `→ ${t(`stage.${next}`)}`}
+          {busy ? "…" : `→ ${order.type === "3pl" && next === "in_storage" ? t("staff.addToInventory") : t(`stage.${next}`)}`}
         </button>
       )}
     </div>
@@ -62,7 +65,7 @@ const Board = () => {
     setError(null);
     const { data, error: err } = await supabase
       .from("orders")
-      .select("id, order_number, stage, eta, prep_day, created_at, clients(company, email), order_items(expected_qty), shipments_inbound(id, status)")
+      .select("id, order_number, type, stage, eta, prep_day, created_at, clients(company, email), order_items(expected_qty), shipments_inbound(id, status)")
       .in("stage", BOARD_STAGES)
       .order("created_at", { ascending: true });
     if (err) setError(err.message);

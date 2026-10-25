@@ -4,6 +4,9 @@ import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
 import { useT } from "../i18n";
 import { CLIENT_STEPS, orderCode, subscribeToChanges } from "../lib/orders";
+
+const CLIENT_STEPS_3PL = ["awaiting_inventory", "received", "in_storage", "paid"];
+const PROGRESS_INDEX_3PL = { awaiting_inventory: 0, received: 1, discrepancy: 1, in_storage: 2, invoiced: 2, paid: 3 };
 import { Card, ErrorBanner, PageHeader, Spinner, StageBadge } from "../components/ui";
 import Timeline from "../components/order/Timeline";
 import ItemsTable from "../components/order/ItemsTable";
@@ -26,17 +29,19 @@ const PROGRESS_INDEX = {
 const RECEIVING_STAGES = new Set(["awaiting_inventory", "received", "discrepancy"]);
 const CLOSED_STAGES = new Set(["paid", "cancelled"]);
 
-function Progress({ stage }) {
+function Progress({ order }) {
   const { t } = useT();
-  const idx = PROGRESS_INDEX[stage];
+  const is3pl = order.type === "3pl";
+  const steps = is3pl ? CLIENT_STEPS_3PL : CLIENT_STEPS;
+  const idx = (is3pl ? PROGRESS_INDEX_3PL : PROGRESS_INDEX)[order.stage];
   if (idx == null) return null;
   return (
-    <ol className="grid grid-cols-6 gap-1 mb-6">
-      {CLIENT_STEPS.map((step, i) => (
+    <ol className={`grid gap-1 mb-6 ${is3pl ? "grid-cols-4" : "grid-cols-6"}`}>
+      {steps.map((step, i) => (
         <li key={step} className="min-w-0">
           <div className={`h-1.5 rounded-full ${i <= idx ? "bg-third" : "bg-gray-200"}`} />
           <p className={`text-[10px] sm:text-xs mt-1.5 truncate ${i === idx ? "text-primary font-semibold" : "text-gray-400"}`}>
-            {t(`stage.${step}`)}
+            {is3pl && step === "in_storage" ? t("stage.in_inventory") : t(`stage.${step}`)}
           </p>
         </li>
       ))}
@@ -47,18 +52,21 @@ function Progress({ stage }) {
 function Summary({ order }) {
   const { t, fmtDate, fmtMoney } = useT();
   const day = (d) => (d ? fmtDate(`${d}T12:00:00`) : "—");
+  const prep = order.type !== "3pl";
   const rows = [
+    [t("order.type"), t(`newOrder.type.${order.type}`)],
     [t("order.eta"), day(order.eta)],
-    [t("order.prepDay"), day(order.prep_day)],
-    [t("order.shipMethod"), t(`shipMethod.${order.ship_method}`)],
-    [t("order.shipmentCreator"), t(`shipmentCreator.${order.shipment_creator}`)],
+    prep && [t("order.prepDay"), day(order.prep_day)],
+    prep && [t("order.shipMethod"), t(`shipMethod.${order.ship_method}`)],
+    prep && [t("order.shipmentCreator"), t(`shipmentCreator.${order.shipment_creator}`)],
     [t("order.cases"), order.total_cases],
     [t("order.pallets"), order.pallets],
-    [t("order.storage"), t(`storage.${order.storage_requested}`)],
-    [t("order.extras"), order.extras?.length ? order.extras.map((x) => t(`extras.${x}`)).join(", ") : "—"],
+    prep && [t("order.storage"), t(`storage.${order.storage_requested}`)],
+    prep && [t("order.extras"), order.extras?.length ? order.extras.map((x) => t(`extras.${x}`)).join(", ") : "—"],
     [t("order.estimate"), fmtMoney(order.estimated_cost)],
     [t("order.invoiceNumber"), order.invoice_number || "—"],
-  ];
+    !prep && order.stocked_at && [t("order.stockedAt"), fmtDate(order.stocked_at)],
+  ].filter(Boolean);
   return (
     <>
       <dl className="grid grid-cols-2 gap-x-6 gap-y-3">
@@ -146,7 +154,14 @@ const OrderDetail = () => {
         <PageHeader
           title={`${t("orderDetail.title")} ${orderCode(order)}`}
           subtitle={isStaff ? `${order.clients?.company || "—"} · ${order.clients?.full_name || ""} ${order.clients?.email || ""}` : undefined}
-          action={<StageBadge stage={order.stage} />}
+          action={
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-bold uppercase tracking-wide text-third bg-third/10 px-2.5 py-1 rounded-full">
+                {order.type === "3pl" ? "3PL" : "PREP"}
+              </span>
+              <StageBadge stage={order.stage} />
+            </div>
+          }
         />
       </div>
 
@@ -163,7 +178,7 @@ const OrderDetail = () => {
         <div className="mb-5 bg-purple-50 border border-purple-200 text-purple-800 text-sm px-4 py-3 rounded-xl">{t("orderDetail.quoteBanner")}</div>
       )}
 
-      {!isStaff && <Progress stage={order.stage} />}
+      {!isStaff && <Progress order={order} />}
 
       <div className="grid lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">

@@ -99,12 +99,13 @@ export const pricingSections = [
     unit: { en: "/order", es: "/pedido" },
     rows: [
       {
+        id: "pick_small_medium_box",
         label: { en: "Small – Medium Box", es: "Caja Pequeña – Mediana" },
         price: 2.5,
       },
-      { label: { en: "Large Box", es: "Caja Grande" }, price: 3.5 },
-      { label: { en: "Bubble Mailer", es: "Sobre Burbuja" }, price: 1.8 },
-      { label: { en: "Poly Mailer", es: "Sobre Poly" }, price: 1.6 },
+      { id: "pick_large_box", label: { en: "Large Box", es: "Caja Grande" }, price: 3.5 },
+      { id: "pick_bubble_mailer", label: { en: "Bubble Mailer", es: "Sobre Burbuja" }, price: 1.8 },
+      { id: "pick_poly_mailer", label: { en: "Poly Mailer", es: "Sobre Poly" }, price: 1.6 },
     ],
   },
   {
@@ -118,14 +119,17 @@ export const pricingSections = [
     },
     rows: [
       {
+        id: "storage_bin",
         label: { en: "Bin (monthly)", es: "Bin (mensual)" },
         ...flat(10, { en: "/mo", es: "/mes" }),
       },
       {
+        id: "storage_shelf",
         label: { en: "Shelf (monthly)", es: "Estante (mensual)" },
         ...flat(20, { en: "/mo", es: "/mes" }),
       },
       {
+        id: "storage_pallet",
         label: { en: "Pallet (monthly)", es: "Pallet (mensual)" },
         ...flat(45, { en: "/mo", es: "/mes" }),
       },

@@ -33,6 +33,37 @@ export const NEXT_STAGES = {
   cancelled: ["awaiting_inventory"],
 };
 
+// 3PL inbounds end in stock: received units are posted to inventory when moved to in_storage.
+const NEXT_STAGES_3PL = {
+  ...NEXT_STAGES,
+  received: ["in_storage", "discrepancy"],
+  discrepancy: ["in_storage", "received", "cancelled"],
+  in_storage: ["invoiced"],
+};
+
+export const nextStages = (order) => (order.type === "3pl" ? NEXT_STAGES_3PL : NEXT_STAGES)[order.stage] ?? [];
+
+export const FULFILLMENT_STATUSES = ["pending", "on_hold", "picking", "packed", "shipped", "cancelled"];
+export const OPEN_FULFILLMENT = ["pending", "on_hold", "picking", "packed"];
+
+export const NEXT_FULFILLMENT = {
+  pending: ["picking", "on_hold", "cancelled"],
+  on_hold: ["pending", "cancelled"],
+  picking: ["packed", "pending", "cancelled"],
+  packed: ["shipped", "picking", "cancelled"],
+  shipped: [],
+  cancelled: [],
+};
+
+export const FULFILLMENT_STYLE = {
+  pending: "bg-gray-100 text-gray-700 border border-gray-200",
+  on_hold: "bg-red-50 text-red-700 border border-red-200",
+  picking: "bg-indigo-50 text-indigo-700 border border-indigo-200",
+  packed: "bg-teal-50 text-teal-700 border border-teal-200",
+  shipped: "bg-green-50 text-green-700 border border-green-200",
+  cancelled: "bg-gray-100 text-gray-400 border border-gray-200 line-through",
+};
+
 export const STAGE_STYLE = {
   quote: "bg-purple-50 text-purple-700 border border-purple-200",
   awaiting_inventory: "bg-gray-100 text-gray-700 border border-gray-200",
@@ -105,17 +136,29 @@ export async function setStage(orderId, stage, note) {
   syncAsana(orderId);
 }
 
-export async function uploadOrderFile(orderId, file, kind) {
+async function uploadFile(table, ownerColumn, ownerId, file, kind) {
   const safe = file.name.replace(/[^\w.-]+/g, "_").slice(-80);
-  const path = `${orderId}/${Date.now()}-${safe}`;
+  const path = `${ownerId}/${Date.now()}-${safe}`;
   const { error: upErr } = await supabase.storage.from("order-files").upload(path, file, { contentType: file.type });
   if (upErr) throw upErr;
-  const { error } = await supabase.from("order_files").insert({ order_id: orderId, kind, storage_path: path, file_name: file.name });
+  const { error } = await supabase.from(table).insert({ [ownerColumn]: ownerId, kind, storage_path: path, file_name: file.name });
   if (error) {
     await supabase.storage.from("order-files").remove([path]);
     throw error;
   }
 }
+
+export const uploadOrderFile = (orderId, file, kind) => uploadFile("order_files", "order_id", orderId, file, kind);
+
+export const uploadFulfillmentFile = (fulfillmentId, file, kind = "label") =>
+  uploadFile("fulfillment_files", "fulfillment_id", fulfillmentId, file, kind);
+
+export async function setFulfillmentStatus(id, status, note) {
+  const { error } = await supabase.rpc("set_fulfillment_status", { p_id: id, p_status: status, p_note: note || null });
+  if (error) throw error;
+}
+
+export const fulfillmentCode = (f) => `#${f.number}`;
 
 export async function openOrderFile(path) {
   const { data, error } = await supabase.storage.from("order-files").createSignedUrl(path, 600);

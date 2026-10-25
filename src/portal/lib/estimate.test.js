@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estimateOrder, volumeDiscount } from "./estimate";
+import { estimateMonth, estimateOrder, volumeDiscount } from "./estimate";
 
 describe("volumeDiscount", () => {
   it("follows the public tiers", () => {
@@ -40,5 +40,23 @@ describe("estimateOrder", () => {
 
   it("ignores empty or invalid quantities", () => {
     expect(estimateOrder({ items: [{ expected_qty: "" }, { expected_qty: -3 }] })).toMatchObject({ units: 0, total: 0 });
+  });
+});
+
+describe("estimateMonth", () => {
+  it("prices pick & pack per order plus monthly storage", () => {
+    const est = estimateMonth({
+      shippedPackagings: ["small_medium_box", "small_medium_box", "poly_mailer"],
+      bins: 2,
+      pallets: 1,
+    });
+    // 2×2.50 + 1×1.60 + 2×10 + 1×45
+    expect(est.orders).toBe(3);
+    expect(est.total).toBe(71.6);
+  });
+
+  it("applies the volume tier by monthly order count", () => {
+    const est = estimateMonth({ shippedPackagings: Array(600).fill("large_box") });
+    expect(est.lines[0].rate).toBe(3.15);
   });
 });
