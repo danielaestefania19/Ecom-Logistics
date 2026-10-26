@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
+import { callFunction } from "../lib/orders";
 
 // ─── Invite form component ─────────────────────────────────────────────────────
 function InviteForm({ session, onSuccess }) {
@@ -101,7 +102,24 @@ function EditModal({ client, onClose, onSaved }) {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState(null);
 
+  const [linking, setLinking] = useState(false);
+
   const handle = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  // Saved server-side right away, so it sticks even if the modal is cancelled.
+  const linkStripe = async () => {
+    setLinking(true);
+    setError(null);
+    try {
+      const res = await callFunction("stripe-billing", { action: "ensure_customer", client_id: client.id });
+      setForm((f) => ({ ...f, stripe_customer_id: res.customer_id }));
+      onSaved();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLinking(false);
+    }
+  };
 
   const save = async (e) => {
     e.preventDefault();
@@ -178,7 +196,20 @@ function EditModal({ client, onClose, onSaved }) {
           </div>
           <div>
             <label className="block text-xs font-semibold text-gray-500 mb-1">Stripe Customer ID</label>
-            <input name="stripe_customer_id" value={form.stripe_customer_id} onChange={handle} className={inputCls} placeholder="cus_..." />
+            <div className="flex gap-2">
+              <input name="stripe_customer_id" value={form.stripe_customer_id} onChange={handle} className={inputCls} placeholder="cus_..." />
+              {!form.stripe_customer_id && (
+                <button
+                  type="button"
+                  onClick={linkStripe}
+                  disabled={linking}
+                  className="shrink-0 border border-gray-200 text-third font-semibold text-xs px-3 rounded-xl hover:bg-gray-50 transition disabled:opacity-50"
+                  title="Reuses the Stripe customer with this client's email, or creates one"
+                >
+                  {linking ? "Linking…" : "Create / link"}
+                </button>
+              )}
+            </div>
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="flex gap-3 pt-1">

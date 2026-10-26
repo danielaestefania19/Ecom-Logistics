@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estimateMonth, estimateOrder, volumeDiscount } from "./estimate";
+import { estimateMonth, estimateOrder, invoiceLines, volumeDiscount } from "./estimate";
 
 describe("volumeDiscount", () => {
   it("follows the public tiers", () => {
@@ -40,6 +40,35 @@ describe("estimateOrder", () => {
 
   it("ignores empty or invalid quantities", () => {
     expect(estimateOrder({ items: [{ expected_qty: "" }, { expected_qty: -3 }] })).toMatchObject({ units: 0, total: 0 });
+  });
+});
+
+describe("invoiceLines", () => {
+  const labels = { prep_standard: "Prep", case_receiving: "Cases" };
+
+  it("bills prepped units, then counted, then expected", () => {
+    const lines = invoiceLines(
+      {
+        type: "prep",
+        total_cases: 2,
+        pallets: 0,
+        order_items: [
+          { expected_qty: 100, received_qty: 98, prepped_qty: 97 },
+          { expected_qty: 50, received_qty: 0, prepped_qty: 0 },
+          { expected_qty: 10, received_qty: null, prepped_qty: 0 },
+        ],
+      },
+      labels,
+    );
+    expect(lines).toEqual([
+      { description: "Prep", quantity: 107, unit_amount: 70 },
+      { description: "Cases", quantity: 2, unit_amount: 300 },
+    ]);
+  });
+
+  it("leaves prep off 3PL inbound orders", () => {
+    const lines = invoiceLines({ type: "3pl", total_cases: 3, order_items: [{ expected_qty: 40 }] }, labels);
+    expect(lines.map((l) => l.description)).toEqual(["Cases"]);
   });
 });
 

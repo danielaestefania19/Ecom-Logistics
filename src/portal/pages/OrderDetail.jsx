@@ -12,7 +12,7 @@ import Timeline from "../components/order/Timeline";
 import ItemsTable from "../components/order/ItemsTable";
 import TrackingPanel from "../components/order/TrackingPanel";
 import FilesPanel from "../components/order/FilesPanel";
-import { Checklist, NoteForm, OrderAdminFields, StageActions } from "../components/order/StaffPanel";
+import { Checklist, NoteForm, OrderAdminFields, StageActions, StripeInvoice } from "../components/order/StaffPanel";
 import ScanPanel from "../components/order/ScanPanel";
 import { scanModeFor } from "../lib/scan";
 
@@ -106,7 +106,7 @@ const OrderDetail = () => {
     setError(null);
     const { data, error: err } = await supabase
       .from("orders")
-      .select(`*, clients(company, full_name, email, phone),
+      .select(`*, clients(company, full_name, email, phone, language),
                order_items(*), order_events(*), order_files(*),
                shipments_inbound(*, tracking_events(*))`)
       .eq("id", id)
@@ -234,6 +234,7 @@ const OrderDetail = () => {
               </Card>
               <Card title={t("staff.planningBilling")}>
                 <OrderAdminFields order={order} onChanged={load} />
+                <StripeInvoice order={order} onChanged={load} />
               </Card>
             </>
           )}

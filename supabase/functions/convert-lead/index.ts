@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { adminClient, corsHeaders, json, SUPABASE_URL } from "../_shared/http.ts";
+import { ensureStripeCustomer } from "../_shared/stripe.ts";
 
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const PORTAL_SET_PASSWORD_URL = "https://ecomlogisticsus.com/portal/set-password";
@@ -68,6 +69,14 @@ Deno.serve(async (req: Request) => {
       if (error) throw new Error(error.message);
     }
 
+    // Best effort: a Stripe hiccup must not undo the conversion; staff can link it later from Admin.
+    let stripeCustomerId: string | null = null;
+    try {
+      stripeCustomerId = (await ensureStripeCustomer(admin, clientId)).id;
+    } catch (err) {
+      console.error("convert-lead stripe:", (err as Error).message);
+    }
+
     await admin.from("leads").update({ status: "won", converted_client_id: clientId }).eq("id", lead_id);
     await admin.from("lead_activities").insert({
       lead_id,
@@ -76,7 +85,7 @@ Deno.serve(async (req: Request) => {
       actor_id: user.id,
     });
 
-    return json({ ok: true, client_id: clientId, invited });
+    return json({ ok: true, client_id: clientId, invited, stripe_customer_id: stripeCustomerId });
   } catch (err) {
     console.error("convert-lead error:", (err as Error).message);
     return json({ error: (err as Error).message }, 500);

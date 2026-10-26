@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useAuth } from "../../AuthContext";
 import { useT } from "../../i18n";
-import { nextStages, setStage, syncAsana } from "../../lib/orders";
+import { invoiceLines } from "../../lib/estimate";
+import { callFunction, nextStages, setStage, syncAsana } from "../../lib/orders";
+import { STRINGS } from "../../strings";
 import { btnPrimary, btnSecondary, ErrorBanner, Field, inputCls } from "../ui";
 
 const STAGE_ORDER = ["received", "prepped", "in_storage", "shipped", "invoiced"];
@@ -173,6 +175,65 @@ export function OrderAdminFields({ order, onChanged }) {
       </div>
       {error && <ErrorBanner message={error} />}
     </form>
+  );
+}
+
+const stripeInvoiceUrl = (id) => `https://dashboard.stripe.com/invoices/${id}`;
+
+// Drafts the order's invoice in Stripe; finalizing and payment then come back through the webhook.
+export function StripeInvoice({ order, onChanged }) {
+  const { t, fmtMoney, fmtDate } = useT();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  const [draftUrl, setDraftUrl] = useState(null);
+
+  const labels = STRINGS[order.clients?.language === "es" ? "es" : "en"].estimate.line;
+  const lines = useMemo(() => invoiceLines(order, labels), [order, labels]);
+  const total = lines.reduce((n, l) => n + l.quantity * l.unit_amount, 0) / 100;
+
+  const createDraft = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await callFunction("stripe-billing", { action: "create_invoice_draft", order_id: order.id, lines });
+      setDraftUrl(res.dashboard_url);
+      onChanged();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="mt-5 pt-5 border-t border-gray-100 space-y-3">
+      {order.invoice_paid_at && (
+        <p className="text-sm font-semibold text-green-700">✓ {t("staff.invoicePaid", { date: fmtDate(order.invoice_paid_at) })}</p>
+      )}
+      {order.stripe_invoice_id ? (
+        <>
+          {draftUrl && <p className="text-sm text-green-700">{t("staff.invoiceDraftDone")}</p>}
+          <a
+            href={draftUrl ?? stripeInvoiceUrl(order.stripe_invoice_id)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-sm font-semibold text-third hover:underline"
+          >
+            {t("staff.openInStripe")} ↗
+          </a>
+        </>
+      ) : lines.length ? (
+        <>
+          <p className="text-xs text-gray-500">{t("staff.invoiceDraftHint", { total: fmtMoney(total) })}</p>
+          <button type="button" onClick={createDraft} disabled={busy} className={btnPrimary}>
+            {busy ? t("common.saving") : t("staff.invoiceDraft")}
+          </button>
+        </>
+      ) : (
+        <p className="text-xs text-gray-400">{t("staff.invoiceDraftEmpty")}</p>
+      )}
+      {error && <ErrorBanner message={error} />}
+    </div>
   );
 }
 

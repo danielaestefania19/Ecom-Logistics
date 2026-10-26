@@ -42,6 +42,23 @@ export function estimateOrder({ items, totalCases = 0, pallets = 0, extras = [] 
   return { units, discount, lines: priced, total: roundCents(priced.reduce((n, l) => n + l.total, 0)) };
 }
 
+// Bill what was actually prepped (or counted), falling back to what the order expected.
+const billedQty = (i) => (i.prepped_qty > 0 ? i.prepped_qty : i.received_qty ?? i.expected_qty);
+
+// Lines for the Stripe invoice draft (unit amounts in cents). 3PL inbound orders bill receiving
+// only: their pick & pack and storage are billed by month.
+export function invoiceLines(order, labels) {
+  const est = estimateOrder({
+    items: order.order_items.map((i) => ({ ...i, expected_qty: billedQty(i) })),
+    totalCases: order.total_cases,
+    pallets: order.pallets,
+    extras: order.extras ?? [],
+  });
+  return est.lines
+    .filter((l) => order.type !== "3pl" || !l.key.startsWith("prep_"))
+    .map((l) => ({ description: labels[l.key] ?? l.key, quantity: l.qty, unit_amount: Math.round(l.rate * 100) }));
+}
+
 // 3PL month to date: pick & pack per shipped order (tier set by the month's order count) + storage held.
 export function estimateMonth({ shippedPackagings = [], bins = 0, shelves = 0, pallets = 0 }) {
   const orders = shippedPackagings.length;

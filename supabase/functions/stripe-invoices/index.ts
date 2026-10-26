@@ -71,7 +71,9 @@ Deno.serve(async (req: Request) => {
       `/invoices?customer=${stripeCustomerId}&limit=25`
     );
 
-    const invoices = (invoiceData.data ?? []).map((inv: any) => ({
+    // Drafts are still being reviewed by staff; clients only see invoices that were issued.
+    const issued = (invoiceData.data ?? []).filter((inv: any) => inv.status !== "draft");
+    const invoices = issued.map((inv: any) => ({
       id: inv.id,
       number: inv.number,
       description: inv.description ||

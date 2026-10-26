@@ -28,6 +28,13 @@ verify_jwt = true
 [functions.notify]
 verify_jwt = false
 
+[functions.stripe-billing]
+verify_jwt = true
+
+# Called by Stripe; authenticated by the Stripe-Signature header.
+[functions.stripe-webhook]
+verify_jwt = false
+
 # Called by EasyPost; authenticated by HMAC signature.
 [functions.tracking-webhook]
 verify_jwt = false

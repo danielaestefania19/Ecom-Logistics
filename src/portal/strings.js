@@ -202,6 +202,8 @@ export const STRINGS = {
       notes: {
         order_submitted: "Order submitted.",
         carrier_delivered: "The carrier delivered your shipment to our warehouse. We'll count it shortly.",
+        stripe_invoiced: "Invoice sent from Stripe.",
+        stripe_paid: "Invoice paid. Thank you!",
       },
     },
     files: {
@@ -221,6 +223,12 @@ export const STRINGS = {
       checklist: "Checklist",
       planningBilling: "Planning & billing",
       addToInventory: "Add to inventory",
+      invoiceDraft: "Create invoice draft in Stripe",
+      invoiceDraftHint: "Built from the units counted and the extras ({total}). Review it in Stripe and send it from there.",
+      invoiceDraftEmpty: "Nothing billable on this order yet.",
+      invoiceDraftDone: "Draft created. Review and send it in Stripe.",
+      openInStripe: "Open in Stripe",
+      invoicePaid: "Paid in Stripe on {date}",
     },
     checklist: {
       docs_verified: "Documents verified",
@@ -791,6 +799,8 @@ export const STRINGS = {
       notes: {
         order_submitted: "Orden enviada.",
         carrier_delivered: "El carrier entregó tu envío en nuestro almacén. Lo contaremos en breve.",
+        stripe_invoiced: "Factura enviada desde Stripe.",
+        stripe_paid: "Factura pagada. ¡Gracias!",
       },
     },
     files: {
@@ -810,6 +820,12 @@ export const STRINGS = {
       checklist: "Checklist",
       planningBilling: "Planificación y facturación",
       addToInventory: "Agregar al inventario",
+      invoiceDraft: "Crear borrador de factura en Stripe",
+      invoiceDraftHint: "Se arma con las unidades contadas y los extras ({total}). Revísala en Stripe y envíala desde ahí.",
+      invoiceDraftEmpty: "Esta orden todavía no tiene nada que facturar.",
+      invoiceDraftDone: "Borrador creado. Revísalo y envíalo en Stripe.",
+      openInStripe: "Abrir en Stripe",
+      invoicePaid: "Pagada en Stripe el {date}",
     },
     checklist: {
       docs_verified: "Documentación verificada",

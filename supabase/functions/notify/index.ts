@@ -170,10 +170,63 @@ async function buildLead(admin: SupabaseClient, id: string): Promise<Built | nul
   };
 }
 
+const WELCOME: Record<Lang, { subject: string; intro: string; ask: string; questions: string[]; close: string; cta: string; footer: string }> = {
+  en: {
+    subject: "Thanks for contacting Ecom Logistics",
+    intro: "Thanks for reaching out! We received your request and someone from our team will contact you shortly.",
+    ask: "To prepare a proposal that fits your business, could you reply to this email with:",
+    questions: [
+      "What products do you sell, and how many SKUs?",
+      "Do you work with another prep center or 3PL today, or do you handle it yourself?",
+      "When would you like to send your first shipment?",
+    ],
+    close: "Talk soon,<br>The Ecom Logistics team",
+    cta: "See our pricing",
+    footer: "You're receiving this because you filled out the form at ecomlogisticsus.com. Phone: +1 (341) 208-9445.",
+  },
+  es: {
+    subject: "Gracias por contactar a Ecom Logistics",
+    intro: "¡Gracias por escribirnos! Recibimos tu solicitud y pronto alguien de nuestro equipo se pondrá en contacto contigo.",
+    ask: "Para preparar una propuesta a la medida de tu negocio, ¿podrías responder este correo con:",
+    questions: [
+      "¿Qué productos vendes y cuántos SKUs manejas?",
+      "¿Trabajas hoy con otro prep center o 3PL, o lo haces tú mismo?",
+      "¿Cuándo te gustaría enviar tu primer envío?",
+    ],
+    close: "Saludos,<br>El equipo de Ecom Logistics",
+    cta: "Ver nuestros precios",
+    footer: "Recibes este correo porque llenaste el formulario en ecomlogisticsus.com. Teléfono: +1 (341) 208-9445.",
+  },
+};
+
+// First touch to the prospect; their reply lands in sales@ and the team takes it from there.
+async function buildLeadWelcome(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const { data: lead } = await admin.from("leads").select("email, first_name, language").eq("id", id).single();
+  if (!lead?.email) return null;
+  const l = lang(lead.language);
+  const w = WELCOME[l];
+  return {
+    to: lead.email,
+    subject: w.subject,
+    content: {
+      heading: w.subject,
+      paragraphs: [
+        greeting(l, lead.first_name).replace(/,$/, l === "es" ? ", ¿cómo estás?" : ", how are you?"),
+        escapeHtml(w.intro),
+        `${escapeHtml(w.ask)}<br>${w.questions.map((q) => `• ${escapeHtml(q)}`).join("<br>")}`,
+        w.close,
+      ],
+      cta: { label: w.cta, url: "https://ecomlogisticsus.com/pricing" },
+      footer: w.footer,
+    },
+  };
+}
+
 const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Built | null>> = {
   order_stage: buildOrderStage,
   fulfillment_status: buildFulfillment,
   lead_new: buildLead,
+  lead_welcome: buildLeadWelcome,
 };
 
 Deno.serve(async (req: Request) => {
