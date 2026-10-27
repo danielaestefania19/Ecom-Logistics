@@ -8,7 +8,7 @@ import { escapeHtml, layout, plainText, PORTAL_URL, SALES_EMAIL, sendEmail } fro
 type Lang = "en" | "es";
 type Built = { to: string; subject: string; replyTo?: string; content: Parameters<typeof layout>[0] };
 
-const NOTE_CODES = new Set(["order_submitted", "carrier_delivered"]);
+const NOTE_CODES = new Set(["order_submitted", "carrier_delivered", "stripe_invoiced", "stripe_paid", "stage_reverted"]);
 
 const FOOTER: Record<Lang, string> = {
   en: "You're receiving this because you have an account in the Ecom Logistics client portal. Reply to this email to reach our team.",
@@ -222,11 +222,76 @@ async function buildLeadWelcome(admin: SupabaseClient, id: string): Promise<Buil
   };
 }
 
+async function loadRelease(admin: SupabaseClient, id: string) {
+  const { data } = await admin
+    .from("storage_releases")
+    .select("id, number, notes, tracking, orders(id, order_number, clients(email, full_name, company, language)), storage_release_lines(qty, order_items(sku, product_name))")
+    .eq("id", id)
+    .single();
+  return data as any;
+}
+
+const releaseRows = (r: any): [string, string][] =>
+  (r.storage_release_lines ?? []).map((l: any) => [l.order_items.sku, `${l.qty}${l.order_items.product_name ? ` · ${l.order_items.product_name}` : ""}`]);
+
+// Internal, in Spanish: a client asked to send stored units out.
+async function buildReleaseRequested(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const r = await loadRelease(admin, id);
+  if (!r) return null;
+  const client = r.orders.clients;
+  const who = client.company || client.full_name || client.email;
+  return {
+    to: SALES_EMAIL,
+    replyTo: client.email ?? undefined,
+    subject: `Envío desde storage #${r.number} · Orden #${r.orders.order_number} · ${who}`,
+    content: {
+      heading: `${who} pidió enviar mercancía desde storage`,
+      paragraphs: [
+        `Solicitud #${r.number} de la orden #${r.orders.order_number}. Prepárala y márcala como enviada en el portal.`,
+        ...(r.notes ? [`<em>“${escapeHtml(r.notes)}”</em>`] : []),
+      ],
+      rows: releaseRows(r),
+      cta: { label: "Abrir orden en el portal", url: `${PORTAL_URL}/orders/${r.orders.id}` },
+      footer: "Aviso automático del portal de Ecom Logistics.",
+    },
+  };
+}
+
+async function buildReleaseShipped(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const r = await loadRelease(admin, id);
+  const client = r?.orders?.clients;
+  if (!r || !client?.email) return null;
+  const l = lang(client.language);
+  const es = l === "es";
+  const rows = releaseRows(r);
+  if (r.tracking) rows.push([UI[l].tracking, r.tracking]);
+  return {
+    to: client.email,
+    subject: es ? `Enviamos tus unidades desde storage (#${r.number})` : `Your stored units shipped (#${r.number})`,
+    content: {
+      heading: es ? `Salió tu envío desde storage #${r.number}` : `Your storage shipment #${r.number} is on its way`,
+      paragraphs: [
+        greeting(l, client.full_name),
+        escapeHtml(
+          es
+            ? `Enviamos estas unidades de tu orden #${r.orders.order_number} que estaban en storage.`
+            : `We shipped these units from storage for your order #${r.orders.order_number}.`,
+        ),
+      ],
+      rows,
+      cta: { label: UI[l].view, url: `${PORTAL_URL}/orders/${r.orders.id}` },
+      footer: FOOTER[l],
+    },
+  };
+}
+
 const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Built | null>> = {
   order_stage: buildOrderStage,
   fulfillment_status: buildFulfillment,
   lead_new: buildLead,
   lead_welcome: buildLeadWelcome,
+  release_requested: buildReleaseRequested,
+  release_shipped: buildReleaseShipped,
 };
 
 Deno.serve(async (req: Request) => {
