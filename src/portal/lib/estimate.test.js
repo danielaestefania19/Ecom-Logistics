@@ -46,14 +46,14 @@ describe("estimateOrder", () => {
 describe("invoiceLines", () => {
   const labels = { prep_standard: "Prep", case_receiving: "Cases" };
 
-  it("bills prepped units, then counted, then expected", () => {
+  it("bills good units counted at receiving, else expected, ignoring a partial FNSKU scan", () => {
     const lines = invoiceLines(
       {
         type: "prep",
         total_cases: 2,
         pallets: 0,
         order_items: [
-          { expected_qty: 100, received_qty: 98, prepped_qty: 97 },
+          { expected_qty: 100, received_qty: 98, damaged_qty: 1, prepped_qty: 5 },
           { expected_qty: 50, received_qty: 0, prepped_qty: 0 },
           { expected_qty: 10, received_qty: null, prepped_qty: 0 },
         ],
@@ -61,9 +61,24 @@ describe("invoiceLines", () => {
       labels,
     );
     expect(lines).toEqual([
-      { description: "Prep", quantity: 107, unit_amount: 70 },
-      { description: "Cases", quantity: 2, unit_amount: 300 },
+      { key: "prep_standard", description: "Prep", quantity: 107, unit_amount: 70 },
+      { key: "case_receiving", description: "Cases", quantity: 2, unit_amount: 300 },
     ]);
+  });
+
+  it("keeps the volume discount of the full received order (order #1012 case)", () => {
+    const lines = invoiceLines(
+      {
+        type: "prep",
+        total_cases: 8,
+        order_items: [
+          { expected_qty: 1000, received_qty: 1000, damaged_qty: 1, prepped_qty: 1 },
+          { expected_qty: 250, received_qty: 250, prepped_qty: 250 },
+        ],
+      },
+      labels,
+    );
+    expect(lines[0]).toEqual({ key: "prep_standard", description: "Prep", quantity: 1249, unit_amount: 63 });
   });
 
   it("leaves prep off 3PL inbound orders", () => {

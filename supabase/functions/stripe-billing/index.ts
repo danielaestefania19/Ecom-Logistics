@@ -6,7 +6,7 @@ import { ensureStripeCustomer, stripe } from "../_shared/stripe.ts";
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 const DAYS_UNTIL_DUE = 7;
 
-type Line = { description: string; quantity: number; unit_amount: number };
+type Line = { key: string | null; description: string; quantity: number; unit_amount: number };
 
 // Staff-only Stripe actions: link a client to a Stripe customer, or draft an order's invoice.
 // Drafts are never sent from here; staff review and send them in Stripe.
@@ -26,6 +26,23 @@ Deno.serve(async (req: Request) => {
       if (!body.client_id) return json({ error: "client_id is required" }, 400);
       const customer = await ensureStripeCustomer(admin, body.client_id);
       return json({ ok: true, customer_id: customer.id, created: customer.created });
+    }
+
+    // Read-only view of the Stripe catalog, to map portal billing lines to existing products.
+    if (body.action === "catalog") {
+      const [products, prices] = await Promise.all([
+        stripe("GET", "/products", { active: true, limit: 100 }),
+        stripe("GET", "/prices", { active: true, limit: 100 }),
+      ]);
+      return json({
+        products: products.data.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          prices: prices.data
+            .filter((pr: any) => pr.product === p.id)
+            .map((pr: any) => ({ id: pr.id, unit_amount_decimal: pr.unit_amount_decimal, recurring: !!pr.recurring, nickname: pr.nickname })),
+        })),
+      });
     }
 
     if (body.action === "create_invoice_draft") {
@@ -51,13 +68,19 @@ Deno.serve(async (req: Request) => {
         description: `Order #${order.order_number} · ${service}`,
         metadata: { portal_order_id: order.id, order_number: order.order_number },
       });
+      // Lines map to the existing Stripe products (portal_config.stripe_products) at this order's
+      // price, so drafts read "PREP - BASIC STANDARD · 1249 × $0.63" and Stripe reports by product.
+      const { data: cfg } = await admin.from("portal_config").select("value").eq("key", "stripe_products").maybeSingle();
+      const productFor: Record<string, string> = cfg?.value ? JSON.parse(cfg.value) : {};
       for (const l of lines) {
+        const product = l.key && productFor[l.key];
         await stripe("POST", "/invoiceitems", {
           customer: customer.id,
           invoice: invoice.id,
-          currency: "usd",
-          amount: Math.round(l.quantity * l.unit_amount),
-          description: `${l.description} — ${l.quantity} × $${(l.unit_amount / 100).toFixed(2)}`,
+          quantity: l.quantity,
+          ...(product
+            ? { price_data: { currency: "usd", product, unit_amount_decimal: l.unit_amount } }
+            : { currency: "usd", unit_amount_decimal: l.unit_amount, description: l.description }),
         });
       }
 
@@ -78,8 +101,9 @@ Deno.serve(async (req: Request) => {
 function validLines(raw: unknown): Line[] | null {
   if (!Array.isArray(raw) || !raw.length || raw.length > 40) return null;
   const lines = raw.map((l) => ({
+    key: typeof l?.key === "string" ? l.key : null,
     description: typeof l?.description === "string" ? l.description.trim().slice(0, 200) : "",
-    quantity: Number(l?.quantity),
+    quantity: Math.round(Number(l?.quantity)),
     unit_amount: Number(l?.unit_amount),
   }));
   const ok = lines.every(

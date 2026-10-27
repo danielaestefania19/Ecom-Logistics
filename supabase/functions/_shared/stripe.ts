@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "jsr:@supabase/supabase-js@2";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY") ?? "";
+// Pinned so request shapes (invoice item quantity × unit price) don't change with the account default.
+const STRIPE_VERSION = "2025-02-24.acacia";
 
 type Params = Record<string, unknown>;
 
@@ -23,6 +25,7 @@ export async function stripe(method: "GET" | "POST", path: string, params: Param
     method,
     headers: {
       Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+      "Stripe-Version": STRIPE_VERSION,
       ...(method === "POST" ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
     },
     body: method === "POST" ? encode(params) : undefined,
