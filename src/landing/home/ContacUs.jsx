@@ -45,6 +45,7 @@ const EMPTY_FORM = {
 
 const ContactUs = () => {
   const { t } = useLanguage();
+  const req = (key) => `${t(key)} *`;
 
   const [formData, setFormData] = useState(EMPTY_FORM);
 
@@ -102,6 +103,8 @@ const ContactUs = () => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const numberRegex = /^[0-9]+$/;
+    // Accept the usual ways people type phones: "+1 (341) 208-9445", "341.208.9445"…
+    const phoneOk = (p) => /^[0-9+()\-.\s]+$/.test(p) && p.replace(/\D/g, "").length >= 7 && p.replace(/\D/g, "").length <= 15;
     const newErrors = {};
 
     if (!firstName?.trim()) newErrors.firstName = t("errorFirstNameRequired");
@@ -119,7 +122,7 @@ const ContactUs = () => {
 
     if (!phone?.trim()) {
       newErrors.phone = t("errorPhoneRequired");
-    } else if (!numberRegex.test(phone)) {
+    } else if (!phoneOk(phone)) {
       newErrors.phone = t("errorPhoneInvalid");
     }
 
@@ -210,13 +213,15 @@ const ContactUs = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
+          <p className="md:col-span-2 text-sm font-semibold text-primary">{t("formSectionRequired")}</p>
+
           {/* First Name */}
           <div className="flex flex-col gap-1">
             <Input
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              placeholder={t("formFirstName")}
+              placeholder={req("formFirstName")}
               variant="bordered"
               color="primary"
               className={errors.firstName ? "border-red-500" : ""}
@@ -232,7 +237,7 @@ const ContactUs = () => {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              placeholder={t("formLastName")}
+              placeholder={req("formLastName")}
               variant="bordered"
               color="primary"
               className={errors.lastName ? "border-red-500" : ""}
@@ -248,7 +253,7 @@ const ContactUs = () => {
               name="companyName"
               value={formData.companyName}
               onChange={handleChange}
-              placeholder={t("formCompany")}
+              placeholder={req("formCompany")}
               variant="bordered"
               color="primary"
               className={errors.companyName ? "border-red-500" : ""}
@@ -264,7 +269,7 @@ const ContactUs = () => {
               name="companyWebsite"
               value={formData.companyWebsite}
               onChange={handleChange}
-              placeholder={t("formCompanyWebsite")}
+              placeholder={req("formCompanyWebsite")}
               variant="bordered"
               color="primary"
               className={errors.companyWebsite ? "border-red-500" : ""}
@@ -280,7 +285,7 @@ const ContactUs = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder={t("formEmail")}
+              placeholder={req("formEmail")}
               variant="bordered"
               color="primary"
               className={errors.email ? "border-red-500" : ""}
@@ -296,7 +301,7 @@ const ContactUs = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder={t("formPhone")}
+              placeholder={req("formPhone")}
               variant="bordered"
               color="primary"
               className={errors.phone ? "border-red-500" : ""}
@@ -313,7 +318,7 @@ const ContactUs = () => {
               onSelectionChange={(keys) =>
                 handleSelectChange("language", [...keys][0])
               }
-              placeholder={t("formLanguage")}
+              placeholder={req("formLanguage")}
               variant="bordered"
               color="primary"
               className={errors.language ? "border-red-500" : ""}
@@ -332,7 +337,7 @@ const ContactUs = () => {
               name="unitsPerMonth"
               value={formData.unitsPerMonth}
               onChange={handleChange}
-              placeholder={t("formUnits")}
+              placeholder={req("formUnits")}
               variant="bordered"
               color="primary"
               className={errors.unitsPerMonth ? "border-red-500" : ""}
@@ -348,7 +353,7 @@ const ContactUs = () => {
               name="shipmentsPerMonth"
               value={formData.shipmentsPerMonth}
               onChange={handleChange}
-              placeholder={t("formShipments")}
+              placeholder={req("formShipments")}
               variant="bordered"
               color="primary"
               className={errors.shipmentsPerMonth ? "border-red-500" : ""}
@@ -365,7 +370,7 @@ const ContactUs = () => {
               onSelectionChange={(keys) =>
                 handleSelectChange("serviceType", [...keys][0])
               }
-              placeholder={t("formServiceType")}
+              placeholder={req("formServiceType")}
               variant="bordered"
               color="primary"
               className={errors.serviceType ? "border-red-500" : ""}
@@ -382,7 +387,7 @@ const ContactUs = () => {
           {/* State */}
           <div className="flex flex-col gap-1">
             <Autocomplete
-              placeholder={t("formSelectState")}
+              placeholder={req("formSelectState")}
               color="primary"
               variant="bordered"
               selectedKey={selectedState}
@@ -407,7 +412,7 @@ const ContactUs = () => {
           <div className="flex flex-col gap-1">
             <Autocomplete
               placeholder={
-                selectedState ? t("formSelectCity") : t("formSelectStateFirst")
+                selectedState ? req("formSelectCity") : t("formSelectStateFirst")
               }
               className={`w-full ${errors.city ? "border-red-500" : ""}`}
               selectedKey={formData.city}
@@ -440,7 +445,7 @@ const ContactUs = () => {
               onSelectionChange={(keys) =>
                 handleSelectChange("heardFrom", [...keys][0])
               }
-              placeholder={t("formHeardFrom")}
+              placeholder={req("formHeardFrom")}
               variant="bordered"
               color="primary"
               className={errors.heardFrom ? "border-red-500" : ""}
@@ -453,6 +458,23 @@ const ContactUs = () => {
             </Select>
             {errors.heardFrom && (
               <p className="text-red-500 text-sm">{errors.heardFrom}</p>
+            )}
+          </div>
+
+          {/* Message */}
+          <div className="md:col-span-2 flex flex-col gap-1">
+            <Textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder={req("formMessage")}
+              variant="bordered"
+              color="primary"
+              minRows={4}
+              className={errors.message ? "border-red-500" : ""}
+            />
+            {errors.message && (
+              <p className="text-red-500 text-sm">{errors.message}</p>
             )}
           </div>
 
@@ -532,23 +554,6 @@ const ContactUs = () => {
             aria-hidden="true"
             className="hidden"
           />
-
-          {/* Message */}
-          <div className="md:col-span-2 flex flex-col gap-1">
-            <Textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder={t("formMessage")}
-              variant="bordered"
-              color="primary"
-              minRows={4}
-              className={errors.message ? "border-red-500" : ""}
-            />
-            {errors.message && (
-              <p className="text-red-500 text-sm">{errors.message}</p>
-            )}
-          </div>
 
           {/* Submit Button */}
           <div className="md:col-span-2 flex justify-center mt-4">
