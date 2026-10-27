@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import { useAuth } from "../../AuthContext";
 import { useT } from "../../i18n";
@@ -207,9 +207,45 @@ function ConvertCard({ lead, onChanged }) {
   );
 }
 
+// Admin only, and not for converted leads (RLS enforces both).
+function DeleteCard({ lead }) {
+  const { t } = useT();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
+  const remove = async () => {
+    if (!window.confirm(t("leads.deleteConfirm", { n: lead.number }))) return;
+    setBusy(true);
+    setError(null);
+    const { data, error: err } = await supabase.from("leads").delete().eq("id", lead.id).select("id");
+    setBusy(false);
+    if (err) return setError(err.message);
+    // RLS-blocked deletes return no error and zero rows.
+    if (!data?.length) return setError(t("leads.deleteHelp"));
+    navigate("/portal/leads", { replace: true });
+  };
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-500">{t("leads.deleteHelp")}</p>
+      <button
+        type="button"
+        onClick={remove}
+        disabled={busy}
+        className="w-full border border-red-200 text-red-700 font-semibold text-sm py-2.5 rounded-xl hover:bg-red-50 transition disabled:opacity-50"
+      >
+        {busy ? t("common.saving") : t("leads.delete")}
+      </button>
+      {error && <ErrorBanner message={error} />}
+    </div>
+  );
+}
+
 const LeadDetail = () => {
   const { id } = useParams();
   const { t, fmtDate } = useT();
+  const { role } = useAuth();
   const [lead, setLead] = useState(null);
   const [activities, setActivities] = useState([]);
   const [staff, setStaff] = useState([]);
@@ -312,6 +348,11 @@ const LeadDetail = () => {
           {lead.status !== "lost" && (
             <Card title={t("leads.convertTitle")}>
               <ConvertCard lead={lead} onChanged={load} />
+            </Card>
+          )}
+          {role === "admin" && !lead.converted_client_id && (
+            <Card title={t("leads.deleteTitle")}>
+              <DeleteCard lead={lead} />
             </Card>
           )}
         </div>
