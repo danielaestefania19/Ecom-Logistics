@@ -32,6 +32,24 @@ export async function stripe(method: "GET" | "POST", path: string, params: Param
   return body;
 }
 
+// What Stripe shows on invoices: the legal company name and the business address from the profile.
+export const customerFields = (c: any) => ({
+  name: c.legal_name || c.company || c.full_name,
+  phone: c.phone,
+  preferred_locales: [c.language === "es" ? "es-419" : "en"],
+  address: c.address_line1
+    ? {
+        line1: c.address_line1,
+        line2: c.address_line2,
+        city: c.address_city,
+        state: c.address_state,
+        postal_code: c.address_zip,
+        // Stripe wants an ISO code; the profile may hold "United States".
+        country: /^[a-z]{2}$/i.test(c.address_country ?? "") ? c.address_country.toUpperCase() : "US",
+      }
+    : undefined,
+});
+
 // Links a portal client to a Stripe customer: reuses one with the same email, else creates it.
 export async function ensureStripeCustomer(admin: SupabaseClient, clientId: string): Promise<{ id: string; created: boolean }> {
   const { data: c, error } = await admin.from("clients").select("*").eq("id", clientId).single();
@@ -45,20 +63,7 @@ export async function ensureStripeCustomer(admin: SupabaseClient, clientId: stri
   if (!id) {
     const customer = await stripe("POST", "/customers", {
       email: c.email,
-      name: c.company || c.full_name,
-      phone: c.phone,
-      preferred_locales: [c.language === "es" ? "es-419" : "en"],
-      address: c.address_line1
-        ? {
-            line1: c.address_line1,
-            line2: c.address_line2,
-            city: c.address_city,
-            state: c.address_state,
-            postal_code: c.address_zip,
-            // Stripe wants an ISO code; the profile may hold "United States".
-            country: /^[a-z]{2}$/i.test(c.address_country ?? "") ? c.address_country.toUpperCase() : "US",
-          }
-        : undefined,
+      ...customerFields(c),
       metadata: { portal_client_id: c.id },
     });
     id = customer.id;

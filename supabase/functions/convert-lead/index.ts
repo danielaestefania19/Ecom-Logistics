@@ -1,10 +1,10 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { adminClient, corsHeaders, json, SUPABASE_URL } from "../_shared/http.ts";
+import { sendPortalInvite } from "../_shared/invite.ts";
 import { ensureStripeCustomer } from "../_shared/stripe.ts";
 
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
-const PORTAL_SET_PASSWORD_URL = "https://ecomlogisticsus.com/portal/set-password";
 const SERVICES = new Set(["prep", "3pl"]);
 
 // Won lead → client account (+ portal invitation). Staff only.
@@ -58,12 +58,16 @@ Deno.serve(async (req: Request) => {
       const { error } = await admin.from("clients").update({ services: svc }).eq("id", clientId);
       if (error) throw new Error(error.message);
     } else {
-      const { data: inv, error: invErr } = await admin.auth.admin.inviteUserByEmail(lead.email, {
-        redirectTo: PORTAL_SET_PASSWORD_URL,
-        data: { full_name: profile.full_name, company: lead.company },
-      });
-      if (invErr) return json({ error: invErr.message }, 400);
-      clientId = inv.user.id;
+      try {
+        clientId = (await sendPortalInvite(admin, {
+          email: lead.email,
+          fullName: profile.full_name,
+          company: lead.company,
+          language: profile.language,
+        })).userId;
+      } catch (err) {
+        return json({ error: (err as Error).message }, 400);
+      }
       invited = true;
       const { error } = await admin.from("clients").upsert({ id: clientId, ...profile }, { onConflict: "id" });
       if (error) throw new Error(error.message);

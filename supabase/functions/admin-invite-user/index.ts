@@ -1,10 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { sendPortalInvite } from "../_shared/invite.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-
-const PORTAL_SET_PASSWORD_URL = "https://ecomlogisticsus.com/portal/set-password";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -43,19 +42,20 @@ Deno.serve(async (req: Request) => {
 
     const body = await req.json();
     const { email, full_name, company, asana_project_id, stripe_customer_id } = body;
+    const language = body.language === "es" ? "es" : "en";
     if (!email) return json({ error: "email is required" }, 400);
 
-    const { data: inviteData, error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(email, {
-      redirectTo: PORTAL_SET_PASSWORD_URL,
-      data: { full_name, company },
-    });
-    if (inviteError) return json({ error: inviteError.message }, 400);
-
-    const newUserId = inviteData.user.id;
+    let newUserId: string;
+    try {
+      newUserId = (await sendPortalInvite(adminClient, { email, fullName: full_name, company, language })).userId;
+    } catch (err) {
+      return json({ error: (err as Error).message }, 400);
+    }
 
     const { error: insertError } = await adminClient.from("clients").upsert({
       id: newUserId,
       email,
+      language,
       full_name: full_name ?? null,
       company: company ?? null,
       asana_project_id: asana_project_id ?? null,

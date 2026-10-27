@@ -5,7 +5,7 @@ import { callFunction } from "../lib/orders";
 
 // ─── Invite form component ─────────────────────────────────────────────────────
 function InviteForm({ session, onSuccess }) {
-  const [form, setForm]       = useState({ email: "", full_name: "", company: "", asana_project_id: "", stripe_customer_id: "" });
+  const [form, setForm]       = useState({ email: "", full_name: "", company: "", language: "en", asana_project_id: "", stripe_customer_id: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState(null);
   const [success, setSuccess] = useState(false);
@@ -32,7 +32,7 @@ function InviteForm({ session, onSuccess }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
       setSuccess(true);
-      setForm({ email: "", full_name: "", company: "", asana_project_id: "", stripe_customer_id: "" });
+      setForm({ email: "", full_name: "", company: "", language: "en", asana_project_id: "", stripe_customer_id: "" });
       onSuccess?.();
     } catch (err) {
       setError(err.message);
@@ -65,6 +65,13 @@ function InviteForm({ session, onSuccess }) {
         <div>
           <label className="block text-xs font-semibold text-gray-500 mb-1">Company</label>
           <input name="company" value={form.company} onChange={handle} placeholder="Acme LLC" className={inputCls} />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-gray-500 mb-1">Invitation language</label>
+          <select name="language" value={form.language} onChange={handle} className={inputCls}>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select>
         </div>
         <div>
           <label className="block text-xs font-semibold text-gray-500 mb-1">Asana Project ID <span className="text-gray-400 font-normal">(optional)</span></label>
