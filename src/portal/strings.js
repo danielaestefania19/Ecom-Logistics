@@ -214,6 +214,7 @@ export const STRINGS = {
         carrier_delivered: "The carrier delivered your shipment to our warehouse. We'll count it shortly.",
         stripe_invoiced: "Invoice sent from Stripe.",
         stripe_paid: "Invoice paid. Thank you!",
+        stage_reverted: "Stage corrected by our team.",
       },
     },
     files: {
@@ -239,6 +240,8 @@ export const STRINGS = {
       invoiceDraftDone: "Draft created. Review and send it in Stripe.",
       openInStripe: "Open in Stripe",
       invoicePaid: "Paid in Stripe on {date}",
+      revertTo: "↩ Back to {stage}",
+      revertConfirm: "Move this order back to \"{stage}\"? The client won't get an email about it.",
     },
     checklist: {
       docs_verified: "Documents verified",
@@ -828,6 +831,7 @@ export const STRINGS = {
         carrier_delivered: "El carrier entregó tu envío en nuestro almacén. Lo contaremos en breve.",
         stripe_invoiced: "Factura enviada desde Stripe.",
         stripe_paid: "Factura pagada. ¡Gracias!",
+        stage_reverted: "Etapa corregida por nuestro equipo.",
       },
     },
     files: {
@@ -853,6 +857,8 @@ export const STRINGS = {
       invoiceDraftDone: "Borrador creado. Revísalo y envíalo en Stripe.",
       openInStripe: "Abrir en Stripe",
       invoicePaid: "Pagada en Stripe el {date}",
+      revertTo: "↩ Regresar a {stage}",
+      revertConfirm: "¿Regresar esta orden a \"{stage}\"? Al cliente no le llega ningún email por esto.",
     },
     checklist: {
       docs_verified: "Documentación verificada",

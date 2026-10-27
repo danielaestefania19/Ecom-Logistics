@@ -9,18 +9,31 @@ import { btnPrimary, btnSecondary, ErrorBanner, Field, inputCls } from "../ui";
 
 const STAGE_ORDER = ["received", "prepped", "in_storage", "shipped", "invoiced"];
 
+// The stage an order was in before its current one, skipping earlier undos, so a mistaken move
+// (e.g. marked paid too soon) can be taken back one step at a time.
+function previousStage(order) {
+  const last = [...(order.order_events ?? [])]
+    .filter((e) => e.to_stage === order.stage && e.from_stage && e.note !== "stage_reverted")
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
+  // 3PL units already posted to stock can't be pulled back by a stage change.
+  if (!last || (order.type === "3pl" && order.stage === "in_storage")) return null;
+  return last.from_stage;
+}
+
 export function StageActions({ order, onChanged }) {
   const { t } = useT();
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
   const next = nextStages(order);
+  const previous = previousStage(order);
 
-  const move = async (stage) => {
+  const move = async (stage, reverting = false) => {
+    if (reverting && !window.confirm(t("staff.revertConfirm", { stage: t(`stage.${stage}`) }))) return;
     setBusy(stage);
     setError(null);
     try {
-      await setStage(order.id, stage, note.trim());
+      await setStage(order.id, stage, reverting ? "stage_reverted" : note.trim());
       setNote("");
       onChanged();
     } catch (err) {
@@ -30,34 +43,48 @@ export function StageActions({ order, onChanged }) {
     }
   };
 
-  if (!next.length) return <p className="text-sm text-gray-400">{t("staff.noNextStage")}</p>;
-
   return (
     <div className="space-y-3">
-      <textarea
-        className={inputCls}
-        rows={2}
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder={t("staff.stageNotePlaceholder")}
-      />
-      <div className="flex flex-wrap gap-2">
-        {next.map((stage, i) => (
-          <button
-            key={stage}
-            type="button"
-            onClick={() => move(stage)}
-            disabled={!!busy}
-            className={i === 0 && stage !== "cancelled" ? btnPrimary : btnSecondary}
-          >
-            {busy === stage
-              ? t("common.saving")
-              : order.type === "3pl" && stage === "in_storage"
-                ? `→ ${t("staff.addToInventory")}`
-                : `→ ${t(`stage.${stage}`)}`}
-          </button>
-        ))}
-      </div>
+      {next.length > 0 ? (
+        <>
+          <textarea
+            className={inputCls}
+            rows={2}
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder={t("staff.stageNotePlaceholder")}
+          />
+          <div className="flex flex-wrap gap-2">
+            {next.map((stage, i) => (
+              <button
+                key={stage}
+                type="button"
+                onClick={() => move(stage)}
+                disabled={!!busy}
+                className={i === 0 && stage !== "cancelled" ? btnPrimary : btnSecondary}
+              >
+                {busy === stage
+                  ? t("common.saving")
+                  : order.type === "3pl" && stage === "in_storage"
+                    ? `→ ${t("staff.addToInventory")}`
+                    : `→ ${t(`stage.${stage}`)}`}
+              </button>
+            ))}
+          </div>
+        </>
+      ) : (
+        <p className="text-sm text-gray-400">{t("staff.noNextStage")}</p>
+      )}
+      {previous && (
+        <button
+          type="button"
+          onClick={() => move(previous, true)}
+          disabled={!!busy}
+          className="text-xs font-semibold text-gray-500 hover:text-third underline"
+        >
+          {busy === previous ? t("common.saving") : t("staff.revertTo", { stage: t(`stage.${previous}`) })}
+        </button>
+      )}
       {error && <ErrorBanner message={error} />}
     </div>
   );

@@ -1,7 +1,7 @@
 import { useT } from "../../i18n";
 import { StageBadge } from "../ui";
 
-const NOTE_KEYS = new Set(["order_submitted", "carrier_delivered", "stripe_invoiced", "stripe_paid"]);
+const NOTE_KEYS = new Set(["order_submitted", "carrier_delivered", "stripe_invoiced", "stripe_paid", "stage_reverted"]);
 
 const Timeline = ({ events, userId, names }) => {
   const { t, fmtDateTime } = useT();
