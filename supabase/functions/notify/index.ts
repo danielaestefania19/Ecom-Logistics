@@ -51,8 +51,8 @@ const ORDER_COPY: Record<Lang, Record<string, (n: number, threePl: boolean) => [
 };
 
 const UI: Record<Lang, Record<string, string>> = {
-  en: { view: "View order", note: "Note from our team", hi: "Hi", carrier: "Carrier", tracking: "Tracking number", recipient: "Recipient" },
-  es: { view: "Ver orden", note: "Nota de nuestro equipo", hi: "Hola", carrier: "Carrier", tracking: "Número de tracking", recipient: "Destinatario" },
+  en: { view: "View order", note: "Note from our team", reason: "Reason", hi: "Hi", carrier: "Carrier", tracking: "Tracking number", recipient: "Recipient" },
+  es: { view: "Ver orden", note: "Nota de nuestro equipo", reason: "Razón", hi: "Hola", carrier: "Carrier", tracking: "Número de tracking", recipient: "Destinatario" },
 };
 
 const lang = (v: unknown): Lang => (v === "es" ? "es" : "en");
@@ -82,7 +82,7 @@ async function buildOrderStage(admin: SupabaseClient, id: string): Promise<Built
     content: {
       heading,
       paragraphs: [greeting(l, client.full_name), escapeHtml(body)],
-      rows: note ? [[UI[l].note, note]] : undefined,
+      rows: note ? [[ev.to_stage === "cancelled" ? UI[l].reason : UI[l].note, note]] : undefined,
       cta: { label: UI[l].view, url: `${PORTAL_URL}/orders/${order.id}` },
       footer: FOOTER[l],
     },
@@ -285,6 +285,33 @@ async function buildReleaseShipped(admin: SupabaseClient, id: string): Promise<B
   };
 }
 
+// Internal, in Spanish: the client cancelled their own order from the portal.
+async function buildClientCancelled(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const { data: o } = await admin
+    .from("orders")
+    .select("id, order_number, clients(email, full_name, company), order_events(to_stage, note, created_at)")
+    .eq("id", id)
+    .single();
+  if (!o) return null;
+  const client = (o as any).clients;
+  const who = client.company || client.full_name || client.email;
+  const reason = ((o as any).order_events ?? [])
+    .filter((e: any) => e.to_stage === "cancelled")
+    .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]?.note;
+  return {
+    to: SALES_EMAIL,
+    replyTo: client.email ?? undefined,
+    subject: `${who} canceló la orden #${o.order_number}`,
+    content: {
+      heading: `${who} canceló la orden #${o.order_number}`,
+      paragraphs: ["El cliente canceló la orden desde el portal antes de que llegara la mercancía."],
+      rows: reason ? [["Razón", reason]] : undefined,
+      cta: { label: "Abrir orden en el portal", url: `${PORTAL_URL}/orders/${o.id}` },
+      footer: "Aviso automático del portal de Ecom Logistics.",
+    },
+  };
+}
+
 const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Built | null>> = {
   order_stage: buildOrderStage,
   fulfillment_status: buildFulfillment,
@@ -292,6 +319,7 @@ const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Bu
   lead_welcome: buildLeadWelcome,
   release_requested: buildReleaseRequested,
   release_shipped: buildReleaseShipped,
+  client_cancelled: buildClientCancelled,
 };
 
 Deno.serve(async (req: Request) => {

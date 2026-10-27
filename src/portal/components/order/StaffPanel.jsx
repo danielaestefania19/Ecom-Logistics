@@ -30,6 +30,8 @@ export function StageActions({ order, onChanged }) {
 
   const move = async (stage, reverting = false) => {
     if (reverting && !window.confirm(t("staff.revertConfirm", { stage: t(`stage.${stage}`) }))) return;
+    // Cancellations are only recorded with a reason (the database enforces it too).
+    if (stage === "cancelled" && !note.trim()) return setError(t("staff.cancelReasonRequired"));
     setBusy(stage);
     setError(null);
     try {

@@ -7,7 +7,7 @@ import { CLIENT_STEPS, orderCode, subscribeToChanges } from "../lib/orders";
 
 const CLIENT_STEPS_3PL = ["awaiting_inventory", "received", "in_storage", "paid"];
 const PROGRESS_INDEX_3PL = { awaiting_inventory: 0, received: 1, discrepancy: 1, in_storage: 2, invoiced: 2, paid: 3 };
-import { Card, ErrorBanner, PageHeader, Spinner, StageBadge } from "../components/ui";
+import { btnSecondary, Card, ErrorBanner, inputCls, PageHeader, Spinner, StageBadge } from "../components/ui";
 import Timeline from "../components/order/Timeline";
 import ItemsTable from "../components/order/ItemsTable";
 import TrackingPanel from "../components/order/TrackingPanel";
@@ -31,8 +31,8 @@ const PROGRESS_INDEX = {
 
 const RECEIVING_STAGES = new Set(["awaiting_inventory", "received", "discrepancy"]);
 const CLOSED_STAGES = new Set(["paid", "cancelled"]);
-// Once prepped, part of a PREP order can stay at the warehouse while the rest ships.
-const STORAGE_STAGES = new Set(["prepped", "in_storage", "shipped", "invoiced", "paid"]);
+// Once counted, staff can decide how much of a PREP order stays at the warehouse while the rest ships.
+const STORAGE_STAGES = new Set(["received", "scheduled", "prepped", "in_storage", "shipped", "invoiced", "paid"]);
 
 function Progress({ order }) {
   const { t } = useT();
@@ -70,6 +70,47 @@ function ReceivedBar({ items }) {
       <div className="mt-2 h-2 rounded-full bg-gray-100 overflow-hidden">
         <div className={`h-full rounded-full ${pct >= 100 ? "bg-green-600" : "bg-third"}`} style={{ width: `${Math.min(pct, 100)}%` }} />
       </div>
+    </div>
+  );
+}
+
+// Clients can cancel their own order, with a reason, until the merchandise arrives.
+function ClientCancel({ order, onChanged }) {
+  const { t } = useT();
+  const [open, setOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
+  const cancel = async () => {
+    if (!reason.trim()) return setError(t("staff.cancelReasonRequired"));
+    if (!window.confirm(t("orderDetail.cancelConfirm"))) return;
+    setBusy(true);
+    setError(null);
+    const { error: err } = await supabase.rpc("cancel_my_order", { p_order: order.id, p_reason: reason.trim() });
+    setBusy(false);
+    if (err) return setError(err.message);
+    onChanged();
+  };
+
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className="text-sm font-semibold text-gray-500 hover:text-red-600 underline">
+        {t("orderDetail.cancelOrder")}
+      </button>
+    );
+  }
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">{t("orderDetail.cancelHelp")}</p>
+      <textarea className={inputCls} rows={2} value={reason} onChange={(e) => setReason(e.target.value)} placeholder={t("orderDetail.cancelReason")} />
+      <div className="flex gap-2">
+        <button type="button" onClick={cancel} disabled={busy} className="bg-red-600 hover:bg-red-700 text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition disabled:opacity-50">
+          {busy ? t("common.saving") : t("orderDetail.cancelOrder")}
+        </button>
+        <button type="button" onClick={() => setOpen(false)} className={btnSecondary}>{t("common.back")}</button>
+      </div>
+      {error && <ErrorBanner message={error} />}
     </div>
   );
 }
@@ -201,6 +242,14 @@ const OrderDetail = () => {
       {order.stage === "discrepancy" && (
         <div className="mb-5 bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-xl">{t("orderDetail.discrepancyBanner")}</div>
       )}
+      {order.stage === "cancelled" && (
+        <div className="mb-5 bg-gray-50 border border-gray-200 text-gray-700 text-sm px-4 py-3 rounded-xl">
+          {t("orderDetail.cancelledBanner", {
+            reason:
+              [...order.order_events].reverse().find((e) => e.to_stage === "cancelled" && e.note && e.note !== "stage_reverted")?.note ?? "—",
+          })}
+        </div>
+      )}
       {order.stage === "quote" && !isStaff && (
         <div className="mb-5 bg-purple-50 border border-purple-200 text-purple-800 text-sm px-4 py-3 rounded-xl">{t("orderDetail.quoteBanner")}</div>
       )}
@@ -259,6 +308,11 @@ const OrderDetail = () => {
         <div className="space-y-6">
           <Card title={t("orderDetail.summary")}>
             <Summary order={order} />
+            {!isStaff && ["quote", "awaiting_inventory"].includes(order.stage) && (
+              <div className="border-t border-gray-100 mt-5 pt-4">
+                <ClientCancel order={order} onChanged={load} />
+              </div>
+            )}
           </Card>
           {isStaff && (
             <>

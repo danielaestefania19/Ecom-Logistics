@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
-import { isoDay, orderCode, subscribeToChanges } from "../../lib/orders";
+import { isoDay, orderCode, registerTracking, subscribeToChanges } from "../../lib/orders";
 import { ErrorBanner, PageHeader, Spinner, TrackingBadge } from "../../components/ui";
 
 const GROUPS = ["overdue", "today", "week", "later", "noEta", "deliveredToday"];
@@ -29,7 +29,7 @@ const Arrivals = () => {
     since.setHours(0, 0, 0, 0);
     const { data, error: err } = await supabase
       .from("shipments_inbound")
-      .select("id, tracking_number, carrier, status, eta, delivered_at, last_event, orders!inner(id, order_number, stage, eta, clients(company, email))")
+      .select("id, tracking_number, carrier, status, eta, delivered_at, last_event, provider_tracker_id, orders!inner(id, order_number, stage, eta, clients(company, email))")
       .or(`status.neq.delivered,delivered_at.gte.${since.toISOString()}`)
       .neq("status", "cancelled")
       .in("orders.stage", ["quote", "awaiting_inventory", "received", "discrepancy"]);
@@ -42,6 +42,15 @@ const Arrivals = () => {
     load();
     return subscribeToChanges("ops-arrivals", [{ table: "shipments_inbound" }], load);
   }, [load]);
+
+  // Connect any tracking that missed live updates (added while EasyPost was unavailable), once per visit.
+  const [swept, setSwept] = useState(false);
+  useEffect(() => {
+    if (swept || loading) return;
+    setSwept(true);
+    const orders = new Set(rows.filter((r) => !r.provider_tracker_id).map((r) => r.orders.id));
+    orders.forEach((id) => registerTracking(id));
+  }, [swept, loading, rows]);
 
   const today = isoDay(new Date());
   const weekEnd = isoDay(new Date(Date.now() + 6 * 864e5));

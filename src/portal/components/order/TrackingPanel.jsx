@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
 import { registerTracking, setStage } from "../../lib/orders";
@@ -12,6 +12,15 @@ const TrackingPanel = ({ order, shipments, canAdd, isStaff, onChanged }) => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(null);
+
+  // A tracking added while EasyPost was unavailable stays unconnected; opening the order retries it,
+  // so live tracking catches up everywhere without anyone pressing a button.
+  const pendingRegistration = shipments.some((s) => !s.provider_tracker_id);
+  const closed = ["paid", "cancelled"].includes(order.stage);
+  useEffect(() => {
+    if (pendingRegistration && !closed) registerTracking(order.id).then(onChanged);
+    // Once per order view: a failed retry shouldn't loop on every reload.
+  }, [order.id]);
 
   const add = async (e) => {
     e.preventDefault();
