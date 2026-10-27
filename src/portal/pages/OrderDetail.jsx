@@ -224,7 +224,8 @@ const OrderDetail = () => {
               onSaved={load}
               showPrep={order.type !== "3pl"}
               showPrepped={order.type === "prep" && ["scheduled", "prepped", "shipped", "in_storage"].includes(order.stage)}
-              canEditFnsku={isStaff && order.type === "prep" && !CLOSED_STAGES.has(order.stage)}
+              canEditItems={isStaff && order.type === "prep" && !CLOSED_STAGES.has(order.stage)}
+              clientId={order.client_id}
             />
           </Card>
           <Card title={t("orderDetail.tracking")}>

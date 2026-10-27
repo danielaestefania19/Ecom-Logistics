@@ -26,9 +26,10 @@ const ScanPanel = ({ order, onChanged }) => {
     setAliases(data ?? []);
   }, [order.client_id]);
 
+  // Reload with the order too, so a UPC edited in the products table is recognized right away.
   useEffect(() => {
     loadAliases();
-  }, [loadAliases]);
+  }, [loadAliases, order.order_items]);
 
   useEffect(() => () => clearTimeout(refreshTimer.current), []);
 

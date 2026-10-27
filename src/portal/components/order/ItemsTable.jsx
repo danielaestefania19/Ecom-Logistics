@@ -1,60 +1,111 @@
-import { useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
-import { btnPrimary, ErrorBanner } from "../ui";
+import { btnPrimary, btnSecondary, ErrorBanner } from "../ui";
 
-// Staff can add or fix the FNSKU when the client left it out, so the prep scan can verify the label.
-function FnskuCell({ item, canEdit, onSaved }) {
+const PREP_TYPES = ["standard", "oversize", "polybag", "bubble", "bundle"];
+const cellInput = "w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm";
+
+// Staff fix what the client got wrong: SKU, name, FNSKU, UPC and prep type (it often turns out
+// polybag rather than standard). UPCs live per client in sku_barcodes so the scanner knows them too.
+function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
   const { t } = useT();
-  const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(item.fnsku ?? "");
+  const [form, setForm] = useState({
+    sku: item.sku,
+    product_name: item.product_name ?? "",
+    fnsku: item.fnsku ?? "",
+    upc: upc ?? "",
+    prep_type: item.prep_type,
+  });
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
+  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
   const save = async () => {
-    const fnsku = value.trim().toUpperCase() || null;
-    if (fnsku === (item.fnsku ?? null)) return setEditing(false);
-    const { error: err } = await supabase.from("order_items").update({ fnsku }).eq("id", item.id);
-    if (err) return setError(err.message);
-    setEditing(false);
-    onSaved?.();
+    const sku = form.sku.trim();
+    if (!sku) return setError(t("newOrder.errors.badItem"));
+    setBusy(true);
+    setError(null);
+    const { error: err } = await supabase
+      .from("order_items")
+      .update({
+        sku,
+        product_name: form.product_name.trim() || null,
+        fnsku: form.fnsku.trim().toUpperCase() || null,
+        prep_type: form.prep_type,
+      })
+      .eq("id", item.id);
+    if (err) {
+      setBusy(false);
+      return setError(err.message);
+    }
+
+    const code = form.upc.trim().toUpperCase().replace(/\s+/g, "");
+    const old = (upc ?? "").toUpperCase();
+    if (old && (old !== code || sku !== item.sku)) {
+      await supabase.from("sku_barcodes").delete().eq("client_id", clientId).eq("code", old);
+    }
+    if (code) {
+      const { error: upcErr } = await supabase
+        .from("sku_barcodes")
+        .upsert({ client_id: clientId, code, sku, kind: "upc" }, { onConflict: "client_id,code" });
+      if (upcErr) {
+        setBusy(false);
+        return setError(upcErr.message);
+      }
+    }
+    setBusy(false);
+    onDone(true);
   };
 
-  if (editing) {
-    return (
-      <div className="mt-1">
-        <input
-          autoFocus
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={save}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") save();
-            if (e.key === "Escape") setEditing(false);
-          }}
-          placeholder="X00…"
-          className="w-40 border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono"
-        />
-        {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
-      </div>
-    );
-  }
   return (
-    <p className="text-xs text-gray-400">
-      {[item.fnsku, item.product_name].filter(Boolean).join(" · ")}
-      {canEdit && (
-        <button type="button" onClick={() => setEditing(true)} className="ml-2 font-semibold text-third hover:underline">
-          {item.fnsku ? t("item.editFnsku") : t("item.addFnsku")}
-        </button>
+    <div className="grid sm:grid-cols-2 gap-3 p-3 bg-gray-50 rounded-xl">
+      <label className="text-[11px] font-semibold text-gray-400">{t("item.sku")}
+        <input className={cellInput} value={form.sku} onChange={(e) => set("sku", e.target.value)} />
+      </label>
+      <label className="text-[11px] font-semibold text-gray-400">{t("item.productName")}
+        <input className={cellInput} value={form.product_name} onChange={(e) => set("product_name", e.target.value)} />
+      </label>
+      <label className="text-[11px] font-semibold text-gray-400">{t("item.fnsku")}
+        <input className={`${cellInput} font-mono`} value={form.fnsku} onChange={(e) => set("fnsku", e.target.value)} placeholder="X00…" />
+      </label>
+      <label className="text-[11px] font-semibold text-gray-400">{t("item.upc")}
+        <input className={`${cellInput} font-mono`} value={form.upc} onChange={(e) => set("upc", e.target.value)} inputMode="numeric" />
+      </label>
+      {showPrep && (
+        <label className="text-[11px] font-semibold text-gray-400 sm:col-span-2">{t("item.prepType")}
+          <select className={cellInput} value={form.prep_type} onChange={(e) => set("prep_type", e.target.value)}>
+            {PREP_TYPES.map((p) => <option key={p} value={p}>{t(`prepType.${p}`)}</option>)}
+          </select>
+        </label>
       )}
-    </p>
+      <div className="sm:col-span-2 flex items-center gap-2">
+        <button type="button" onClick={save} disabled={busy} className={btnPrimary}>{busy ? t("common.saving") : t("common.save")}</button>
+        <button type="button" onClick={() => onDone(false)} className={btnSecondary}>{t("common.cancel")}</button>
+        {error && <span className="text-xs text-red-600">{error}</span>}
+      </div>
+    </div>
   );
 }
 
 const toState = (items) =>
   Object.fromEntries(items.map((i) => [i.id, { received: i.received_qty ?? "", damaged: i.damaged_qty ?? 0 }]));
 
-const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false, canEditFnsku = false }) => {
+const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false, canEditItems = false, clientId }) => {
   const { t } = useT();
+  const [upcs, setUpcs] = useState({});
+  const [editingId, setEditingId] = useState(null);
+
+  // Known UPCs per SKU (staff only; RLS returns nothing to clients).
+  const loadUpcs = useCallback(async () => {
+    if (!clientId) return;
+    const { data } = await supabase.from("sku_barcodes").select("code, sku").eq("client_id", clientId).eq("kind", "upc");
+    setUpcs(Object.fromEntries((data ?? []).map((b) => [b.sku, b.code])));
+  }, [clientId]);
+
+  useEffect(() => {
+    loadUpcs();
+  }, [loadUpcs, items]);
   const [counts, setCounts] = useState(() => toState(items));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -121,10 +172,20 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
               const c = counts[i.id] ?? { received: "", damaged: 0 };
               const mismatch = i.received_qty != null && i.received_qty !== i.expected_qty;
               return (
-                <tr key={i.id} className="border-t border-gray-100 align-middle">
+                <Fragment key={i.id}>
+                <tr className="border-t border-gray-100 align-middle">
                   <td className="py-3 pr-3">
-                    <p className="font-semibold text-primary">{i.sku}</p>
-                    <FnskuCell item={i} canEdit={canEditFnsku} onSaved={onSaved} />
+                    <p className="font-semibold text-primary">
+                      {i.sku}
+                      {canEditItems && editingId !== i.id && (
+                        <button type="button" onClick={() => setEditingId(i.id)} className="ml-2 text-xs font-semibold text-third hover:underline">
+                          {t("item.edit")}
+                        </button>
+                      )}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      {[i.product_name, i.fnsku && `FNSKU ${i.fnsku}`, upcs[i.sku] && `UPC ${upcs[i.sku]}`].filter(Boolean).join(" · ")}
+                    </p>
                   </td>
                   {showPrep && <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>}
                   <td className="py-3 pr-3 text-right font-medium">{i.expected_qty}</td>
@@ -162,6 +223,23 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
                     </td>
                   )}
                 </tr>
+                {editingId === i.id && (
+                  <tr>
+                    <td colSpan={4 + (showPrep ? 1 : 0) + (showPrepped ? 1 : 0)} className="pb-3">
+                      <ItemEditor
+                        item={i}
+                        upc={upcs[i.sku]}
+                        clientId={clientId}
+                        showPrep={showPrep}
+                        onDone={(saved) => {
+                          setEditingId(null);
+                          if (saved) onSaved?.();
+                        }}
+                      />
+                    </td>
+                  </tr>
+                )}
+                </Fragment>
               );
             })}
           </tbody>

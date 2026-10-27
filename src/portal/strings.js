@@ -79,8 +79,8 @@ export const STRINGS = {
       saveCount: "Save count",
       prepped: "FNSKU checked",
       mismatchHint: "Count doesn't match — consider moving the order to Discrepancy.",
-      addFnsku: "+ Add FNSKU",
-      editFnsku: "Edit",
+      edit: "Edit",
+      upc: "UPC",
     },
     prepType: {
       standard: "Standard",
@@ -693,8 +693,8 @@ export const STRINGS = {
       saveCount: "Guardar conteo",
       prepped: "FNSKU verificadas",
       mismatchHint: "El conteo no cuadra: considera mover la orden a Discrepancia.",
-      addFnsku: "+ Agregar FNSKU",
-      editFnsku: "Editar",
+      edit: "Editar",
+      upc: "UPC",
     },
     prepType: {
       standard: "Estándar",
