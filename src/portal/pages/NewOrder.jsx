@@ -25,6 +25,7 @@ const NewOrder = () => {
     client_id: "",
     eta: "",
     tracking: "",
+    inbound_shipments: "single",
     total_cases: "",
     pallets: "",
     ship_method: "spd",
@@ -99,6 +100,7 @@ const NewOrder = () => {
         estimated_cost: estimate.total || null,
         declaration_accepted: form.declaration_accepted,
         signer_name: form.signer_name,
+        inbound_shipments: form.inbound_shipments,
       },
       p_items: lines.map((i) => ({ ...i, expected_qty: Number(i.expected_qty) })),
       p_tracking: tracking,
@@ -264,7 +266,22 @@ const NewOrder = () => {
                 <input className={inputCls} type="number" min="0" inputMode="numeric" value={form.pallets} onChange={(e) => set("pallets", e.target.value)} />
               </Field>
               <div className="sm:col-span-3">
-                <Field label={t("newOrder.tracking")} hint={t("newOrder.trackingHint")}>
+                <Field label={t("newOrder.inboundShipments")}>
+                  <div className="flex flex-wrap gap-2">
+                    {["single", "multiple"].map((m) => (
+                      <label key={m} className={`cursor-pointer px-4 py-2 rounded-xl border text-sm font-medium ${form.inbound_shipments === m ? "border-third bg-third/5 text-third" : "border-gray-200 text-gray-600"}`}>
+                        <input type="radio" className="sr-only" name="inbound_shipments" checked={form.inbound_shipments === m} onChange={() => set("inbound_shipments", m)} />
+                        {t(`inboundShipments.${m}`)}
+                      </label>
+                    ))}
+                  </div>
+                </Field>
+              </div>
+              <div className="sm:col-span-3">
+                <Field
+                  label={t("newOrder.tracking")}
+                  hint={t(form.inbound_shipments === "multiple" ? "newOrder.trackingHintMultiple" : "newOrder.trackingHint")}
+                >
                   <textarea className={inputCls} rows={2} value={form.tracking} onChange={(e) => set("tracking", e.target.value)} placeholder="1Z999AA10123456784, 9400…" />
                 </Field>
               </div>
@@ -355,7 +372,8 @@ const NewOrder = () => {
                 {estimate.lines.map((l) => (
                   <div key={l.key} className="flex justify-between gap-3">
                     <span className="text-gray-600">
-                      {t(`estimate.line.${l.key}`)} <span className="text-gray-400">× {l.qty}</span>
+                      {t(`estimate.line.${l.key}`)}
+                      <span className="block text-xs text-gray-400">{l.qty} × {fmtMoney(l.rate)} {t("estimate.each")}</span>
                     </span>
                     <span className="font-medium text-primary">{fmtMoney(l.total)}</span>
                   </div>
@@ -367,6 +385,12 @@ const NewOrder = () => {
                   <span>{t("estimate.total")}</span>
                   <span>{fmtMoney(estimate.total)}</span>
                 </div>
+                {estimate.units > 0 && (
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>{t("estimate.perUnit")}</span>
+                    <span>{fmtMoney(estimate.total / estimate.units)}</span>
+                  </div>
+                )}
               </div>
             )}
             <p className="text-[11px] text-gray-400 mt-3">{t("estimate.disclaimer")}</p>

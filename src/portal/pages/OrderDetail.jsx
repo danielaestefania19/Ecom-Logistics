@@ -51,6 +51,26 @@ function Progress({ order }) {
   );
 }
 
+// How much of the order has been counted in, so the client sees partial arrivals at a glance.
+function ReceivedBar({ items }) {
+  const { t } = useT();
+  if (!items.some((i) => i.received_qty != null)) return null;
+  const expected = items.reduce((n, i) => n + i.expected_qty, 0);
+  const received = items.reduce((n, i) => n + (i.received_qty ?? 0), 0);
+  const pct = expected ? Math.round((received / expected) * 100) : 0;
+  return (
+    <div className="mb-6 bg-white border border-gray-200 rounded-2xl px-5 py-4">
+      <div className="flex items-baseline justify-between gap-3 text-sm">
+        <span className="font-semibold text-primary">{t("order.receivedProgress")}</span>
+        <span className="text-gray-600">{t("order.receivedOf", { n: received, of: expected, pct })}</span>
+      </div>
+      <div className="mt-2 h-2 rounded-full bg-gray-100 overflow-hidden">
+        <div className={`h-full rounded-full ${pct >= 100 ? "bg-green-600" : "bg-third"}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+      </div>
+    </div>
+  );
+}
+
 function Summary({ order }) {
   const { t, fmtDate, fmtMoney } = useT();
   const day = (d) => (d ? fmtDate(`${d}T12:00:00`) : "—");
@@ -61,6 +81,7 @@ function Summary({ order }) {
     prep && [t("order.prepDay"), day(order.prep_day)],
     prep && [t("order.shipMethod"), t(`shipMethod.${order.ship_method}`)],
     prep && [t("order.shipmentCreator"), t(`shipmentCreator.${order.shipment_creator}`)],
+    [t("order.shipments"), t(`inboundShipments.${order.inbound_shipments ?? "single"}`)],
     [t("order.cases"), order.total_cases],
     [t("order.pallets"), order.pallets],
     prep && [t("order.storage"), t(`storage.${order.storage_requested}`)],
@@ -181,6 +202,7 @@ const OrderDetail = () => {
       )}
 
       {!isStaff && <Progress order={order} />}
+      <ReceivedBar items={order.order_items} />
 
       <div className="grid lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
@@ -202,6 +224,7 @@ const OrderDetail = () => {
               onSaved={load}
               showPrep={order.type !== "3pl"}
               showPrepped={order.type === "prep" && ["scheduled", "prepped", "shipped", "in_storage"].includes(order.stage)}
+              canEditFnsku={isStaff && order.type === "prep" && !CLOSED_STAGES.has(order.stage)}
             />
           </Card>
           <Card title={t("orderDetail.tracking")}>

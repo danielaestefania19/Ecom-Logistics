@@ -3,10 +3,57 @@ import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
 import { btnPrimary, ErrorBanner } from "../ui";
 
+// Staff can add or fix the FNSKU when the client left it out, so the prep scan can verify the label.
+function FnskuCell({ item, canEdit, onSaved }) {
+  const { t } = useT();
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(item.fnsku ?? "");
+  const [error, setError] = useState(null);
+
+  const save = async () => {
+    const fnsku = value.trim().toUpperCase() || null;
+    if (fnsku === (item.fnsku ?? null)) return setEditing(false);
+    const { error: err } = await supabase.from("order_items").update({ fnsku }).eq("id", item.id);
+    if (err) return setError(err.message);
+    setEditing(false);
+    onSaved?.();
+  };
+
+  if (editing) {
+    return (
+      <div className="mt-1">
+        <input
+          autoFocus
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={save}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") save();
+            if (e.key === "Escape") setEditing(false);
+          }}
+          placeholder="X00…"
+          className="w-40 border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono"
+        />
+        {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      </div>
+    );
+  }
+  return (
+    <p className="text-xs text-gray-400">
+      {[item.fnsku, item.product_name].filter(Boolean).join(" · ")}
+      {canEdit && (
+        <button type="button" onClick={() => setEditing(true)} className="ml-2 font-semibold text-third hover:underline">
+          {item.fnsku ? t("item.editFnsku") : t("item.addFnsku")}
+        </button>
+      )}
+    </p>
+  );
+}
+
 const toState = (items) =>
   Object.fromEntries(items.map((i) => [i.id, { received: i.received_qty ?? "", damaged: i.damaged_qty ?? 0 }]));
 
-const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false }) => {
+const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false, canEditFnsku = false }) => {
   const { t } = useT();
   const [counts, setCounts] = useState(() => toState(items));
   const [saving, setSaving] = useState(false);
@@ -77,7 +124,7 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
                 <tr key={i.id} className="border-t border-gray-100 align-middle">
                   <td className="py-3 pr-3">
                     <p className="font-semibold text-primary">{i.sku}</p>
-                    <p className="text-xs text-gray-400">{[i.fnsku, i.product_name].filter(Boolean).join(" · ")}</p>
+                    <FnskuCell item={i} canEdit={canEditFnsku} onSaved={onSaved} />
                   </td>
                   {showPrep && <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>}
                   <td className="py-3 pr-3 text-right font-medium">{i.expected_qty}</td>

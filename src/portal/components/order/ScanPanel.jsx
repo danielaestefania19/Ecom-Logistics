@@ -74,6 +74,12 @@ const ScanPanel = ({ order, onChanged }) => {
       const m = matchFnsku(code, order.order_items, aliases);
       if (m.item && !m.error) return apply(m.item, Number(multiplier) || 1);
       beep(false);
+      // A label nobody entered on the order: let staff assign it to a SKU that still has no FNSKU.
+      if (m.error === "unknown" && order.order_items.some((i) => !i.fnsku)) {
+        setUnknown(code);
+        setTeachSku("");
+        return setResult({ tone: "warn", text: t("scan.unknownFnsku", { code }) });
+      }
       return setResult({
         tone: "error",
         text: m.error === "notFnsku" ? t("scan.notFnsku", { sku: m.item.sku }) : t("scan.unknownFnsku", { code }),
@@ -90,12 +96,19 @@ const ScanPanel = ({ order, onChanged }) => {
   const teach = async () => {
     const item = order.order_items.find((i) => i.sku === teachSku);
     if (!item) return;
-    const { error: err } = await supabase.from("sku_barcodes").insert({ client_id: order.client_id, code: unknown, sku: item.sku, kind: "upc" });
+    const { error: err } =
+      mode === "prep"
+        ? await supabase.from("order_items").update({ fnsku: unknown }).eq("id", item.id)
+        : await supabase.from("sku_barcodes").insert({ client_id: order.client_id, code: unknown, sku: item.sku, kind: "upc" });
     if (err) return setError(err.message);
     setUnknown(null);
-    await loadAliases();
+    if (mode === "prep") onChanged();
+    else await loadAliases();
     apply(item, Number(multiplier) || 1);
   };
+
+  // In the FNSKU check only SKUs still missing their label code can take a new one.
+  const teachable = mode === "prep" ? order.order_items.filter((i) => !i.fnsku) : order.order_items;
 
   if (!mode) return null;
 
@@ -126,15 +139,15 @@ const ScanPanel = ({ order, onChanged }) => {
 
       {unknown && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2">
-          <p className="text-sm text-amber-900">{t("scan.teach", { code: unknown })}</p>
+          <p className="text-sm text-amber-900">{t(mode === "prep" ? "scan.teachFnsku" : "scan.teach", { code: unknown })}</p>
           <div className="flex gap-2">
             <select className={inputCls} value={teachSku} onChange={(e) => setTeachSku(e.target.value)}>
               <option value="">{t("scan.pickSku")}</option>
-              {order.order_items.map((i) => (
+              {teachable.map((i) => (
                 <option key={i.id} value={i.sku}>{i.sku}{i.product_name ? ` — ${i.product_name}` : ""}</option>
               ))}
             </select>
-            <button type="button" onClick={teach} disabled={!teachSku} className={btnPrimary}>{t("scan.save")}</button>
+            <button type="button" onClick={teach} disabled={!teachSku} className={btnPrimary}>{t(mode === "prep" ? "scan.saveFnsku" : "scan.save")}</button>
             <button type="button" onClick={() => setUnknown(null)} className={btnSecondary}>{t("common.cancel")}</button>
           </div>
         </div>
