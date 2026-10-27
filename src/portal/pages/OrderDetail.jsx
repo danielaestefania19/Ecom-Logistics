@@ -15,6 +15,7 @@ import FilesPanel from "../components/order/FilesPanel";
 import { Checklist, NoteForm, OrderAdminFields, StageActions, StripeInvoice } from "../components/order/StaffPanel";
 import ScanPanel from "../components/order/ScanPanel";
 import StoragePanel from "../components/order/StoragePanel";
+import PackingListPanel from "../components/order/PackingListPanel";
 import { scanModeFor } from "../lib/scan";
 
 const PROGRESS_INDEX = {
@@ -173,7 +174,8 @@ const OrderDetail = () => {
       .from("orders")
       .select(`*, clients(company, full_name, email, phone, language),
                order_items(*), order_events(*), order_files(*),
-               shipments_inbound(*, tracking_events(*)), storage_releases(*, storage_release_lines(*))`)
+               shipments_inbound(*, tracking_events(*)), storage_releases(*, storage_release_lines(*)),
+               packing_boxes(*, packing_box_contents(*))`)
       .eq("id", id)
       .maybeSingle();
     if (err) setError(err.message);
@@ -281,6 +283,11 @@ const OrderDetail = () => {
               clientId={order.client_id}
             />
           </Card>
+          {order.type === "prep" && STORAGE_STAGES.has(order.stage) && (isStaff || order.packing_sent_at) && (
+            <Card title={t("packing.title")}>
+              <PackingListPanel order={order} isStaff={isStaff} onChanged={load} />
+            </Card>
+          )}
           {order.type === "prep" && STORAGE_STAGES.has(order.stage) && (isStaff || order.order_items.some((i) => i.stored_qty > 0)) && (
             <Card title={t("storagePanel.title")}>
               <StoragePanel order={order} isStaff={isStaff} onChanged={load} />

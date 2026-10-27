@@ -312,6 +312,76 @@ async function buildClientCancelled(admin: SupabaseClient, id: string): Promise<
   };
 }
 
+// The packing list the client needs to build the Amazon shipment. The id is "<order id>@<send time>"
+// so every re-send is its own email.
+async function buildPackingList(admin: SupabaseClient, ref: string): Promise<Built | null> {
+  const { data: o } = await admin
+    .from("orders")
+    .select("id, order_number, clients(email, full_name, language), packing_boxes(kind, qty, length_in, width_in, height_in, weight_lb, position, packing_box_contents(units, order_items(sku)))")
+    .eq("id", ref.split("@")[0])
+    .single();
+  const order = o as any;
+  const client = order?.clients;
+  if (!order || !client?.email) return null;
+  const l = lang(client.language);
+  const es = l === "es";
+  const boxes = [...(order.packing_boxes ?? [])].sort((a: any, b: any) => a.position - b.position);
+  const unit = (kind: string, n: number) =>
+    kind === "pallet" ? (n > 1 ? "Pallets" : "Pallet") : es ? (n > 1 ? "Cajas" : "Caja") : n > 1 ? "Boxes" : "Box";
+  const rows: [string, string][] = boxes.map((b: any) => [
+    `${b.qty} × ${unit(b.kind, b.qty)}`,
+    `${b.length_in} × ${b.width_in} × ${b.height_in} in · ${b.weight_lb} lb ${es ? "c/u" : "each"} · ` +
+      b.packing_box_contents.map((c: any) => `${c.order_items.sku} × ${c.units}`).join(", "),
+  ]);
+  const count = boxes.reduce((n: number, b: any) => n + b.qty, 0);
+  const weight = boxes.reduce((n: number, b: any) => n + b.qty * Number(b.weight_lb), 0);
+  rows.push(["Total", `${count} · ${weight.toFixed(1)} lb`]);
+  const heading = es ? `Packing list de tu orden #${order.order_number}` : `Packing list for your order #${order.order_number}`;
+  return {
+    to: client.email,
+    subject: heading,
+    content: {
+      heading,
+      paragraphs: [
+        greeting(l, client.full_name),
+        escapeHtml(
+          es
+            ? "Tu orden está preparada. Usa estas medidas y pesos para crear el shipment en Amazon y luego sube en tu orden los labels 4×6 (etiquetas FBA de las cajas y del carrier)."
+            : "Your order is prepped. Use these dimensions and weights to create the shipment in Amazon, then upload the 4×6 labels (FBA box labels and carrier labels) in your order.",
+        ),
+      ],
+      rows,
+      cta: { label: es ? "Subir labels" : "Upload labels", url: `${PORTAL_URL}/orders/${order.id}` },
+      footer: FOOTER[l],
+    },
+  };
+}
+
+// Internal, in Spanish: the client uploaded labels after getting the packing list.
+async function buildLabelsUploaded(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const { data: f } = await admin
+    .from("order_files")
+    .select("file_name, orders(id, order_number, clients(email, full_name, company))")
+    .eq("id", id)
+    .single();
+  const order = (f as any)?.orders;
+  if (!order) return null;
+  const client = order.clients;
+  const who = client.company || client.full_name || client.email;
+  return {
+    to: SALES_EMAIL,
+    replyTo: client.email ?? undefined,
+    subject: `${who} subió labels para la orden #${order.order_number}`,
+    content: {
+      heading: `${who} subió labels para la orden #${order.order_number}`,
+      paragraphs: ["Ya puedes imprimirlos y preparar el envío a Amazon."],
+      rows: [["Archivo", (f as any).file_name]],
+      cta: { label: "Abrir orden en el portal", url: `${PORTAL_URL}/orders/${order.id}` },
+      footer: "Aviso automático del portal de Ecom Logistics.",
+    },
+  };
+}
+
 const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Built | null>> = {
   order_stage: buildOrderStage,
   fulfillment_status: buildFulfillment,
@@ -320,6 +390,8 @@ const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Bu
   release_requested: buildReleaseRequested,
   release_shipped: buildReleaseShipped,
   client_cancelled: buildClientCancelled,
+  packing_list: buildPackingList,
+  labels_uploaded: buildLabelsUploaded,
 };
 
 Deno.serve(async (req: Request) => {

@@ -5,6 +5,7 @@ import { useT } from "../../i18n";
 import { invoiceLines } from "../../lib/estimate";
 import { callFunction, nextStages, setStage, syncAsana } from "../../lib/orders";
 import { STRINGS } from "../../strings";
+import { labelsAfterPacking } from "./PackingListPanel";
 import { btnPrimary, btnSecondary, ErrorBanner, Field, inputCls } from "../ui";
 
 const STAGE_ORDER = ["received", "prepped", "in_storage", "shipped", "invoiced"];
@@ -27,6 +28,9 @@ export function StageActions({ order, onChanged }) {
   const [error, setError] = useState(null);
   const next = nextStages(order);
   const previous = previousStage(order);
+  // When the client creates the Amazon shipment, it can't leave until their labels are in.
+  const awaitingLabels =
+    order.shipment_creator === "customer" && !!order.packing_sent_at && labelsAfterPacking(order).length === 0;
 
   const move = async (stage, reverting = false) => {
     if (reverting && !window.confirm(t("staff.revertConfirm", { stage: t(`stage.${stage}`) }))) return;
@@ -62,7 +66,8 @@ export function StageActions({ order, onChanged }) {
                 key={stage}
                 type="button"
                 onClick={() => move(stage)}
-                disabled={!!busy}
+                disabled={!!busy || (stage === "shipped" && awaitingLabels)}
+                title={stage === "shipped" && awaitingLabels ? t("packing.waitingLabels") : undefined}
                 className={i === 0 && stage !== "cancelled" ? btnPrimary : btnSecondary}
               >
                 {busy === stage
@@ -73,6 +78,7 @@ export function StageActions({ order, onChanged }) {
               </button>
             ))}
           </div>
+          {awaitingLabels && next.includes("shipped") && <p className="text-xs text-amber-700">{t("packing.waitingLabels")}</p>}
         </>
       ) : (
         <p className="text-sm text-gray-400">{t("staff.noNextStage")}</p>
