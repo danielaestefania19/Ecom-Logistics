@@ -74,16 +74,13 @@ const ScanPanel = ({ order, onChanged }) => {
       const m = matchFnsku(code, order.order_items, aliases);
       if (m.item && !m.error) return apply(m.item, Number(multiplier) || 1);
       beep(false);
-      // A label nobody entered on the order: let staff assign it to a SKU that still has no FNSKU.
-      if (m.error === "unknown" && order.order_items.some((i) => !i.fnsku)) {
+      // Same as receiving: an unknown label is assigned once to its product and counts from then on.
+      if (m.error === "unknown") {
         setUnknown(code);
         setTeachSku("");
         return setResult({ tone: "warn", text: t("scan.unknownFnsku", { code }) });
       }
-      return setResult({
-        tone: "error",
-        text: m.error === "notFnsku" ? t("scan.notFnsku", { sku: m.item.sku }) : t("scan.unknownFnsku", { code }),
-      });
+      return setResult({ tone: "error", text: t("scan.notFnsku", { sku: m.item.sku }) });
     }
     const item = matchReceiving(code, order.order_items, aliases);
     if (item) return apply(item, Number(multiplier) || 1);
@@ -107,8 +104,18 @@ const ScanPanel = ({ order, onChanged }) => {
     apply(item, Number(multiplier) || 1);
   };
 
-  // In the FNSKU check only SKUs still missing their label code can take a new one.
-  const teachable = mode === "prep" ? order.order_items.filter((i) => !i.fnsku) : order.order_items;
+  // Everything the operator might recognize on the box: SKU, product name, known UPCs and FNSKU.
+  const optionLabel = (i) => {
+    const upcs = aliases.filter((a) => a.sku === i.sku && a.kind !== "fnsku").map((a) => a.code);
+    return [
+      i.sku,
+      i.product_name,
+      upcs.length && `UPC ${upcs.join(", ")}`,
+      i.fnsku ? `FNSKU ${i.fnsku}` : mode === "prep" && t("scan.noFnsku"),
+    ]
+      .filter(Boolean)
+      .join(" · ");
+  };
 
   if (!mode) return null;
 
@@ -143,8 +150,8 @@ const ScanPanel = ({ order, onChanged }) => {
           <div className="flex gap-2">
             <select className={inputCls} value={teachSku} onChange={(e) => setTeachSku(e.target.value)}>
               <option value="">{t("scan.pickSku")}</option>
-              {teachable.map((i) => (
-                <option key={i.id} value={i.sku}>{i.sku}{i.product_name ? ` — ${i.product_name}` : ""}</option>
+              {order.order_items.map((i) => (
+                <option key={i.id} value={i.sku}>{optionLabel(i)}</option>
               ))}
             </select>
             <button type="button" onClick={teach} disabled={!teachSku} className={btnPrimary}>{t(mode === "prep" ? "scan.saveFnsku" : "scan.save")}</button>
