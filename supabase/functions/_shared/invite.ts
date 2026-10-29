@@ -26,6 +26,18 @@ const COPY = {
 
 type Invite = { email: string; fullName?: string | null; company?: string | null; language?: string | null };
 
+function inviteEmail(invite: Invite, link: string) {
+  const c = COPY[invite.language === "es" ? "es" : "en"];
+  const first = invite.fullName?.trim().split(" ")[0];
+  const content = {
+    heading: c.heading,
+    paragraphs: [`${c.hi}${first ? ` ${escapeHtml(first)}` : ""},`, escapeHtml(c.body), escapeHtml(c.action)],
+    cta: { label: c.cta, url: link },
+    footer: escapeHtml(c.footer),
+  };
+  return { to: invite.email, subject: c.subject, html: layout(content), text: plainText(content) };
+}
+
 // Creates the auth user and emails our own branded invitation (instead of Supabase's generic one).
 export async function sendPortalInvite(admin: SupabaseClient, invite: Invite): Promise<{ userId: string }> {
   const { data, error } = await admin.auth.admin.generateLink({
@@ -35,20 +47,24 @@ export async function sendPortalInvite(admin: SupabaseClient, invite: Invite): P
   });
   if (error || !data?.properties?.action_link) throw new Error(error?.message ?? "could not create the invitation");
 
-  const c = COPY[invite.language === "es" ? "es" : "en"];
-  const first = invite.fullName?.trim().split(" ")[0];
-  const content = {
-    heading: c.heading,
-    paragraphs: [`${c.hi}${first ? ` ${escapeHtml(first)}` : ""},`, escapeHtml(c.body), escapeHtml(c.action)],
-    cta: { label: c.cta, url: data.properties.action_link },
-    footer: escapeHtml(c.footer),
-  };
   try {
-    await sendEmail({ to: invite.email, subject: c.subject, html: layout(content), text: plainText(content) });
+    await sendEmail(inviteEmail(invite, data.properties.action_link));
   } catch (err) {
     // Undo the half-made account so staff can simply retry the invitation.
     await admin.auth.admin.deleteUser(data.user.id);
     throw err;
   }
   return { userId: data.user.id };
+}
+
+// For an existing account (lost or expired invitation): a fresh one-time link to set the password,
+// in the same welcome email.
+export async function resendPortalInvite(admin: SupabaseClient, invite: Invite) {
+  const { data, error } = await admin.auth.admin.generateLink({
+    type: "recovery",
+    email: invite.email,
+    options: { redirectTo: PORTAL_SET_PASSWORD_URL },
+  });
+  if (error || !data?.properties?.action_link) throw new Error(error?.message ?? "could not create the invitation");
+  await sendEmail(inviteEmail(invite, data.properties.action_link));
 }

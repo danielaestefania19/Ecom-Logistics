@@ -128,9 +128,7 @@ function NavbarMenu() {
       {/* Auth buttons mobile */}
       <NavbarMenuItem>
         <a
-          href="https://portal.ecomlogisticsus.com/login"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/portal/login"
           className="block w-full text-center border border-white text-white text-lg py-2 rounded-sm hover:bg-white hover:text-primary transition-colors"
         >
           {t("login")}
@@ -319,9 +317,7 @@ const Navbar = () => {
             <NavbarItem>
               <Button
                 as="a"
-                href="https://portal.ecomlogisticsus.com/login"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/portal/login"
                 variant="bordered"
                 size="md"
                 radius="sm"

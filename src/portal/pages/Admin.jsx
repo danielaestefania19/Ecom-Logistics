@@ -110,6 +110,35 @@ function EditModal({ client, onClose, onSaved }) {
   const [error, setError]     = useState(null);
 
   const [linking, setLinking] = useState(false);
+  const [accountBusy, setAccountBusy] = useState(null);
+  const [accountMsg, setAccountMsg] = useState(null);
+
+  const accountAction = async (action) => {
+    setAccountBusy(action);
+    setError(null);
+    setAccountMsg(null);
+    try {
+      await callFunction("admin-invite-user", { action, client_id: client.id });
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    } finally {
+      setAccountBusy(null);
+    }
+  };
+
+  const resend = async () => {
+    if (await accountAction("resend")) setAccountMsg(`Invitation sent to ${client.email}.`);
+  };
+
+  const remove = async () => {
+    if (!window.confirm(`Delete ${client.email} permanently? They lose portal access. This can't be undone.`)) return;
+    if (await accountAction("delete")) {
+      onSaved();
+      onClose();
+    }
+  };
 
   const handle = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -226,6 +255,19 @@ function EditModal({ client, onClose, onSaved }) {
             </button>
           </div>
         </form>
+        <div className="px-6 pb-5 pt-4 border-t border-gray-100 space-y-2">
+          <p className="text-xs font-semibold text-gray-500">Account</p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={resend} disabled={!!accountBusy} className="border border-gray-200 text-third font-semibold text-xs px-3 py-2 rounded-xl hover:bg-gray-50 transition disabled:opacity-50">
+              {accountBusy === "resend" ? "Sending…" : "Resend invitation"}
+            </button>
+            <button type="button" onClick={remove} disabled={!!accountBusy} className="border border-red-200 text-red-700 font-semibold text-xs px-3 py-2 rounded-xl hover:bg-red-50 transition disabled:opacity-50">
+              {accountBusy === "delete" ? "Deleting…" : "Delete client"}
+            </button>
+          </div>
+          {accountMsg && <p className="text-green-700 text-xs">{accountMsg}</p>}
+          <p className="text-[11px] text-gray-400">Resend sends a new one-time link to set the password. Clients with orders can't be deleted.</p>
+        </div>
       </div>
     </div>
   );
