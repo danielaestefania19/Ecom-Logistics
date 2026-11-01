@@ -32,7 +32,7 @@ export default function FastDeliverySection() {
         <div className="w-full lg:w-1/2 flex justify-center">
           <img
             src={FastDelivery}
-            alt="LTL Shipment Delivery"
+            alt="Shipment delivery to Amazon"
             className="rounded-2xl shadow-xl w-full max-w-xl"
           />
         </div>

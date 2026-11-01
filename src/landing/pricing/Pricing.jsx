@@ -49,8 +49,8 @@ const Pricing = () => {
 
   const description =
     lang === "es"
-      ? "Precios de Ecom Logistics: preparación FBA, pick & pack 3PL, almacenamiento y carga en Hayward, CA. Tarifas transparentes con descuentos por volumen, sin cuotas mensuales ni costos ocultos."
-      : "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and freight in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
+      ? "Precios de Ecom Logistics: preparación FBA, pick & pack 3PL, almacenamiento y recepción en Hayward, CA. Tarifas transparentes con descuentos por volumen, sin cuotas mensuales ni costos ocultos."
+      : "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and receiving in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
 
   // ---- Section renderers ---------------------------------------------------
 
@@ -127,7 +127,7 @@ const Pricing = () => {
             <div key={ri} className="rounded-xl border border-white/10 bg-[#0d1117] px-5 py-4 flex items-center justify-between gap-4 hover:border-third/40 transition">
               <span className="text-white/75 font-medium">{row.label[lang]}</span>
               <span className="text-white font-bold text-lg whitespace-nowrap">
-                {isNum ? `${money(row.price)}${row.suffix?.[lang] ?? ""}` : row.price[lang]}
+                {isNum ? `${row.prefix?.[lang] ?? ""}${money(row.price)}${row.suffix?.[lang] ?? ""}` : row.price[lang]}
               </span>
             </div>
           );

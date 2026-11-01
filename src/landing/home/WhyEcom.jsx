@@ -38,7 +38,7 @@ const WhyEcom = () => {
             <CardHeader className="flex flex-col items-start gap-1">
               <Image
                 src={top}
-                alt="Top LTL and Prep Rates"
+                alt="Top FBA Prep Rates"
                 className="w-14 h-14 xl:w-20 xl:h-20 rounded-md mb-1 object-cover aspect-square"
               />
               <h3 className="text-2xl font-semibold text-primary">

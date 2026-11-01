@@ -5,7 +5,7 @@ const RATE = Object.fromEntries(
 );
 
 export const PREP_TYPES = ["standard", "oversize", "polybag", "bubble", "bundle"];
-export const EXTRAS = ["pallet", "pallet_wrap", "coupon_insert", "filler"];
+export const EXTRAS = ["pallet", "pallet_wrap", "coupon_insert", "filler", "custom_label"];
 export const PACKAGING = ["small_medium_box", "large_box", "bubble_mailer", "poly_mailer"];
 
 // Same flooring as the public /pricing page, so the portal never quotes less discount than advertised.
@@ -37,6 +37,9 @@ export function estimateOrder({ items, totalCases = 0, pallets = 0, extras = [] 
   if (extras.includes("pallet_wrap")) lines.push({ key: "pallet_wrap", qty: palletCount, rate: RATE.pallet_wrap });
   if (extras.includes("coupon_insert") && units) lines.push({ key: "coupon_insert", qty: units, rate: RATE.coupon_insert });
   if (extras.includes("filler") && units) lines.push({ key: "filler", qty: units, rate: RATE.filler });
+  // Custom labels go only on the SKUs the client marked for them.
+  const labeled = items.filter((i) => i.custom_label).reduce((n, i) => n + qtyOf(i), 0);
+  if (labeled) lines.push({ key: "custom_label", qty: labeled, rate: RATE.custom_label });
 
   const priced = lines.map((l) => ({ ...l, total: roundCents(l.qty * l.rate) }));
   return { units, discount, lines: priced, total: roundCents(priced.reduce((n, l) => n + l.total, 0)) };

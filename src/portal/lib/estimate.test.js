@@ -43,6 +43,19 @@ describe("estimateOrder", () => {
   });
 });
 
+describe("custom label", () => {
+  it("bills only the units of the SKUs marked for it", () => {
+    const est = estimateOrder({
+      items: [
+        { expected_qty: 100, custom_label: true },
+        { expected_qty: 40 },
+      ],
+      extras: ["custom_label"],
+    });
+    expect(est.lines.find((l) => l.key === "custom_label")).toEqual({ key: "custom_label", qty: 100, rate: 0.3, total: 30 });
+  });
+});
+
 describe("invoiceLines", () => {
   const labels = { prep_standard: "Prep", case_receiving: "Cases" };
 

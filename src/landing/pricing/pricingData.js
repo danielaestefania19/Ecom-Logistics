@@ -230,6 +230,12 @@ export const pricingSections = [
         ...flat(0.5, { en: "/unit", es: "/unidad" }),
       },
       {
+        id: "custom_label",
+        label: { en: "Custom Label", es: "Etiqueta Personalizada (Custom Label)" },
+        prefix: { en: "From ", es: "Desde " },
+        ...flat(0.3, { en: "/unit", es: "/unidad" }),
+      },
+      {
         label: { en: "Account / Database Setup", es: "Configuración de Cuenta / Base de Datos" },
         ...flat(400, { en: " one-time", es: " único" }),
       },

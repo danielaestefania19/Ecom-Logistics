@@ -375,7 +375,6 @@ const ContactUs = () => {
               color="primary"
               className={errors.serviceType ? "border-red-500" : ""}
             >
-              <SelectItem key="LTL">LTL</SelectItem>
               <SelectItem key="FBA Prep">FBA Prep</SelectItem>
               <SelectItem key="3PL">3PL</SelectItem>
             </Select>

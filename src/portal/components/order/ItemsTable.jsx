@@ -16,6 +16,7 @@ function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
     fnsku: item.fnsku ?? "",
     upc: upc ?? "",
     prep_type: item.prep_type,
+    custom_label: item.custom_label,
   });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -33,6 +34,7 @@ function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
         product_name: form.product_name.trim() || null,
         fnsku: form.fnsku.trim().toUpperCase() || null,
         prep_type: form.prep_type,
+        custom_label: showPrep && form.custom_label,
       })
       .eq("id", item.id);
     if (err) {
@@ -77,6 +79,12 @@ function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
           <select className={cellInput} value={form.prep_type} onChange={(e) => set("prep_type", e.target.value)}>
             {PREP_TYPES.map((p) => <option key={p} value={p}>{t(`prepType.${p}`)}</option>)}
           </select>
+        </label>
+      )}
+      {showPrep && (
+        <label className="sm:col-span-2 flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" className="accent-third" checked={form.custom_label} onChange={(e) => set("custom_label", e.target.checked)} />
+          {t("extras.custom_label")}
         </label>
       )}
       <div className="sm:col-span-2 flex items-center gap-2">
@@ -184,7 +192,9 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
                       )}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {[i.product_name, i.fnsku && `FNSKU ${i.fnsku}`, upcs[i.sku] && `UPC ${upcs[i.sku]}`].filter(Boolean).join(" · ")}
+                      {[i.product_name, i.fnsku && `FNSKU ${i.fnsku}`, upcs[i.sku] && `UPC ${upcs[i.sku]}`, i.custom_label && t("extras.custom_label")]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
                   </td>
                   {showPrep && <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>}

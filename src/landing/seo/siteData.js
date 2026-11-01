@@ -18,7 +18,7 @@ export const SITE = {
   gbpName: "California Amazon FBA Prep Center - Ecom Logistics",
   defaultTitle: "Ecom Logistics | E-commerce 3PL & FBA Prep Center in Hayward, CA",
   defaultDescription:
-    "Ecom Logistics is a Hayward, CA based 3PL offering end-to-end e-commerce logistics: FBA prep, pick & pack fulfillment and Amazon LTL/FTL freight across the Bay Area and the USA.",
+    "Ecom Logistics is a Hayward, CA based 3PL offering end-to-end e-commerce logistics: Amazon FBA prep, pick & pack fulfillment and storage for sellers across the Bay Area and the USA.",
 
   // Default social share image (1200x630). Lives in /public.
   ogImage: "/og-image.jpg",

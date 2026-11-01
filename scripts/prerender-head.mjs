@@ -34,12 +34,10 @@ async function main() {
 
   const prepDescription =
     "Ecom Logistics is your Amazon FBA Prep Center in Hayward, CA. We offer expert inspection, FNSKU labeling, efficient packaging, and direct shipping to Amazon. Optimize your FBA prep!";
-  const amazonDescription =
-    "Streamline your LTL & FTL shipments with Ecom Logistics. As an Amazon Freight Partner in Hayward, CA, we offer efficient, cost-effective freight to Amazon FBA warehouses and beyond.";
   const tiktokDescription =
     "Streamline your e-commerce with Ecom Logistics' 3PL services in Hayward, CA. Expert third-party fulfillment, warehousing & pick and pack for growing brands.";
   const pricingDescription =
-    "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and freight in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
+    "Ecom Logistics pricing: FBA prep, 3PL pick & pack, storage and receiving in Hayward, CA. Transparent rates with automatic volume discounts, no monthly fees and no hidden costs.";
 
   const routes = [
     {
@@ -52,21 +50,8 @@ async function main() {
       path: "/about-us",
       title: "About Ecom Logistics | 3PL & FBA Prep Center in Hayward, CA",
       description:
-        "Discover Ecom Logistics: founded by e-commerce entrepreneurs. We offer scalable 3PL, FBA prep, and LTL/FTL shipping from Hayward, CA. Your reliable partner in growth.",
+        "Discover Ecom Logistics: founded by e-commerce entrepreneurs. We offer scalable 3PL fulfillment and Amazon FBA prep from Hayward, CA. Your reliable partner in growth.",
       schema: localBusinessSchema,
-    },
-    {
-      path: "/amazon-freight-partner-shipping",
-      title: "Amazon Freight Partner | LTL & FTL Shipping | Ecom Logistics",
-      description: amazonDescription,
-      schema: [
-        buildServiceSchema({
-          name: "Amazon Freight Partner LTL & FTL Shipping",
-          description: amazonDescription,
-          path: "/amazon-freight-partner-shipping",
-        }),
-        buildFaqSchema(en.faq?.questions),
-      ].filter(Boolean),
     },
     {
       path: "/prep-center",

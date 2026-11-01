@@ -25,7 +25,7 @@ function AboutUs() {
         <>
             <Seo
                 title="About Ecom Logistics | 3PL & FBA Prep Center in Hayward, CA"
-                description="Discover Ecom Logistics: founded by e-commerce entrepreneurs. We offer scalable 3PL, FBA prep, and LTL/FTL shipping from Hayward, CA. Your reliable partner in growth."
+                description="Discover Ecom Logistics: founded by e-commerce entrepreneurs. We offer scalable 3PL fulfillment and Amazon FBA prep from Hayward, CA. Your reliable partner in growth."
                 path="/about-us"
                 schema={localBusinessSchema}
             />

@@ -1,6 +1,6 @@
 import FreeStorage from '../../../assets/FreeStorage.webp'
 import { Button } from "@heroui/react";
-import PriceListPrepLTL from '../../../assets/PriceListPrep&LTL.pdf';
+import { Link as ReactRouterLink } from "react-router-dom";
 import { useLanguage } from "../../i18n/LanguageContext";
 
 const FreeStorageOffer = () => {
@@ -26,14 +26,15 @@ const FreeStorageOffer = () => {
           <p className="text-lg text-black mb-8">
             {t("storage.description")}
           </p>
-          <a href={PriceListPrepLTL} target="_blank" rel="noopener noreferrer">
+          {/* The old PDF price list still had LTL; the /pricing page is the current one. */}
+          <ReactRouterLink to="/pricing">
             <Button
               size="lg"
               className="text-white bg-third hover:bg-third-dark px-8 py-4 rounded-xl transition duration-300 ease-in-out"
             >
               {t("storage.button")}
             </Button>
-          </a>
+          </ReactRouterLink>
         </div>
       </div>
     </section>

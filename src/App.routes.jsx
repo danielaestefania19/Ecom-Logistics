@@ -3,7 +3,6 @@ import { LanguageProvider } from "../src/landing/i18n/LanguageContext.jsx";
 
 // Landing pages
 import Home          from "./landing/home/Home.jsx";
-import AmazonPartner from "./landing/services/AmazonPartner/AmazonPartner.jsx";
 import PrepCenter    from "./landing/services/PrepCenter/PrepCenter.jsx";
 import TikTokShop    from "./landing/services/TikTokShop/TikTokShop.jsx";
 import AboutUs       from "./landing/AboutUs/AboutUs.jsx";
@@ -71,7 +70,8 @@ function App() {
         <Route element={<LandingLayout />}>
           <Route path="/"                                element={<Navigate to="/home" />} />
           <Route path="/home"                            element={<Home />} />
-          <Route path="/amazon-freight-partner-shipping" element={<AmazonPartner />} />
+          {/* LTL freight was discontinued; the server 301s this URL too (public/serve.json). */}
+          <Route path="/amazon-freight-partner-shipping" element={<Navigate to="/home" replace />} />
           <Route path="/prep-center"                     element={<PrepCenter />} />
           <Route path="/3pl-services"                    element={<TikTokShop />} />
           <Route path="/about-us"                        element={<AboutUs />} />

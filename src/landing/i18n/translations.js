@@ -18,9 +18,9 @@ export const translations = {
     // Hero
     heroHeadline2: "Fulfillment Solutions ",
     heroDesc1:
-      "for Ecommerce Sellers: 3rd party logistics (3PL), Amazon fba Prep Center,",
+      "for Ecommerce Sellers: 3rd party logistics (3PL), Amazon FBA Prep Center",
     heroDesc2:
-      " Amazon Freight Partner (LTL & FTL). All you need in one place!",
+      " and storage. All you need in one place!",
     // Contact Us
     contactTitle: "Contact Us",
     contactSubtitle:
@@ -101,7 +101,7 @@ export const translations = {
     servicesTitle2: "E-commerce Logistics Services",
     servicesTitle3: "Move Effortless",
     servicesDesc:
-      "At Ecom Logistics, we offer a full spectrum of integrated solutions designed to streamline your operations and drive growth. Discover how our expert 3PL, FBA prep, and Freight shipping services can benefit your business.",
+      "At Ecom Logistics, we offer a full spectrum of integrated solutions designed to streamline your operations and drive growth. Discover how our expert 3PL, FBA prep, and storage services can benefit your business.",
     servicesAll: "All Services",
     ltlTitle: "Amazon LTL & FTL Shipping",
     ltlDesc:
@@ -151,9 +151,9 @@ export const translations = {
     fastBenefit3: "Free Expert Advisory",
     //Discount
     discountHeadline1: "Are you overpaying for",
-    discountHeadline2: "LTL Services and losing time?",
-    discountCardTitle: "Free daily LTL Pickup",
-    discountCardSubtitle: "In the Bay Area",
+    discountHeadline2: "FBA Prep and losing time?",
+    discountCardTitle: "First 7 days of storage free",
+    discountCardSubtitle: "At our Hayward warehouse",
     //FulfillmentPromise
     fulfillmentHeadline: " Top-Rated Fulfillment Center on the West Coast",
     fulfillmentAccuracy: "Order Accuracy",
@@ -161,9 +161,9 @@ export const translations = {
     fulfillmentPreparation: "to Prepare Your Products",
     //WhyEcom
     whyEcomTitle: "Why Ecom",
-    whyEcomCard1Title: "#1 LTL & Prep Rates",
+    whyEcomCard1Title: "#1 Prep Rates",
     whyEcomCard1Text:
-      "Save more with the leading LTL and Prep Rates in Northern California. Increase your margins with Ecom Logistics' exceptional pricing. Our LTL and prep rates are the most competitive in the region, tailored for e-commerce sellers. Save on every shipment without sacrificing quality.",
+      "Save more with the leading FBA prep rates in Northern California. Increase your margins with Ecom Logistics' exceptional pricing. Our prep and fulfillment rates are the most competitive in the region, tailored for e-commerce sellers. Save on every shipment without sacrificing quality.",
     whyEcomCard2Title: "Expert Support & Advisors",
     whyEcomCard2Text:
       "At Ecom Logistics, we have 5 years of experience in the logistics industry. Our trained team is here to offer you advice and support at every stage, from the initial pricing inquiry to the completion of your order.",
@@ -443,11 +443,11 @@ export const translations = {
       heroEyebrow: "Transparent Pricing",
       heroTitle: "Pricing that scales with your volume",
       heroSubtitle:
-        "FBA prep, 3PL pick & pack, storage and freight — clear rates with automatic volume discounts. No hidden fees, no monthly minimums.",
+        "FBA prep, 3PL pick & pack, storage and receiving — clear rates with automatic volume discounts. No hidden fees, no monthly minimums.",
       ctaQuote: "Get a Custom Quote",
       ctaCall: "Call Sales",
       tabFulfillment: "FBA Prep & Fulfillment",
-      tabWarehouse: "Storage & Freight",
+      tabWarehouse: "Storage & Receiving",
       perUnitNote: "Per-unit price · drops with volume",
       bestValue: "Best value",
       storageOfferBadge: "First 7 days FREE",
@@ -778,10 +778,9 @@ export const translations = {
       paragraph2:
         "We specialize in key services that support the full e-commerce supply chain, including ",
       highlights: {
-        ltl: "LTL pallet shipping",
         fulfillment: "3PL fulfillment",
         fba: "Amazon FBA prep",
-        local: "local moving solutions",
+        storage: "warehouse storage",
       },
       conclusion:
         ". Whether you’re a growing brand or a high-volume seller, our team is here to make your logistics easier, faster, and more efficient.",
@@ -793,11 +792,6 @@ export const translations = {
         "At Ecom Logistics, we simplify your logistics so you can focus on growing your business. With tailored solutions and years of experience, we offer the services that keep your e-commerce operations running efficiently and securely.",
       services: [
         {
-          title: "Amazon LTL Shipping",
-          description:
-            "Fast, reliable, and cost-effective, ensuring your products reach Amazon’s fulfillment centers on time.",
-        },
-        {
           title: "3PL Fulfillment",
           description:
             "End-to-end logistics management, from storage to order fulfillment, giving you peace of mind.",
@@ -808,9 +802,9 @@ export const translations = {
             "We prepare your products to meet Amazon’s strict guidelines, so you can hit the ground running.",
         },
         {
-          title: "Local Moving",
+          title: "Storage",
           description:
-            "Reliable local delivery and pickup to keep your operations smooth and hassle-free.",
+            "Monthly storage by bin, shelf or pallet, with the first 7 days free and no long-term contract.",
         },
       ],
       conclusion:
@@ -885,7 +879,6 @@ export const translations = {
         message: "Any additional information...",
       },
       serviceOptions: {
-        ltl: "LTL",
         fba: "FBA Prep",
         pl: "3PL",
       },
@@ -923,9 +916,9 @@ export const translations = {
     heroHeadline1: "Soluciones logísticas para",
     heroHeadline2: "E-Commerce",
     heroDesc1:
-      "Para Vendedores de E-commerce: logística de terceros (3PL), Centro de Preparación Amazon FBA,",
+      "Para Vendedores de E-commerce: logística de terceros (3PL), Centro de Preparación Amazon FBA",
     heroDesc2:
-      "Socio de Carga de Amazon (LTL y FTL). ¡Todo lo que necesitas en un solo lugar!,",
+      " y almacenamiento. ¡Todo lo que necesitas en un solo lugar!",
     // Contact Us
     contactTitle: "Contáctanos",
     contactSubtitle:
@@ -1004,7 +997,7 @@ export const translations = {
     servicesTitle1: "Nuestros Servicios Integrales de",
     servicesTitle2: "Logística para E-commerce",
     servicesDesc:
-      "En Ecom Logistics, ofrecemos un espectro completo de soluciones integradas diseñadas para optimizar sus operaciones e impulsar el crecimiento. Descubra cómo nuestros servicios expertos de 3PL, preparación de FBA y envío de carga pueden beneficiar a su negocio.",
+      "En Ecom Logistics, ofrecemos un espectro completo de soluciones integradas diseñadas para optimizar sus operaciones e impulsar el crecimiento. Descubra cómo nuestros servicios expertos de 3PL, preparación de FBA y almacenamiento pueden beneficiar a su negocio.",
     servicesAll: "Todos los Servicios",
     ltlTitle: " Envíos LTL y FTL de Amazon",
     ltlDesc:
@@ -1054,9 +1047,9 @@ export const translations = {
     fastBenefit3: "Asesoramiento Experto Gratuito",
     //Discount
     discountHeadline1: "¿Estás pagando de más por",
-    discountHeadline2: "Servicios LTL y perdiendo tiempo?",
-    discountCardTitle: "Recojo diario LTL gratis",
-    discountCardSubtitle: "En el Área de la Bahía",
+    discountHeadline2: "la preparación FBA y perdiendo tiempo?",
+    discountCardTitle: "7 días de almacenamiento gratis",
+    discountCardSubtitle: "En nuestro almacén de Hayward",
     //FulfillmentPromise
     fulfillmentHeadline:
       "Centro de Fulfillment Mejor Valorado en la Costa Oeste",
@@ -1065,9 +1058,9 @@ export const translations = {
     fulfillmentPreparation: "Para Preparar Sus Productos",
     //WhyEcom
     whyEcomTitle: "¿Por qué Ecom",
-    whyEcomCard1Title: "#1 Tarifas LTL y de Preparación",
+    whyEcomCard1Title: "#1 Tarifas de Preparación",
     whyEcomCard1Text:
-      "Ahorra más con las tarifas LTL y de preparación líderes en el norte de California. Aumenta tus márgenes con los precios excepcionales de Ecom Logistics. Nuestras tarifas están diseñadas para vendedores de e-commerce. Ahorra en cada envío sin sacrificar calidad.",
+      "Ahorra más con las tarifas de preparación FBA líderes en el norte de California. Aumenta tus márgenes con los precios excepcionales de Ecom Logistics. Nuestras tarifas están diseñadas para vendedores de e-commerce. Ahorra en cada envío sin sacrificar calidad.",
     whyEcomCard2Title: "Soporte Experto y Asesores",
     whyEcomCard2Text:
       "En Ecom Logistics, tenemos 5 años de experiencia en la industria logística. Nuestro equipo capacitado está listo para apoyarte en cada etapa, desde la cotización inicial hasta la entrega final.",
@@ -1350,11 +1343,11 @@ export const translations = {
       heroEyebrow: "Precios Transparentes",
       heroTitle: "Precios que escalan con tu volumen",
       heroSubtitle:
-        "Preparación FBA, pick & pack 3PL, almacenamiento y carga — tarifas claras con descuentos automáticos por volumen. Sin costos ocultos, sin mínimos mensuales.",
+        "Preparación FBA, pick & pack 3PL, almacenamiento y recepción — tarifas claras con descuentos automáticos por volumen. Sin costos ocultos, sin mínimos mensuales.",
       ctaQuote: "Solicitar Cotización",
       ctaCall: "Llamar a Ventas",
       tabFulfillment: "Prep FBA y Fulfillment",
-      tabWarehouse: "Almacén y Carga",
+      tabWarehouse: "Almacén y Recepción",
       perUnitNote: "Precio por unidad · baja con el volumen",
       bestValue: "Mejor precio",
       storageOfferBadge: "Primeros 7 días GRATIS",
@@ -1688,10 +1681,9 @@ export const translations = {
       paragraph2:
         "Nos especializamos en servicios clave que respaldan toda la cadena de suministro de e-commerce, incluyendo el ",
       highlights: {
-        ltl: "envío de palets LTL",
         fulfillment: "cumplimiento 3PL",
         fba: "preparación para Amazon FBA",
-        local: "soluciones locales de mudanza",
+        storage: "almacenamiento",
       },
       conclusion:
         ". Ya seas una marca en crecimiento o un vendedor de alto volumen, nuestro equipo está aquí para hacer tu logística más fácil, rápida y eficiente.",
@@ -1703,11 +1695,6 @@ export const translations = {
         "En Ecom Logistics, simplificamos tu logística para que puedas concentrarte en hacer crecer tu negocio. Con soluciones personalizadas y años de experiencia, ofrecemos los servicios que mantienen tus operaciones de e-commerce eficientes y seguras.",
       services: [
         {
-          title: "Envíos LTL a Amazon",
-          description:
-            "Rápidos, confiables y económicos, asegurando que tus productos lleguen a los centros de cumplimiento de Amazon a tiempo.",
-        },
-        {
           title: "Cumplimiento 3PL",
           description:
             "Gestión logística integral, desde el almacenamiento hasta la entrega de pedidos, para brindarte tranquilidad.",
@@ -1718,9 +1705,9 @@ export const translations = {
             "Preparamos tus productos para cumplir con las estrictas pautas de Amazon, permitiéndote empezar sin contratiempos.",
         },
         {
-          title: "Mudanzas Locales",
+          title: "Almacenamiento",
           description:
-            "Entregas y recolecciones locales confiables para mantener tus operaciones sin interrupciones.",
+            "Almacenamiento mensual por bin, estante o pallet, con los primeros 7 días gratis y sin contrato a largo plazo.",
         },
       ],
       conclusion:
@@ -1795,7 +1782,6 @@ export const translations = {
         message: "Información adicional...",
       },
       serviceOptions: {
-        ltl: "LTL",
         fba: "Preparación FBA",
         pl: "3PL",
       },

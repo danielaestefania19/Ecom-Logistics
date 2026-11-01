@@ -17,10 +17,9 @@ const WhoWeAre = () => {
           </p>
           <p className="text-base md:text-lg text-gray-700 leading-relaxed text-center lg:text-left">
             {who.paragraph2}
-            <span className="font-semibold text-primary">{who.highlights.ltl}</span>,{" "}
             <span className="font-semibold text-primary">{who.highlights.fulfillment}</span>,{" "}
             <span className="font-semibold text-primary">{who.highlights.fba}</span>,{" "}
-            <span className="font-semibold text-primary">{who.highlights.local}</span>
+            <span className="font-semibold text-primary">{who.highlights.storage}</span>
             {who.conclusion}
           </p>
         </div>

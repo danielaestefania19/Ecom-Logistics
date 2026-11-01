@@ -1,4 +1,7 @@
 {
+  "redirects": [
+    { "source": "/amazon-freight-partner-shipping", "destination": "/home", "type": 301 }
+  ],
   "rewrites": [
     { "source": "/portal", "destination": "/index.html" },
     { "source": "/portal/**", "destination": "/index.html" }

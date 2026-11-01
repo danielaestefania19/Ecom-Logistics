@@ -8,7 +8,7 @@ import { registerTracking, syncAsana, uploadOrderFile } from "../lib/orders";
 import { btnPrimary, btnSecondary, Card, ErrorBanner, Field, inputCls, PageHeader } from "../components/ui";
 import CompanyProfileForm from "../components/CompanyProfileForm";
 
-const emptyItem = () => ({ sku: "", fnsku: "", product_name: "", prep_type: "standard", expected_qty: "" });
+const emptyItem = () => ({ sku: "", fnsku: "", product_name: "", prep_type: "standard", expected_qty: "", custom_label: false });
 
 const splitTracking = (text) =>
   [...new Set(text.split(/[\s,;]+/).map((s) => s.trim().toUpperCase()).filter(Boolean))];
@@ -62,24 +62,32 @@ const NewOrder = () => {
   const toggleExtra = (x) =>
     set("extras", form.extras.includes(x) ? form.extras.filter((e) => e !== x) : [...form.extras, x]);
 
+  // A SKU gets a custom label only while that extra is ticked.
+  const wantsLabels = form.extras.includes("custom_label");
+  const itemsToSend = useMemo(
+    () => items.map((i) => ({ ...i, custom_label: wantsLabels && i.custom_label })),
+    [items, wantsLabels]
+  );
+
   const estimate = useMemo(
     () =>
       estimateOrder({
-        items: is3pl ? [] : items,
+        items: is3pl ? [] : itemsToSend,
         totalCases: Number(form.total_cases) || 0,
         pallets: Number(form.pallets) || 0,
         extras: form.extras,
       }),
-    [is3pl, items, form.total_cases, form.pallets, form.extras]
+    [is3pl, itemsToSend, form.total_cases, form.pallets, form.extras]
   );
 
   const submit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    const lines = items.filter((i) => i.sku.trim() || i.expected_qty);
+    const lines = itemsToSend.filter((i) => i.sku.trim() || i.expected_qty);
     if (!lines.length) return setError(t("newOrder.errors.noItems"));
     if (lines.some((i) => !i.sku.trim() || !(Number(i.expected_qty) > 0))) return setError(t("newOrder.errors.badItem"));
+    if (!is3pl && wantsLabels && !lines.some((i) => i.custom_label)) return setError(t("newOrder.errors.customLabel"));
     if (isStaff && !form.client_id) return setError(t("newOrder.errors.noClient"));
     if (!form.declaration_accepted || !form.signer_name.trim()) return setError(t("newOrder.errors.declaration"));
 
@@ -344,6 +352,32 @@ const NewOrder = () => {
                 </label>
               ))}
             </div>
+            {wantsLabels && (
+              <div className="mb-5 p-4 bg-gray-50 rounded-xl">
+                <p className="text-sm font-semibold text-primary">{t("newOrder.customLabelWhich")}</p>
+                <p className="text-xs text-gray-500 mb-3">{t("newOrder.customLabelHint")}</p>
+                {items.some((i) => i.sku.trim()) ? (
+                  <div className="space-y-2">
+                    {items.map((it, idx) =>
+                      it.sku.trim() ? (
+                        <label key={idx} className="flex items-center gap-3 text-sm text-gray-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 accent-third"
+                            checked={it.custom_label}
+                            onChange={(e) => setItem(idx, "custom_label", e.target.checked)}
+                          />
+                          <span className="font-semibold">{it.sku}</span>
+                          {Number(it.expected_qty) > 0 && <span className="text-gray-400">{t("orders.units", { n: Number(it.expected_qty) })}</span>}
+                        </label>
+                      ) : null
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-amber-700">{t("newOrder.customLabelNoSkus")}</p>
+                )}
+              </div>
+            )}
             <div className="grid sm:grid-cols-2 gap-4">
               <Field label={t("order.storage")}>
                 <select className={inputCls} value={form.storage_requested} onChange={(e) => set("storage_requested", e.target.value)}>

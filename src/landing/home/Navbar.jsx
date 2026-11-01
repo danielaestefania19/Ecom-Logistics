@@ -22,7 +22,6 @@ import Banner from "./Banner.jsx";
 import { useLanguage } from "../i18n/LanguageContext";
 
 const servicesItems = [
-  { key: "Amazon", labelKey: "ltlTitle", path: "/amazon-freight-partner-shipping" },
   { key: "FBA", labelKey: "fbaTitle", path: "/prep-center" },
   { key: "TikTok", labelKey: "tiktokTitle", path: "/3pl-services" },
 ];
