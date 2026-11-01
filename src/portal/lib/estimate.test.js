@@ -94,12 +94,16 @@ describe("invoiceLines", () => {
       quote_status: "accepted",
       order_quote_lines: [
         { key: "prep_standard", description: "Prep", quantity: 100, unit_amount: 55 },
+        { key: "prep_polybag", description: "Poly", quantity: 10, unit_amount: 90 },
+        { key: "prod_MASTERBOX", description: "Master box", quantity: 3, unit_amount: 400 },
         { key: null, description: "Discount", quantity: 1, unit_amount: -1000 },
       ],
     };
+    // Quoted polybag units never arrived, so they aren't billed; the Stripe product added by hand is.
     expect(invoiceLines(order, labels)).toEqual([
       { key: "prep_standard", description: "Prep", quantity: 90, unit_amount: 55 },
       { key: "case_receiving", description: "Cases", quantity: 2, unit_amount: 300 },
+      { key: "prod_MASTERBOX", description: "Master box", quantity: 3, unit_amount: 400 },
       { key: null, description: "Discount", quantity: 1, unit_amount: -1000 },
     ]);
     // A quote that was only sent doesn't change the invoice.

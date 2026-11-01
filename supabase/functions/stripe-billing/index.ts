@@ -28,17 +28,21 @@ Deno.serve(async (req: Request) => {
       return json({ ok: true, customer_id: customer.id, created: customer.created });
     }
 
-    // Read-only view of the Stripe catalog, to map portal billing lines to existing products.
+    // Read-only view of the Stripe catalog: quotes take their prices from it, and `mapping` says
+    // which product each portal billing line (prep_standard, case_receiving…) uses.
     if (body.action === "catalog") {
-      const [products, prices] = await Promise.all([
-        stripe("GET", "/products", { active: true, limit: 100 }),
-        stripe("GET", "/prices", { active: true, limit: 100 }),
+      const [products, prices, mapping] = await Promise.all([
+        listAll("/products"),
+        listAll("/prices"),
+        productMap(admin),
       ]);
       return json({
-        products: products.data.map((p: any) => ({
+        mapping,
+        products: products.map((p: any) => ({
           id: p.id,
           name: p.name,
-          prices: prices.data
+          default_price: typeof p.default_price === "string" ? p.default_price : p.default_price?.id ?? null,
+          prices: prices
             .filter((pr: any) => pr.product === p.id)
             .map((pr: any) => ({ id: pr.id, unit_amount_decimal: pr.unit_amount_decimal, recurring: !!pr.recurring, nickname: pr.nickname })),
         })),
@@ -68,12 +72,16 @@ Deno.serve(async (req: Request) => {
         description: `Order #${order.order_number} · ${service}`,
         metadata: { portal_order_id: order.id, order_number: order.order_number },
       });
-      // Lines map to the existing Stripe products (portal_config.stripe_products) at this order's
-      // price, so drafts read "PREP - BASIC STANDARD · 1249 × $0.63" and Stripe reports by product.
-      const { data: cfg } = await admin.from("portal_config").select("value").eq("key", "stripe_products").maybeSingle();
-      const productFor: Record<string, string> = cfg?.value ? JSON.parse(cfg.value) : {};
+      // Lines map to the existing Stripe products (portal_config.stripe_products, or a product picked
+      // in the quote) at this order's price, so drafts read "PREP - BASIC STANDARD · 1249 × $0.50"
+      // and Stripe reports by product. When that price already exists in Stripe it is reused as is;
+      // otherwise Stripe keeps a one-off price on the same product. No products are created.
+      const [productFor, prices] = await Promise.all([productMap(admin), listAll("/prices")]);
+      const existingPrice = (product: string, cents: number) =>
+        prices.find((p: any) => p.product === product && !p.recurring && Number(p.unit_amount_decimal) === cents)?.id;
       for (const l of lines) {
-        const product = l.key && productFor[l.key];
+        const product = l.key?.startsWith("prod_") ? l.key : l.key && productFor[l.key];
+        const price = product && existingPrice(product, l.unit_amount);
         // A quote discount (negative) or a fractional quantity goes to Stripe as one flat amount.
         const item = l.unit_amount < 0 || !Number.isInteger(l.quantity)
           ? {
@@ -83,7 +91,9 @@ Deno.serve(async (req: Request) => {
             }
           : {
               quantity: l.quantity,
-              ...(product
+              ...(price
+                ? { price }
+                : product
                 ? { price_data: { currency: "usd", product, unit_amount_decimal: l.unit_amount } }
                 : { currency: "usd", unit_amount_decimal: l.unit_amount, description: l.description }),
             };
@@ -103,6 +113,24 @@ Deno.serve(async (req: Request) => {
     return json({ error: (err as Error).message }, 500);
   }
 });
+
+// Every active object of a Stripe list endpoint, following its pages.
+async function listAll(path: string): Promise<any[]> {
+  const all: any[] = [];
+  let startingAfter: string | undefined;
+  for (let page = 0; page < 10; page++) {
+    const res = await stripe("GET", path, { active: true, limit: 100, starting_after: startingAfter });
+    all.push(...res.data);
+    if (!res.has_more || !res.data.length) break;
+    startingAfter = res.data[res.data.length - 1].id;
+  }
+  return all;
+}
+
+async function productMap(admin: ReturnType<typeof adminClient>): Promise<Record<string, string>> {
+  const { data: cfg } = await admin.from("portal_config").select("value").eq("key", "stripe_products").maybeSingle();
+  return cfg?.value ? JSON.parse(cfg.value) : {};
+}
 
 function validLines(raw: unknown): Line[] | null {
   if (!Array.isArray(raw) || !raw.length || raw.length > 40) return null;

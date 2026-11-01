@@ -55,30 +55,33 @@ export const orderEstimate = (order, items = order.order_items) =>
 // count is a verification aid and can be partial, so it never drives the invoice.
 const billedQty = (i) => (i.received_qty != null ? Math.max(i.received_qty - (i.damaged_qty ?? 0), 0) : i.expected_qty);
 
-// Starting point for a quote: the price-list estimate (unit amounts in cents).
-export const quoteDraftLines = (order, labels) =>
+// Starting point for a quote: the estimate's lines, each priced by priceFor(key, price-list cents)
+// so the caller can swap in a Stripe price. Unit amounts in cents.
+export const quoteDraftLines = (order, labels, priceFor = (key, cents) => cents) =>
   orderEstimate(order).lines.map((l) => ({
     key: l.key,
     description: labels[l.key] ?? l.key,
     quantity: l.qty,
-    unit_amount: Math.round(l.rate * 100),
+    unit_amount: priceFor(l.key, Math.round(l.rate * 100)),
   }));
 
 // Lines for the Stripe invoice draft (unit amounts in cents). 3PL inbound orders bill receiving
 // only: their pick & pack and storage are billed by month. Once the client accepts a quote, its
-// prices replace the price list (quantities still come from what was received) and its custom
-// lines, discounts included, are added as they are.
+// prices replace the price list (quantities still come from what was received). Its other lines
+// (Stripe products added by hand, custom lines, discounts) are added as quoted.
+const isExtraQuoteLine = (q) => !q.key || q.key.startsWith("prod_");
+
 export function invoiceLines(order, labels) {
   const lines = orderEstimate(order, order.order_items.map((i) => ({ ...i, expected_qty: billedQty(i) })))
     .lines.map((l) => ({ key: l.key, description: labels[l.key] ?? l.key, quantity: l.qty, unit_amount: Math.round(l.rate * 100) }));
   const quote = order.quote_status === "accepted" ? order.order_quote_lines ?? [] : [];
   if (!quote.length) return lines;
-  const quoted = Object.fromEntries(quote.filter((q) => q.key).map((q) => [q.key, Number(q.unit_amount)]));
+  const quoted = Object.fromEntries(quote.filter((q) => !isExtraQuoteLine(q)).map((q) => [q.key, Number(q.unit_amount)]));
   return [
     ...lines.map((l) => (l.key in quoted ? { ...l, unit_amount: quoted[l.key] } : l)),
     ...quote
-      .filter((q) => !q.key)
-      .map((q) => ({ key: null, description: q.description, quantity: Number(q.quantity), unit_amount: Number(q.unit_amount) })),
+      .filter(isExtraQuoteLine)
+      .map((q) => ({ key: q.key ?? null, description: q.description, quantity: Number(q.quantity), unit_amount: Number(q.unit_amount) })),
   ];
 }
 

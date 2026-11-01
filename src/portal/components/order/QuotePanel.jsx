@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import { useT } from "../../i18n";
-import { quoteDraftLines } from "../../lib/estimate";
+import { orderEstimate, quoteDraftLines } from "../../lib/estimate";
+import { callFunction } from "../../lib/orders";
 import { STRINGS } from "../../strings";
 import { btnPrimary, btnSecondary, ErrorBanner, inputCls } from "../ui";
 
@@ -12,6 +13,47 @@ const STATUS_STYLE = {
   accepted: "bg-green-50 text-green-700",
   changes_requested: "bg-amber-50 text-amber-800",
 };
+
+const money = (cents) => `$${(cents / 100).toFixed(2)}`;
+const oneTimePrices = (p) => p.prices.filter((x) => !x.recurring && x.unit_amount_decimal != null);
+
+const EMPTY_CATALOG = { products: [], byId: {}, mapping: {}, loaded: false, error: null };
+
+// The Stripe catalog: every product with a one-time price, plus which product each portal billing
+// line (prep_standard, case_receiving…) maps to.
+function useStripeCatalog() {
+  const [catalog, setCatalog] = useState(EMPTY_CATALOG);
+  useEffect(() => {
+    let live = true;
+    callFunction("stripe-billing", { action: "catalog" })
+      .then(({ products, mapping }) => {
+        const sellable = products.filter((p) => oneTimePrices(p).length).sort((a, b) => a.name.localeCompare(b.name));
+        const byId = Object.fromEntries(sellable.map((p) => [p.id, p]));
+        if (live) setCatalog({ products: sellable, byId, mapping: mapping ?? {}, loaded: true, error: null });
+      })
+      .catch((err) => live && setCatalog({ ...EMPTY_CATALOG, loaded: true, error: err.message }));
+    return () => {
+      live = false;
+    };
+  }, []);
+
+  // The Stripe product behind a quote line: picked directly (prod_…) or mapped from its key.
+  const productFor = (key) => (key ? catalog.byId[key.startsWith("prod_") ? key : catalog.mapping[key]] : null);
+  // A line's Stripe prices, highest first, so the list reads from base price down to promos.
+  const pricesFor = (key) => {
+    const p = productFor(key);
+    return p ? [...oneTimePrices(p)].sort((a, b) => Number(b.unit_amount_decimal) - Number(a.unit_amount_decimal)) : [];
+  };
+  // Draft price: keep the price-list rate when Stripe has that exact price (the volume tiers do),
+  // else the product's default Stripe price.
+  const priceFor = (key, cents) => {
+    const list = pricesFor(key);
+    if (!list.length || list.some((x) => Number(x.unit_amount_decimal) === cents)) return cents;
+    const def = list.find((x) => x.id === productFor(key).default_price) ?? list[0];
+    return Number(def.unit_amount_decimal);
+  };
+  return { ...catalog, pricesFor, priceFor };
+}
 
 const sortedLines = (order) => [...(order.order_quote_lines ?? [])].sort((a, b) => a.position - b.position);
 export const quoteTotal = (lines) => lines.reduce((n, l) => n + Number(l.quantity) * Number(l.unit_amount), 0) / 100;
@@ -64,15 +106,17 @@ function LinesTable({ lines }) {
   );
 }
 
-// Staff build the quote from the price list, adjust it (prices, quantities, extra lines, discounts)
-// and send it; the client accepts it in the portal and the invoice then uses its prices.
+// Staff build the quote from the estimate at Stripe prices, adjust it (any Stripe price or product,
+// quantities, custom lines, discounts) and send it; the client accepts it in the portal and the invoice then uses its prices.
 function StaffQuote({ order, onChanged }) {
   const { t, fmtMoney, fmtDate } = useT();
   // The client reads the quote, so its lines are written in the client's language.
   const clientStrings = STRINGS[order.clients?.language === "es" ? "es" : "en"];
   const labels = clientStrings.estimate.line;
   const saved = sortedLines(order);
-  const fresh = () => toRows(saved.length ? saved : quoteDraftLines(order, labels));
+  const catalog = useStripeCatalog();
+  const draft = () => toRows(quoteDraftLines(order, labels, catalog.priceFor));
+  const fresh = () => (saved.length ? toRows(saved) : draft());
   const [started, setStarted] = useState(!!order.quote_status);
   const [rows, setRows] = useState(fresh);
   const [dirty, setDirty] = useState(false);
@@ -80,9 +124,15 @@ function StaffQuote({ order, onChanged }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // A fresh load shows the saved quote, unless staff are mid-edit.
+    // A fresh load (or the Stripe prices arriving) shows the saved quote or a new draft, unless
+    // staff are mid-edit.
     if (!dirty) setRows(fresh());
-  }, [order]);
+  }, [order, catalog.loaded]);
+
+  // Estimate lines whose Stripe product has no one-time price fall back to the website price list.
+  const noStripePrice = catalog.loaded && !catalog.error
+    ? orderEstimate(order).lines.filter((l) => !catalog.pricesFor(l.key).length).map((l) => labels[l.key] ?? l.key)
+    : [];
 
   if (order.quote_status === "accepted") {
     return (
@@ -159,7 +209,7 @@ function StaffQuote({ order, onChanged }) {
             <tr className="text-left text-[11px] uppercase tracking-wide text-gray-400">
               <th className="py-2 pr-2 font-semibold">{t("quote.description")}</th>
               <th className="py-2 pr-2 font-semibold text-right w-20">{t("quote.qty")}</th>
-              <th className="py-2 pr-2 font-semibold text-right w-24">{t("quote.price")}</th>
+              <th className="py-2 pr-2 font-semibold text-right w-32">{t("quote.price")}</th>
               <th className="py-2 pr-2 font-semibold text-right w-24">{t("quote.total")}</th>
               <th className="w-8" />
             </tr>
@@ -175,6 +225,20 @@ function StaffQuote({ order, onChanged }) {
                 </td>
                 <td className="py-2 pr-2">
                   <input type="number" step="0.01" inputMode="decimal" className={`${cellInput} text-right`} value={r.price} onChange={(e) => setRow(n, "price", e.target.value)} />
+                  {catalog.pricesFor(r.key).length > 1 && (
+                    <select
+                      className="mt-1 w-full border border-gray-200 rounded-lg px-1 py-1 text-[11px] text-gray-500 bg-white"
+                      value=""
+                      onChange={(e) => e.target.value && setRow(n, "price", (Number(e.target.value) / 100).toFixed(2))}
+                    >
+                      <option value="">{t("quote.stripePrice")}</option>
+                      {catalog.pricesFor(r.key).map((x) => (
+                        <option key={x.id} value={x.unit_amount_decimal}>
+                          {money(Number(x.unit_amount_decimal))}{x.nickname ? ` · ${x.nickname}` : ""}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </td>
                 <td className={`py-2 pr-2 text-right font-medium ${rowAmount(r) < 0 ? "text-green-700" : ""}`}>{fmtMoney(rowAmount(r))}</td>
                 <td className="py-2 text-right">
@@ -199,10 +263,44 @@ function StaffQuote({ order, onChanged }) {
         <button type="button" onClick={() => edit((list) => [...list, { key: null, description: clientStrings.quote.discount, quantity: "1", price: "" }])} className="text-third hover:underline">
           + {t("quote.addDiscount")}
         </button>
-        <button type="button" onClick={() => { setDirty(true); setRows(toRows(quoteDraftLines(order, labels))); }} className="text-gray-400 hover:text-third">
+        <button type="button" onClick={() => { setDirty(true); setRows(draft()); }} className="text-gray-400 hover:text-third">
           {t("quote.reset")}
         </button>
       </div>
+      {catalog.products.length > 0 && (
+        <select
+          className={inputCls}
+          value=""
+          onChange={(e) => {
+            const [productId, priceId] = e.target.value.split("|");
+            const product = catalog.products.find((p) => p.id === productId);
+            const price = product && oneTimePrices(product).find((x) => x.id === priceId);
+            if (!price) return;
+            edit((list) => [
+              ...list,
+              { key: product.id, description: product.name, quantity: "1", price: (Number(price.unit_amount_decimal) / 100).toFixed(2) },
+            ]);
+          }}
+        >
+          <option value="">+ {t("quote.addStripeProduct")}</option>
+          {catalog.products.map((p) => (
+            <optgroup key={p.id} label={p.name}>
+              {catalog.pricesFor(p.id).map((x) => (
+                <option key={x.id} value={`${p.id}|${x.id}`}>
+                  {p.name} · {money(Number(x.unit_amount_decimal))}{x.nickname ? ` (${x.nickname})` : ""}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+      )}
+      <p className="text-xs text-gray-400">
+        {catalog.error
+          ? t("quote.stripeUnavailable")
+          : noStripePrice.length
+            ? t("quote.stripePricesMissing", { lines: noStripePrice.join(", ") })
+            : catalog.loaded && t("quote.stripePrices")}
+      </p>
       <p className="text-xs text-gray-400">{t("quote.discountHint")}</p>
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={() => save(true)} disabled={!!busy} className={btnPrimary}>
