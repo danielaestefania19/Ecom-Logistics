@@ -61,7 +61,7 @@ const CompanyProfileForm = ({ onSaved, intro }) => {
       {intro && <div className="bg-third/5 border border-third/20 text-primary text-sm px-4 py-3 rounded-xl">{intro}</div>}
 
       <Card title={t("profile.company")}>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label={t("profile.legalName")} required>{input("legal_name", { required: true })}</Field>
           <Field label={t("profile.tradeName")}>{input("company")}</Field>
           <Field label={t("profile.website")}>{input("website", { placeholder: "https://" })}</Field>
@@ -94,7 +94,7 @@ const CompanyProfileForm = ({ onSaved, intro }) => {
       </Card>
 
       <Card title={t("profile.address")}>
-        <div className="grid sm:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
           <div className="sm:col-span-4"><Field label={t("profile.line1")} required>{input("address_line1", { required: true })}</Field></div>
           <div className="sm:col-span-2"><Field label={t("profile.line2")}>{input("address_line2")}</Field></div>
           <div className="sm:col-span-2"><Field label={t("profile.city")} required>{input("address_city", { required: true })}</Field></div>
@@ -105,7 +105,7 @@ const CompanyProfileForm = ({ onSaved, intro }) => {
       </Card>
 
       <Card title={t("profile.contact")}>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label={t("profile.fullName")}>{input("full_name")}</Field>
           <Field label={t("profile.jobTitle")}>{input("job_title")}</Field>
           <Field label={t("profile.phone")}>{input("phone")}</Field>

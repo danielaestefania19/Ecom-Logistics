@@ -112,13 +112,13 @@ const Schedule = () => {
             {unscheduled.length === 0 ? (
               <p className="text-sm text-gray-400">{t("schedule.nothingToSchedule")}</p>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {unscheduled.map((o) => <ScheduleCard key={o.id} order={o} onChanged={load} />)}
               </div>
             )}
           </section>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
             {days.map((day) => {
               const list = orders.filter((o) => o.prep_day === day);
               const units = list.reduce((n, o) => n + orderUnits(o), 0);

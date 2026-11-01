@@ -61,7 +61,7 @@ function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
   };
 
   return (
-    <div className="grid sm:grid-cols-2 gap-3 p-3 bg-gray-50 rounded-xl">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-gray-50 rounded-xl">
       <label className="text-[11px] font-semibold text-gray-400">{t("item.sku")}
         <input className={cellInput} value={form.sku} onChange={(e) => set("sku", e.target.value)} />
       </label>
@@ -161,9 +161,92 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
   );
   const counted = items.some((i) => i.received_qty != null);
 
+  // Pieces shared by the phone cards and the table.
+  const skuInfo = (i) => (
+    <>
+      <p className="font-semibold text-primary">
+        {i.sku}
+        {canEditItems && editingId !== i.id && (
+          <button type="button" onClick={() => setEditingId(i.id)} className="ml-1 px-1.5 py-1 text-xs font-semibold text-third hover:underline">
+            {t("item.edit")}
+          </button>
+        )}
+      </p>
+      <p className="text-xs text-gray-400">
+        {[i.product_name, i.fnsku && `FNSKU ${i.fnsku}`, upcs[i.sku] && `UPC ${upcs[i.sku]}`, i.custom_label && t("extras.custom_label")]
+          .filter(Boolean)
+          .join(" · ")}
+      </p>
+    </>
+  );
+  const countField = (i, key, cls) => {
+    const c = counts[i.id] ?? { received: "", damaged: 0 };
+    if (editable) {
+      return (
+        <input
+          type="number"
+          min="0"
+          inputMode="numeric"
+          value={c[key]}
+          onChange={(e) => setCount(i.id, key, e.target.value)}
+          className={`${cls} border border-gray-200 rounded-lg px-2 py-2 text-right text-base`}
+        />
+      );
+    }
+    if (key === "received") {
+      const mismatch = i.received_qty != null && i.received_qty !== i.expected_qty;
+      return <span className={mismatch ? "text-red-600 font-semibold" : ""}>{i.received_qty ?? "—"}</span>;
+    }
+    return <span className={i.damaged_qty ? "text-red-600 font-semibold" : ""}>{i.damaged_qty || "—"}</span>;
+  };
+  const preppedCls = (i) => `font-semibold ${i.prepped_qty >= i.expected_qty ? "text-green-700" : "text-amber-700"}`;
+  const editor = (i) => (
+    <ItemEditor
+      item={i}
+      upc={upcs[i.sku]}
+      clientId={clientId}
+      showPrep={showPrep}
+      onDone={(saved) => {
+        setEditingId(null);
+        if (saved) onSaved?.();
+      }}
+    />
+  );
+  const stat = (label, value) => (
+    <div className="min-w-0">
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">{label}</p>
+      <div className="text-sm text-primary">{value}</div>
+    </div>
+  );
+
   return (
     <div>
-      <div className="overflow-x-auto -mx-5 px-5">
+      {/* Phones: one card per SKU so the count fields stay on screen without side scrolling. */}
+      <ul className="sm:hidden divide-y divide-gray-100">
+        {items.map((i) => (
+          <li key={i.id} className="py-3 space-y-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">{skuInfo(i)}</div>
+              {showPrep && <span className="text-xs text-gray-500 whitespace-nowrap pt-1">{t(`prepType.${i.prep_type}`)}</span>}
+            </div>
+            <div className={`grid gap-2 items-end ${showPrepped ? "grid-cols-4" : "grid-cols-3"}`}>
+              {stat(t("item.expected"), <span className="font-medium">{i.expected_qty}</span>)}
+              {stat(t("item.received"), countField(i, "received", "w-full"))}
+              {stat(t("item.damaged"), countField(i, "damaged", "w-full"))}
+              {showPrepped && stat(t("item.prepped"), <span className={preppedCls(i)}>{i.prepped_qty}/{i.expected_qty}</span>)}
+            </div>
+            {editingId === i.id && editor(i)}
+          </li>
+        ))}
+        <li className="pt-3 flex justify-between text-sm font-bold text-primary">
+          <span>{t("item.total")}</span>
+          <span>
+            {counted ? <span className={totals.received !== totals.expected ? "text-red-600" : ""}>{totals.received}</span> : "—"} / {totals.expected}
+          </span>
+        </li>
+      </ul>
+
+      <div className="hidden sm:block overflow-x-auto -mx-5 px-5">
         <table className="w-full text-sm min-w-[560px]">
           <thead>
             <tr className="text-left text-[11px] uppercase tracking-wide text-gray-400">
@@ -176,82 +259,25 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
             </tr>
           </thead>
           <tbody>
-            {items.map((i) => {
-              const c = counts[i.id] ?? { received: "", damaged: 0 };
-              const mismatch = i.received_qty != null && i.received_qty !== i.expected_qty;
-              return (
-                <Fragment key={i.id}>
+            {items.map((i) => (
+              <Fragment key={i.id}>
                 <tr className="border-t border-gray-100 align-middle">
-                  <td className="py-3 pr-3">
-                    <p className="font-semibold text-primary">
-                      {i.sku}
-                      {canEditItems && editingId !== i.id && (
-                        <button type="button" onClick={() => setEditingId(i.id)} className="ml-2 text-xs font-semibold text-third hover:underline">
-                          {t("item.edit")}
-                        </button>
-                      )}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {[i.product_name, i.fnsku && `FNSKU ${i.fnsku}`, upcs[i.sku] && `UPC ${upcs[i.sku]}`, i.custom_label && t("extras.custom_label")]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    </p>
-                  </td>
+                  <td className="py-3 pr-3">{skuInfo(i)}</td>
                   {showPrep && <td className="py-3 pr-3 text-gray-600">{t(`prepType.${i.prep_type}`)}</td>}
                   <td className="py-3 pr-3 text-right font-medium">{i.expected_qty}</td>
-                  <td className="py-3 pr-3 text-right">
-                    {editable ? (
-                      <input
-                        type="number"
-                        min="0"
-                        inputMode="numeric"
-                        value={c.received}
-                        onChange={(e) => setCount(i.id, "received", e.target.value)}
-                        className="w-24 border border-gray-200 rounded-lg px-2 py-2 text-right text-base"
-                      />
-                    ) : (
-                      <span className={mismatch ? "text-red-600 font-semibold" : ""}>{i.received_qty ?? "—"}</span>
-                    )}
-                  </td>
-                  <td className="py-3 text-right">
-                    {editable ? (
-                      <input
-                        type="number"
-                        min="0"
-                        inputMode="numeric"
-                        value={c.damaged}
-                        onChange={(e) => setCount(i.id, "damaged", e.target.value)}
-                        className="w-20 border border-gray-200 rounded-lg px-2 py-2 text-right text-base"
-                      />
-                    ) : (
-                      <span className={i.damaged_qty ? "text-red-600 font-semibold" : ""}>{i.damaged_qty || "—"}</span>
-                    )}
-                  </td>
-                  {showPrepped && (
-                    <td className={`py-3 pl-3 text-right font-semibold ${i.prepped_qty >= i.expected_qty ? "text-green-700" : "text-amber-700"}`}>
-                      {i.prepped_qty}/{i.expected_qty}
-                    </td>
-                  )}
+                  <td className="py-3 pr-3 text-right">{countField(i, "received", "w-24")}</td>
+                  <td className="py-3 text-right">{countField(i, "damaged", "w-20")}</td>
+                  {showPrepped && <td className={`py-3 pl-3 text-right ${preppedCls(i)}`}>{i.prepped_qty}/{i.expected_qty}</td>}
                 </tr>
                 {editingId === i.id && (
                   <tr>
                     <td colSpan={4 + (showPrep ? 1 : 0) + (showPrepped ? 1 : 0)} className="pb-3">
-                      <ItemEditor
-                        item={i}
-                        upc={upcs[i.sku]}
-                        clientId={clientId}
-                        showPrep={showPrep}
-                        onDone={(saved) => {
-                          setEditingId(null);
-                          if (saved) onSaved?.();
-                        }}
-                      />
+                      {editor(i)}
                     </td>
                   </tr>
                 )}
-                </Fragment>
-              );
-            })}
+              </Fragment>
+            ))}
           </tbody>
           <tfoot>
             <tr className="border-t border-gray-200 font-bold text-primary">

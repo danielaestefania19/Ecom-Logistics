@@ -177,7 +177,7 @@ function UnitsForm({ order, isAdmin, onDone }) {
       </ul>
 
       {added.map((l, n) => (
-        <div key={n} className="grid sm:grid-cols-6 gap-2 items-end border-t border-gray-200 pt-3">
+        <div key={n} className="grid grid-cols-1 sm:grid-cols-6 gap-2 items-end border-t border-gray-200 pt-3">
           <label className="text-[11px] font-semibold text-gray-400 sm:col-span-2">{t("item.sku")}
             <input className={cellInput} value={l.sku} onChange={(e) => setLine(n, "sku", e.target.value)} />
           </label>

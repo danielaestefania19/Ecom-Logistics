@@ -226,7 +226,7 @@ const FulfillmentDetail = () => {
         <div className="mb-5 bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 rounded-xl">{t("fulfillment.onHoldBanner")}</div>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
           {isStaff && open && (
             <Card title={t("fulfillment.moveStatus")}>

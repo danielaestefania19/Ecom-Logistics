@@ -152,7 +152,7 @@ const NewOrder = () => {
         action={<Link to="/portal/orders" className={btnSecondary}>{t("common.cancel")}</Link>}
       />
 
-      <div className="grid lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
           {isStaff && (
             <Card title={t("newOrder.clientSection")}>
@@ -171,7 +171,7 @@ const NewOrder = () => {
 
           {canDo3pl && (
             <Card title={t("newOrder.typeSection")}>
-              <div className="grid sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {["prep", "3pl"].map((k) => (
                   <label key={k} className={`cursor-pointer px-4 py-3 rounded-xl border text-sm ${type === k ? "border-third bg-third/5 text-third font-semibold" : "border-gray-200 text-gray-600"}`}>
                     <input type="radio" className="sr-only" name="order_type" checked={type === k} onChange={() => setType(k)} />
@@ -263,7 +263,7 @@ const NewOrder = () => {
           </Card>
 
           <Card title={t("newOrder.inbound")}>
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Field label={t("order.eta")}>
                 <input className={inputCls} type="date" value={form.eta} onChange={(e) => set("eta", e.target.value)} />
               </Field>
@@ -320,7 +320,7 @@ const NewOrder = () => {
               </fieldset>
               <fieldset>
                 <legend className="text-xs font-semibold text-gray-500 mb-2">{t("order.shipmentCreator")}</legend>
-                <div className="grid sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   {["customer", "ecom_seller_central", "ecom_scanpower"].map((c) => (
                     <label key={c} className={`cursor-pointer px-4 py-3 rounded-xl border text-sm ${form.shipment_creator === c ? "border-third bg-third/5 text-third font-semibold" : "border-gray-200 text-gray-600"}`}>
                       <input type="radio" className="sr-only" name="shipment_creator" checked={form.shipment_creator === c} onChange={() => set("shipment_creator", c)} />
@@ -344,7 +344,7 @@ const NewOrder = () => {
           </Card>
 
           <Card title={t("newOrder.services")}>
-            <div className="grid sm:grid-cols-2 gap-3 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
               {EXTRAS.map((x) => (
                 <label key={x} className="flex items-center gap-3 text-sm text-gray-700 cursor-pointer">
                   <input type="checkbox" className="w-4 h-4 accent-third" checked={form.extras.includes(x)} onChange={() => toggleExtra(x)} />
@@ -378,7 +378,7 @@ const NewOrder = () => {
                 )}
               </div>
             )}
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label={t("order.storage")}>
                 <select className={inputCls} value={form.storage_requested} onChange={(e) => set("storage_requested", e.target.value)}>
                   {["none", "1m", "2m", "3m_plus"].map((s) => (

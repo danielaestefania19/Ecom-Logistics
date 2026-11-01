@@ -61,7 +61,7 @@ function ManualForm({ clientId, products }) {
   };
 
   return (
-    <form onSubmit={submit} className="grid lg:grid-cols-3 gap-6 items-start">
+    <form onSubmit={submit} className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       <div className="lg:col-span-2 space-y-6">
         <Card
           title={t("fulfillment.products")}
@@ -110,7 +110,7 @@ function ManualForm({ clientId, products }) {
         </Card>
 
         <Card title={t("fulfillment.shipTo")}>
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label={t("fulfillment.channel")}>
               <select className={inputCls} value={form.channel} onChange={(e) => set("channel", e.target.value)}>
                 {CHANNELS.map((c) => <option key={c} value={c}>{t(`channel.${c}`)}</option>)}
@@ -240,7 +240,7 @@ function CsvImport({ clientId, products }) {
     <div className="space-y-6">
       <Card title={t("fulfillment.csv.title")}>
         <p className="text-sm text-gray-500 mb-4">{t("fulfillment.csv.help")}</p>
-        <div className="grid sm:grid-cols-3 gap-4 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           <Field label={t("fulfillment.channel")}>
             <select className={inputCls} value={channel} onChange={(e) => setChannel(e.target.value)}>
               {CHANNELS.map((c) => <option key={c} value={c}>{t(`channel.${c}`)}</option>)}

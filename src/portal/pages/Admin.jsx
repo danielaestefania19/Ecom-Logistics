@@ -180,11 +180,11 @@ function EditModal({ client, onClose, onSaved }) {
   const inputCls = "w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-primary placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-third/30 focus:border-third transition";
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto">
         <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
           <h3 className="font-bold text-primary">Edit Client</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} className="p-2 -mr-2 text-gray-400 hover:text-gray-600">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
         </div>

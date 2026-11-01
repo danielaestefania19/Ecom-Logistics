@@ -188,7 +188,7 @@ function StaffTools({ product, onDone }) {
       </div>
 
       {mode === "adjust" && (
-        <form onSubmit={saveAdjust} className="grid sm:grid-cols-4 gap-2 mt-3 items-end">
+        <form onSubmit={saveAdjust} className="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-3 items-end">
           <Field label={t("inventory.adjustQty")} hint={t("inventory.adjustQtyHint")}>
             <input className={inputCls} type="number" required value={adj.qty} onChange={(e) => setAdj((a) => ({ ...a, qty: e.target.value }))} />
           </Field>
@@ -207,7 +207,7 @@ function StaffTools({ product, onDone }) {
       )}
 
       {mode === "edit" && (
-        <form onSubmit={saveEdit} className="grid sm:grid-cols-3 gap-2 mt-3 items-end">
+        <form onSubmit={saveEdit} className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 items-end">
           <Field label={t("item.productName")}>
             <input className={inputCls} value={edit.name} onChange={(e) => setEdit((x) => ({ ...x, name: e.target.value }))} />
           </Field>
@@ -295,7 +295,7 @@ const Inventory = () => {
       {error && <ErrorBanner message={error} onRetry={load} />}
 
       {!loading && client && (
-        <div className="grid lg:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <div className="lg:col-span-2">
             <Card
               title={t("inventory.stockTitle", { n: shown.length })}

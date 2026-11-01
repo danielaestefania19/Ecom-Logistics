@@ -68,7 +68,7 @@ const PickVerify = ({ f }) => {
 
   return (
     <div className="space-y-4">
-      <ScanInput onScan={onScan} result={result} hint={t("scan.hint.pick")} />
+      <ScanInput onScan={onScan} result={result} hint={t("scan.hint.pick")} paused={!!unknown} />
       <ul className="space-y-1.5">
         {lines.map((l) => {
           const n = counts[l.id] ?? 0;

@@ -143,7 +143,7 @@ const ScanPanel = ({ order, onChanged }) => {
         )}
       </div>
 
-      <ScanInput onScan={onScan} result={result} busy={busy} hint={t(`scan.hint.${mode}`)} />
+      <ScanInput onScan={onScan} result={result} busy={busy} hint={t(`scan.hint.${mode}`)} paused={!!unknown} />
 
       {unknown && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2">

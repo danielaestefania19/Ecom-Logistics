@@ -310,7 +310,7 @@ const LeadDetail = () => {
         <div className="mb-5 bg-gray-50 border border-gray-200 text-gray-700 text-sm px-4 py-3 rounded-xl">{t("leads.lostReason")}: {lead.lost_reason}</div>
       )}
 
-      <div className="grid lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
           <Card title={t("leads.contact")}>
             <p className="text-base font-semibold text-primary">{leadName(lead)}{lead.job_title && <span className="font-normal text-gray-500"> · {lead.job_title}</span>}</p>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../AuthContext";
 import { useT } from "../i18n";
@@ -114,6 +114,44 @@ function ClientCancel({ order, onChanged }) {
         </button>
         <button type="button" onClick={() => setOpen(false)} className={btnSecondary}>{t("common.back")}</button>
       </div>
+      {error && <ErrorBanner message={error} />}
+    </div>
+  );
+}
+
+// Admins remove test or duplicate orders for good, typing the order number to confirm.
+function DeleteOrder({ order }) {
+  const { t } = useT();
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
+  const remove = async () => {
+    const typed = window.prompt(t("orderDetail.deleteConfirm", { n: order.order_number }));
+    if (typed == null) return;
+    if (typed.replace("#", "").trim() !== String(order.order_number)) return setError(t("orderDetail.deleteMismatch"));
+    setBusy(true);
+    setError(null);
+    const { data: paths, error: err } = await supabase.rpc("delete_order", { p_order: order.id });
+    if (err) {
+      setBusy(false);
+      return setError(err.message);
+    }
+    if (paths?.length) await supabase.storage.from("order-files").remove(paths);
+    navigate("/portal/ops", { replace: true });
+  };
+
+  return (
+    <div className="space-y-2">
+      <p className="text-xs text-gray-500">{t("orderDetail.deleteHelp")}</p>
+      <button
+        type="button"
+        onClick={remove}
+        disabled={busy}
+        className="w-full border border-red-200 text-red-600 hover:bg-red-50 font-semibold text-sm px-4 py-2.5 rounded-xl transition disabled:opacity-50"
+      >
+        {busy ? t("common.saving") : t("orderDetail.delete")}
+      </button>
       {error && <ErrorBanner message={error} />}
     </div>
   );
@@ -266,7 +304,7 @@ const OrderDetail = () => {
       {!isStaff && <Progress order={order} />}
       <ReceivedBar items={order.order_items} />
 
-      <div className="grid lg:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         <div className="lg:col-span-2 space-y-6">
           {/* Staff can always move an order: forward, reopen a cancelled one, or step back a mistake. */}
           {isStaff && (
@@ -334,8 +372,12 @@ const OrderDetail = () => {
             title={t("orderDetail.summary")}
             action={
               isAdmin && !editingSummary && (
-                <button type="button" onClick={() => setEditingSummary(true)} className="text-xs font-semibold text-third hover:underline">
-                  {t("item.edit")}
+                <button
+                  type="button"
+                  onClick={() => setEditingSummary(true)}
+                  className="px-3 py-1.5 rounded-lg border border-third/30 text-xs font-semibold text-third hover:bg-third/5"
+                >
+                  ✎ {t("item.edit")}
                 </button>
               )
             }
@@ -371,6 +413,11 @@ const OrderDetail = () => {
           <Card title={t("orderDetail.files")}>
             <FilesPanel orderId={order.id} files={order.order_files} isStaff={isStaff} onChanged={load} />
           </Card>
+          {isAdmin && (
+            <Card title={t("orderDetail.deleteTitle")}>
+              <DeleteOrder order={order} />
+            </Card>
+          )}
         </div>
       </div>
     </div>

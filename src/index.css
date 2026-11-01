@@ -81,3 +81,11 @@ html {
   -ms-overflow-style: none; /* IE y Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* iOS Safari zooms into any form field with text under 16px. On touch screens (iPhone/iPad) the
+   portal's small fields get 16px so tapping one never zooms the page. */
+@media (pointer: coarse) {
+  input.text-sm, input.text-xs, select.text-sm, select.text-xs, select.text-\[11px\], textarea.text-sm {
+    font-size: 16px;
+  }
+}

@@ -60,6 +60,8 @@ const Board = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
+  // Phones show one stage at a time; null means "the first stage that has orders".
+  const [phoneStage, setPhoneStage] = useState(null);
 
   const load = useCallback(async () => {
     setError(null);
@@ -98,8 +100,39 @@ const Board = () => {
       </div>
       {loading && <Spinner />}
       {error && <ErrorBanner message={error} onRetry={load} />}
+      {!loading && !error && (() => {
+        const shown = phoneStage ?? BOARD_STAGES.find((s) => filtered.some((o) => o.stage === s)) ?? BOARD_STAGES[0];
+        const list = filtered.filter((o) => o.stage === shown);
+        return (
+          <div className="sm:hidden">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3 -mx-4 px-4">
+              {BOARD_STAGES.map((stage) => {
+                const n = filtered.filter((o) => o.stage === stage).length;
+                return (
+                  <button
+                    key={stage}
+                    type="button"
+                    onClick={() => setPhoneStage(stage)}
+                    className={`flex-shrink-0 px-3 py-2 rounded-full text-sm font-semibold border ${
+                      stage === shown ? "bg-primary text-white border-primary" : n ? "bg-white text-gray-700 border-gray-200" : "bg-white text-gray-300 border-gray-100"
+                    }`}
+                  >
+                    {t(`stage.${stage}`)} · {n}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="space-y-2">
+              {list.map((o) => (
+                <BoardCard key={o.id} order={o} onMoved={load} />
+              ))}
+              {!list.length && <p className="text-sm text-gray-400 py-8 text-center">{t("board.emptyStage")}</p>}
+            </div>
+          </div>
+        );
+      })()}
       {!loading && !error && (
-        <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 snap-x">
+        <div className="hidden sm:flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 scroll-px-6 snap-x">
           {BOARD_STAGES.map((stage) => {
             const col = filtered.filter((o) => o.stage === stage);
             return (

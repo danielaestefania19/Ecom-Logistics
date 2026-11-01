@@ -123,7 +123,7 @@ function SidebarContent({ onNavigate }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-6 py-6 border-b border-white/10">
+      <div className="px-6 pb-6 pt-[max(1.5rem,env(safe-area-inset-top))] border-b border-white/10">
         <span className="text-third text-[10px] font-bold uppercase tracking-widest block mb-0.5">
           {isStaff ? t("nav.opsPortal") : t("nav.clientPortal")}
         </span>
@@ -146,7 +146,7 @@ function SidebarContent({ onNavigate }) {
         {role === "admin" && <NavSection title={t("nav.admin")} items={ADMIN_NAV} onNavigate={onNavigate} />}
       </nav>
 
-      <div className="px-4 py-5 border-t border-white/10">
+      <div className="px-4 pt-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] border-t border-white/10">
         <div className="flex items-center gap-1 mb-4 bg-white/5 rounded-lg p-1 w-fit" role="group" aria-label={t("nav.language")}>
           {["en", "es"].map((l) => (
             <button
@@ -203,14 +203,15 @@ const PortalLayout = ({ children }) => {
 
   return (
     <div className="min-h-screen flex bg-gray-50">
-      <aside className="hidden md:flex md:flex-col w-60 bg-primary flex-shrink-0 sticky top-0 h-screen print:hidden">
+      {/* Sidebar from 1024px (iPad landscape and up); phones and iPad portrait use the menu button. */}
+      <aside className="hidden lg:flex lg:flex-col w-60 bg-primary flex-shrink-0 sticky top-0 h-screen print:hidden">
         <SidebarContent />
       </aside>
 
-      {mobileOpen && <div className="fixed inset-0 z-30 bg-black/50 md:hidden" onClick={() => setMobileOpen(false)} />}
+      {mobileOpen && <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={() => setMobileOpen(false)} />}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-primary flex flex-col transform transition-transform duration-200 md:hidden ${
+        className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] bg-primary flex flex-col transform transition-transform duration-200 lg:hidden ${
           mobileOpen ? "translate-x-0" : "-translate-x-full invisible"
         }`}
       >
@@ -218,8 +219,8 @@ const PortalLayout = ({ children }) => {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="md:hidden bg-primary px-4 py-3 flex items-center gap-3 flex-shrink-0 sticky top-0 z-20 print:hidden">
-          <button onClick={() => setMobileOpen(true)} className="text-white/70 hover:text-white" aria-label={t("nav.openMenu")}>
+        <header className="lg:hidden bg-primary px-4 pb-2 pt-[max(0.5rem,env(safe-area-inset-top))] flex items-center gap-2 flex-shrink-0 sticky top-0 z-20 print:hidden">
+          <button onClick={() => setMobileOpen(true)} className="p-2 -ml-2 text-white/70 hover:text-white" aria-label={t("nav.openMenu")}>
             <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />
               <line x1="3" y1="6" x2="21" y2="6" />
@@ -229,7 +230,7 @@ const PortalLayout = ({ children }) => {
           <span className="text-white font-semibold text-sm">Ecom Logistics</span>
         </header>
 
-        <main className="flex-1 px-4 sm:px-6 py-6 sm:py-8 overflow-x-hidden">{children}</main>
+        <main className="flex-1 min-w-0 px-4 sm:px-6 pt-6 sm:pt-8 pb-[max(1.5rem,env(safe-area-inset-bottom))] overflow-x-hidden">{children}</main>
       </div>
     </div>
   );

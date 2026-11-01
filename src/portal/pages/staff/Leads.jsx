@@ -66,7 +66,7 @@ function NewLeadForm({ onCancel }) {
 
   return (
     <Card title={t("leads.newTitle")} className="mb-6">
-      <form onSubmit={submit} className="grid sm:grid-cols-3 gap-3 items-end">
+      <form onSubmit={submit} className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
         <Field label={t("leads.firstName")}><input className={inputCls} value={form.first_name} onChange={(e) => set("first_name", e.target.value)} /></Field>
         <Field label={t("leads.lastName")}><input className={inputCls} value={form.last_name} onChange={(e) => set("last_name", e.target.value)} /></Field>
         <Field label={t("leads.company")}><input className={inputCls} value={form.company} onChange={(e) => set("company", e.target.value)} /></Field>
@@ -189,7 +189,7 @@ const Leads = () => {
       )}
 
       {!loading && !error && tab !== "open" && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl">
           {filtered.filter((l) => l.status === tab).map((l) => <LeadCard key={l.id} lead={l} />)}
         </div>
       )}

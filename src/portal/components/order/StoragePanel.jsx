@@ -147,7 +147,7 @@ const StoragePanel = ({ order, isStaff, onChanged }) => {
       {totalAvailable > 0 && !editing && (
         <div className="border-t border-gray-100 pt-5 space-y-3">
           <p className="text-sm font-semibold text-primary">{t("storagePanel.requestTitle")}</p>
-          <div className="grid sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {items.filter((i) => available(i) > 0).map((i) => (
               <label key={i.id} className="flex items-center justify-between gap-3 text-sm border border-gray-100 rounded-xl px-3 py-2">
                 <span>
