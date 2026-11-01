@@ -18,6 +18,7 @@ import StoragePanel from "../components/order/StoragePanel";
 import PackingListPanel from "../components/order/PackingListPanel";
 import UnitsPanel, { UNIT_STAGES } from "../components/order/UnitsPanel";
 import QuotePanel, { QuoteStatus, quoteTotal } from "../components/order/QuotePanel";
+import SummaryEditor from "../components/order/SummaryEditor";
 import { scanModeFor } from "../lib/scan";
 
 const PROGRESS_INDEX = {
@@ -168,6 +169,7 @@ const OrderDetail = () => {
   const isAdmin = role === "admin";
 
   const [order, setOrder] = useState(null);
+  const [editingSummary, setEditingSummary] = useState(false);
   const [checklist, setChecklist] = useState([]);
   const [names, setNames] = useState({});
   const [loading, setLoading] = useState(true);
@@ -328,8 +330,27 @@ const OrderDetail = () => {
         </div>
 
         <div className="space-y-6">
-          <Card title={t("orderDetail.summary")}>
-            <Summary order={order} />
+          <Card
+            title={t("orderDetail.summary")}
+            action={
+              isAdmin && !editingSummary && (
+                <button type="button" onClick={() => setEditingSummary(true)} className="text-xs font-semibold text-third hover:underline">
+                  {t("item.edit")}
+                </button>
+              )
+            }
+          >
+            {editingSummary ? (
+              <SummaryEditor
+                order={order}
+                onDone={(saved) => {
+                  setEditingSummary(false);
+                  if (saved) load();
+                }}
+              />
+            ) : (
+              <Summary order={order} />
+            )}
             {!isStaff && ["quote", "awaiting_inventory"].includes(order.stage) && (
               <div className="border-t border-gray-100 mt-5 pt-4">
                 <ClientCancel order={order} onChanged={load} />

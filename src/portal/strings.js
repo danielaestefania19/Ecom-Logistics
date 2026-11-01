@@ -290,6 +290,12 @@ export const STRINGS = {
       acceptReceivedConfirm: "Change the order to the {n} units received?",
       acceptReceivedStaff: "Only an admin can accept the received count. Ask an admin, or send a unit change request.",
     },
+    summaryEdit: {
+      note: "Summary edited by an admin:",
+      badNumber: "Cases, pallets and the estimate must be numbers of 0 or more.",
+      estimateHint: "Follows cases, pallets and extras until you type your own amount.",
+      customLabelHint: "Pick which SKUs get the custom label with Edit in Products.",
+    },
     quote: {
       title: "Quote",
       clientTitle: "Your quote",
@@ -1050,6 +1056,12 @@ export const STRINGS = {
       acceptReceivedHelp: "Cambia las unidades de cada SKU a lo que contamos ({n} unidades en total) y regresa la orden a Recibida para que pueda seguir.",
       acceptReceivedConfirm: "¿Cambiar la orden a las {n} unidades recibidas?",
       acceptReceivedStaff: "Solo un admin puede aceptar lo recibido. Pídeselo a un admin o envía una solicitud de cambio de unidades.",
+    },
+    summaryEdit: {
+      note: "Resumen editado por un admin:",
+      badNumber: "Cajas, pallets y el estimado deben ser números de 0 o más.",
+      estimateHint: "Se recalcula con cajas, pallets y extras hasta que escribas tu propio monto.",
+      customLabelHint: "Elige a qué SKUs va el custom label con Editar en Productos.",
     },
     quote: {
       title: "Cotización",
