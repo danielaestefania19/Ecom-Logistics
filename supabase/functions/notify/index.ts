@@ -8,7 +8,9 @@ import { escapeHtml, layout, plainText, PORTAL_URL, SALES_EMAIL, sendEmail } fro
 type Lang = "en" | "es";
 type Built = { to: string; subject: string; replyTo?: string; content: Parameters<typeof layout>[0] };
 
-const NOTE_CODES = new Set(["order_submitted", "carrier_delivered", "stripe_invoiced", "stripe_paid", "stage_reverted"]);
+const NOTE_CODES = new Set([
+  "order_submitted", "carrier_delivered", "stripe_invoiced", "stripe_paid", "stage_reverted", "received_counts_accepted", "quote_accepted",
+]);
 
 const FOOTER: Record<Lang, string> = {
   en: "You're receiving this because you have an account in the Ecom Logistics client portal. Reply to this email to reach our team.",
@@ -382,6 +384,113 @@ async function buildLabelsUploaded(admin: SupabaseClient, id: string): Promise<B
   };
 }
 
+const money = (cents: number) => `$${(cents / 100).toFixed(2)}`;
+
+// Internal, in Spanish: a staff member asks an admin to change an order's units.
+async function buildChangeRequested(admin: SupabaseClient, id: string): Promise<Built | null> {
+  const { data: req } = await admin
+    .from("order_change_requests")
+    .select("items, reason, requested_by, orders(id, order_number, clients(company, full_name, email), order_items(id, sku, expected_qty))")
+    .eq("id", id)
+    .single();
+  const r = req as any;
+  if (!r) return null;
+  const order = r.orders;
+  const byId = Object.fromEntries((order.order_items ?? []).map((i: any) => [i.id, i]));
+  const rows: [string, string][] = (r.items ?? []).map((l: any) => {
+    const item = l.id ? byId[l.id] : null;
+    if (item && l.remove) return [item.sku, "Quitar de la orden"];
+    if (item) return [item.sku, `${item.expected_qty} → ${l.expected_qty}`];
+    return [l.sku, `Nuevo · ${l.expected_qty} unidades`];
+  });
+  const { data: who } = await admin.from("clients").select("full_name, email").eq("id", r.requested_by).maybeSingle();
+  const client = order.clients;
+  return {
+    to: SALES_EMAIL,
+    subject: `Solicitud de cambio de unidades · Orden #${order.order_number}`,
+    content: {
+      heading: `Aprobar cambio de unidades en la orden #${order.order_number}`,
+      paragraphs: [
+        escapeHtml(`${who?.full_name || who?.email || "Alguien del staff"} pidió cambiar las unidades de la orden de ${client.company || client.full_name || client.email}. Un admin debe aprobarlo en el portal.`),
+        `<em>“${escapeHtml(r.reason)}”</em>`,
+      ],
+      rows,
+      cta: { label: "Revisar en el portal", url: `${PORTAL_URL}/orders/${order.id}` },
+      footer: "Aviso automático del portal de Ecom Logistics.",
+    },
+  };
+}
+
+async function loadQuote(admin: SupabaseClient, ref: string) {
+  const { data } = await admin
+    .from("orders")
+    .select("id, order_number, quote_status, quote_response, clients(email, full_name, company, language), order_quote_lines(description, quantity, unit_amount, position)")
+    .eq("id", ref.split("@")[0])
+    .single();
+  return data as any;
+}
+
+const quoteRows = (o: any): [string, string][] => {
+  const lines = [...(o.order_quote_lines ?? [])].sort((a: any, b: any) => a.position - b.position);
+  const total = lines.reduce((n: number, l: any) => n + Number(l.quantity) * Number(l.unit_amount), 0);
+  return [
+    ...lines.map((l: any): [string, string] => [l.description, `${Number(l.quantity)} × ${money(Number(l.unit_amount))} = ${money(Number(l.quantity) * Number(l.unit_amount))}`]),
+    ["Total", money(total)],
+  ];
+};
+
+async function buildQuoteSent(admin: SupabaseClient, ref: string): Promise<Built | null> {
+  const o = await loadQuote(admin, ref);
+  const client = o?.clients;
+  if (!o || !client?.email) return null;
+  const l = lang(client.language);
+  const es = l === "es";
+  const heading = es ? `Cotización de tu orden #${o.order_number}` : `Quote for your order #${o.order_number}`;
+  return {
+    to: client.email,
+    subject: heading,
+    content: {
+      heading,
+      paragraphs: [
+        greeting(l, client.full_name),
+        escapeHtml(
+          es
+            ? "Preparamos la cotización de tu orden. Revísala en el portal y acéptala, o pídenos cambios desde ahí mismo."
+            : "We prepared the quote for your order. Review it in the portal and accept it, or ask us for changes right there.",
+        ),
+      ],
+      rows: quoteRows(o),
+      cta: { label: es ? "Ver y aceptar la cotización" : "Review and accept the quote", url: `${PORTAL_URL}/orders/${o.id}` },
+      footer: FOOTER[l],
+    },
+  };
+}
+
+// Internal, in Spanish: the client accepted the quote or asked for changes.
+async function buildQuoteResponse(admin: SupabaseClient, ref: string): Promise<Built | null> {
+  const o = await loadQuote(admin, ref);
+  if (!o) return null;
+  const client = o.clients;
+  const who = client.company || client.full_name || client.email;
+  const accepted = o.quote_status === "accepted";
+  return {
+    to: SALES_EMAIL,
+    replyTo: client.email ?? undefined,
+    subject: accepted
+      ? `${who} aceptó la cotización de la orden #${o.order_number}`
+      : `${who} pidió cambios en la cotización de la orden #${o.order_number}`,
+    content: {
+      heading: accepted ? `Cotización aceptada · Orden #${o.order_number}` : `Cambios pedidos · Orden #${o.order_number}`,
+      paragraphs: accepted
+        ? ["La orden pasó a “Esperando mercancía”. La factura usará estos precios."]
+        : [`<em>“${escapeHtml(o.quote_response ?? "")}”</em>`, "Ajusta la cotización en el portal y reenvíala."],
+      rows: quoteRows(o),
+      cta: { label: "Abrir orden en el portal", url: `${PORTAL_URL}/orders/${o.id}` },
+      footer: "Aviso automático del portal de Ecom Logistics.",
+    },
+  };
+}
+
 const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Built | null>> = {
   order_stage: buildOrderStage,
   fulfillment_status: buildFulfillment,
@@ -392,6 +501,9 @@ const BUILDERS: Record<string, (admin: SupabaseClient, id: string) => Promise<Bu
   client_cancelled: buildClientCancelled,
   packing_list: buildPackingList,
   labels_uploaded: buildLabelsUploaded,
+  change_requested: buildChangeRequested,
+  quote_sent: buildQuoteSent,
+  quote_response: buildQuoteResponse,
 };
 
 Deno.serve(async (req: Request) => {

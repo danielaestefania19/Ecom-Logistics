@@ -74,14 +74,20 @@ Deno.serve(async (req: Request) => {
       const productFor: Record<string, string> = cfg?.value ? JSON.parse(cfg.value) : {};
       for (const l of lines) {
         const product = l.key && productFor[l.key];
-        await stripe("POST", "/invoiceitems", {
-          customer: customer.id,
-          invoice: invoice.id,
-          quantity: l.quantity,
-          ...(product
-            ? { price_data: { currency: "usd", product, unit_amount_decimal: l.unit_amount } }
-            : { currency: "usd", unit_amount_decimal: l.unit_amount, description: l.description }),
-        });
+        // A quote discount (negative) or a fractional quantity goes to Stripe as one flat amount.
+        const item = l.unit_amount < 0 || !Number.isInteger(l.quantity)
+          ? {
+              currency: "usd",
+              amount: Math.round(l.quantity * l.unit_amount),
+              description: l.quantity === 1 ? l.description : `${l.description} (${l.quantity} × $${(l.unit_amount / 100).toFixed(2)})`,
+            }
+          : {
+              quantity: l.quantity,
+              ...(product
+                ? { price_data: { currency: "usd", product, unit_amount_decimal: l.unit_amount } }
+                : { currency: "usd", unit_amount_decimal: l.unit_amount, description: l.description }),
+            };
+        await stripe("POST", "/invoiceitems", { customer: customer.id, invoice: invoice.id, ...item });
       }
 
       // Link right away so a second click can't draft a duplicate.
@@ -103,13 +109,15 @@ function validLines(raw: unknown): Line[] | null {
   const lines = raw.map((l) => ({
     key: typeof l?.key === "string" ? l.key : null,
     description: typeof l?.description === "string" ? l.description.trim().slice(0, 200) : "",
-    quantity: Math.round(Number(l?.quantity)),
+    quantity: Math.round(Number(l?.quantity) * 100) / 100,
     unit_amount: Number(l?.unit_amount),
   }));
   const ok = lines.every(
-    (l) => l.description && Number.isFinite(l.quantity) && l.quantity > 0 && Number.isFinite(l.unit_amount) && l.unit_amount >= 0,
+    (l) =>
+      l.description && Number.isFinite(l.quantity) && l.quantity > 0 && Number.isFinite(l.unit_amount) && (l.unit_amount >= 0 || !l.key),
   );
-  return ok ? lines : null;
+  const total = lines.reduce((n, l) => n + l.quantity * l.unit_amount, 0);
+  return ok && total >= 0 ? lines : null;
 }
 
 const dashboardUrl = (invoice: { id: string; livemode: boolean }) =>

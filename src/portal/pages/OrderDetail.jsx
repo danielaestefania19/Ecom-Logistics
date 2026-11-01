@@ -16,6 +16,8 @@ import { Checklist, NoteForm, OrderAdminFields, StageActions, StripeInvoice } fr
 import ScanPanel from "../components/order/ScanPanel";
 import StoragePanel from "../components/order/StoragePanel";
 import PackingListPanel from "../components/order/PackingListPanel";
+import UnitsPanel, { UNIT_STAGES } from "../components/order/UnitsPanel";
+import QuotePanel, { QuoteStatus, quoteTotal } from "../components/order/QuotePanel";
 import { scanModeFor } from "../lib/scan";
 
 const PROGRESS_INDEX = {
@@ -123,6 +125,7 @@ function Summary({ order }) {
   const rows = [
     [t("order.type"), t(`newOrder.type.${order.type}`)],
     [t("order.eta"), day(order.eta)],
+    order.received_at && [t("order.receivedAt"), fmtDate(order.received_at)],
     prep && [t("order.prepDay"), day(order.prep_day)],
     prep && [t("order.shipMethod"), t(`shipMethod.${order.ship_method}`)],
     prep && [t("order.shipmentCreator"), t(`shipmentCreator.${order.shipment_creator}`)],
@@ -132,6 +135,7 @@ function Summary({ order }) {
     prep && [t("order.storage"), t(`storage.${order.storage_requested}`)],
     prep && [t("order.extras"), order.extras?.length ? order.extras.map((x) => t(`extras.${x}`)).join(", ") : "—"],
     [t("order.estimate"), fmtMoney(order.estimated_cost)],
+    ["sent", "accepted"].includes(order.quote_status) && [t("quote.title"), fmtMoney(quoteTotal(order.order_quote_lines ?? []))],
     [t("order.invoiceNumber"), order.invoice_number || "—"],
     !prep && order.stocked_at && [t("order.stockedAt"), fmtDate(order.stocked_at)],
   ].filter(Boolean);
@@ -161,6 +165,7 @@ const OrderDetail = () => {
   const { t } = useT();
   const { user, role } = useAuth();
   const isStaff = role === "staff" || role === "admin";
+  const isAdmin = role === "admin";
 
   const [order, setOrder] = useState(null);
   const [checklist, setChecklist] = useState([]);
@@ -175,7 +180,7 @@ const OrderDetail = () => {
       .select(`*, clients(company, full_name, email, phone, language),
                order_items(*), order_events(*), order_files(*),
                shipments_inbound(*, tracking_events(*)), storage_releases(*, storage_release_lines(*)),
-               packing_boxes(*, packing_box_contents(*))`)
+               packing_boxes(*, packing_box_contents(*)), order_quote_lines(*), order_change_requests(*)`)
       .eq("id", id)
       .maybeSingle();
     if (err) setError(err.message);
@@ -252,7 +257,7 @@ const OrderDetail = () => {
           })}
         </div>
       )}
-      {order.stage === "quote" && !isStaff && (
+      {order.stage === "quote" && !isStaff && order.quote_status !== "sent" && (
         <div className="mb-5 bg-purple-50 border border-purple-200 text-purple-800 text-sm px-4 py-3 rounded-xl">{t("orderDetail.quoteBanner")}</div>
       )}
 
@@ -282,7 +287,17 @@ const OrderDetail = () => {
               canEditItems={isStaff && order.type === "prep" && !CLOSED_STAGES.has(order.stage)}
               clientId={order.client_id}
             />
+            {isStaff && UNIT_STAGES.has(order.stage) && (
+              <UnitsPanel order={order} isAdmin={isAdmin} names={names} onChanged={load} />
+            )}
           </Card>
+          {(isStaff
+            ? order.quote_status || UNIT_STAGES.has(order.stage)
+            : ["sent", "accepted", "changes_requested"].includes(order.quote_status)) && (
+            <Card title={isStaff ? t("quote.title") : t("quote.clientTitle")} action={<QuoteStatus status={order.quote_status} />}>
+              <QuotePanel order={order} isStaff={isStaff} onChanged={load} />
+            </Card>
+          )}
           {order.type === "prep" && STORAGE_STAGES.has(order.stage) && (isStaff || order.packing_sent_at) && (
             <Card title={t("packing.title")}>
               <PackingListPanel order={order} isStaff={isStaff} onChanged={load} />

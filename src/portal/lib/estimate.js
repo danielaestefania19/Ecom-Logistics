@@ -42,22 +42,44 @@ export function estimateOrder({ items, totalCases = 0, pallets = 0, extras = [] 
   return { units, discount, lines: priced, total: roundCents(priced.reduce((n, l) => n + l.total, 0)) };
 }
 
-// Bill the good units counted at receiving, falling back to what the order expected. The FNSKU scan
-// count is a verification aid and can be partial, so it never drives the invoice.
-const billedQty = (i) => (i.received_qty != null ? Math.max(i.received_qty - (i.damaged_qty ?? 0), 0) : i.expected_qty);
-
-// Lines for the Stripe invoice draft (unit amounts in cents). 3PL inbound orders bill receiving
-// only: their pick & pack and storage are billed by month.
-export function invoiceLines(order, labels) {
-  const est = estimateOrder({
-    items: order.order_items.map((i) => ({ ...i, expected_qty: billedQty(i) })),
+// The order's estimate as stored in orders.estimated_cost. 3PL inbounds only pay receiving.
+export const orderEstimate = (order, items = order.order_items) =>
+  estimateOrder({
+    items: order.type === "3pl" ? [] : items,
     totalCases: order.total_cases,
     pallets: order.pallets,
     extras: order.extras ?? [],
   });
-  return est.lines
-    .filter((l) => order.type !== "3pl" || !l.key.startsWith("prep_"))
-    .map((l) => ({ key: l.key, description: labels[l.key] ?? l.key, quantity: l.qty, unit_amount: Math.round(l.rate * 100) }));
+
+// Bill the good units counted at receiving, falling back to what the order expected. The FNSKU scan
+// count is a verification aid and can be partial, so it never drives the invoice.
+const billedQty = (i) => (i.received_qty != null ? Math.max(i.received_qty - (i.damaged_qty ?? 0), 0) : i.expected_qty);
+
+// Starting point for a quote: the price-list estimate (unit amounts in cents).
+export const quoteDraftLines = (order, labels) =>
+  orderEstimate(order).lines.map((l) => ({
+    key: l.key,
+    description: labels[l.key] ?? l.key,
+    quantity: l.qty,
+    unit_amount: Math.round(l.rate * 100),
+  }));
+
+// Lines for the Stripe invoice draft (unit amounts in cents). 3PL inbound orders bill receiving
+// only: their pick & pack and storage are billed by month. Once the client accepts a quote, its
+// prices replace the price list (quantities still come from what was received) and its custom
+// lines, discounts included, are added as they are.
+export function invoiceLines(order, labels) {
+  const lines = orderEstimate(order, order.order_items.map((i) => ({ ...i, expected_qty: billedQty(i) })))
+    .lines.map((l) => ({ key: l.key, description: labels[l.key] ?? l.key, quantity: l.qty, unit_amount: Math.round(l.rate * 100) }));
+  const quote = order.quote_status === "accepted" ? order.order_quote_lines ?? [] : [];
+  if (!quote.length) return lines;
+  const quoted = Object.fromEntries(quote.filter((q) => q.key).map((q) => [q.key, Number(q.unit_amount)]));
+  return [
+    ...lines.map((l) => (l.key in quoted ? { ...l, unit_amount: quoted[l.key] } : l)),
+    ...quote
+      .filter((q) => !q.key)
+      .map((q) => ({ key: null, description: q.description, quantity: Number(q.quantity), unit_amount: Number(q.unit_amount) })),
+  ];
 }
 
 // 3PL month to date: pick & pack per shipped order (tier set by the month's order count) + storage held.

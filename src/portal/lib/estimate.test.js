@@ -85,6 +85,26 @@ describe("invoiceLines", () => {
     const lines = invoiceLines({ type: "3pl", total_cases: 3, order_items: [{ expected_qty: 40 }] }, labels);
     expect(lines.map((l) => l.description)).toEqual(["Cases"]);
   });
+
+  it("uses accepted quote prices on received quantities and adds its custom lines", () => {
+    const order = {
+      type: "prep",
+      total_cases: 2,
+      order_items: [{ expected_qty: 100, received_qty: 90, prepped_qty: 0 }],
+      quote_status: "accepted",
+      order_quote_lines: [
+        { key: "prep_standard", description: "Prep", quantity: 100, unit_amount: 55 },
+        { key: null, description: "Discount", quantity: 1, unit_amount: -1000 },
+      ],
+    };
+    expect(invoiceLines(order, labels)).toEqual([
+      { key: "prep_standard", description: "Prep", quantity: 90, unit_amount: 55 },
+      { key: "case_receiving", description: "Cases", quantity: 2, unit_amount: 300 },
+      { key: null, description: "Discount", quantity: 1, unit_amount: -1000 },
+    ]);
+    // A quote that was only sent doesn't change the invoice.
+    expect(invoiceLines({ ...order, quote_status: "sent" }, labels)[0].unit_amount).toBe(70);
+  });
 });
 
 describe("estimateMonth", () => {

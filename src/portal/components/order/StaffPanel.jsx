@@ -3,7 +3,7 @@ import { supabase } from "../../../lib/supabaseClient";
 import { useAuth } from "../../AuthContext";
 import { useT } from "../../i18n";
 import { invoiceLines } from "../../lib/estimate";
-import { callFunction, nextStages, setStage, syncAsana } from "../../lib/orders";
+import { callFunction, isoDay, nextStages, parseDay, setStage, syncAsana } from "../../lib/orders";
 import { STRINGS } from "../../strings";
 import { labelsAfterPacking } from "./PackingListPanel";
 import { btnPrimary, btnSecondary, ErrorBanner, Field, inputCls } from "../ui";
@@ -21,26 +21,69 @@ function previousStage(order) {
   return last.from_stage;
 }
 
+// Leaving receiving for real work (prep, stock) is when the receiving date has to be right.
+const RECEIVING = new Set(["received", "discrepancy"]);
+const asksReceivedDate = (order, stage) =>
+  RECEIVING.has(order.stage) && !RECEIVING.has(stage) && !["cancelled", "awaiting_inventory"].includes(stage);
+// Noon local time, so the stored timestamp lands on the same calendar day everywhere.
+const dayToTimestamp = (day) => new Date(`${day}T12:00:00`).toISOString();
+
+function ReceivedDateConfirm({ order, stage, busy, onConfirm, onCancel }) {
+  const { t, fmtDate } = useT();
+  const today = isoDay(new Date());
+  const [day, setDay] = useState(order.received_at ? isoDay(order.received_at) : today);
+  const matches = order.eta && day === order.eta;
+  return (
+    <div className="border border-blue-200 bg-blue-50 rounded-xl p-4 space-y-3">
+      <div>
+        <p className="text-sm font-bold text-primary">{t("staff.receivedDateTitle")}</p>
+        <p className="text-xs text-gray-600">{t("staff.receivedDateHelp")}</p>
+      </div>
+      <input type="date" className={inputCls} value={day} max={today} onChange={(e) => setDay(e.target.value)} />
+      {order.eta ? (
+        <p className={`text-sm ${matches ? "text-green-700" : "text-amber-700"}`}>
+          {matches ? t("staff.receivedDateMatches") : t("staff.receivedDateMismatch", { date: fmtDate(parseDay(order.eta)) })}
+        </p>
+      ) : (
+        <p className="text-xs text-gray-500">{t("staff.receivedDateNoEta")}</p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={() => onConfirm(day)} disabled={!day || !!busy} className={btnPrimary}>
+          {busy ? t("common.saving") : t("staff.confirmMove", { stage: t(`stage.${stage}`) })}
+        </button>
+        <button type="button" onClick={onCancel} disabled={!!busy} className={btnSecondary}>{t("common.cancel")}</button>
+      </div>
+    </div>
+  );
+}
+
 export function StageActions({ order, onChanged }) {
   const { t } = useT();
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState(null);
+  const [confirming, setConfirming] = useState(null);
   const next = nextStages(order);
   const previous = previousStage(order);
   // When the client creates the Amazon shipment, it can't leave until their labels are in.
   const awaitingLabels =
     order.shipment_creator === "customer" && !!order.packing_sent_at && labelsAfterPacking(order).length === 0;
 
-  const move = async (stage, reverting = false) => {
+  const move = async (stage, reverting = false, receivedDay = null) => {
     if (reverting && !window.confirm(t("staff.revertConfirm", { stage: t(`stage.${stage}`) }))) return;
     // Cancellations are only recorded with a reason (the database enforces it too).
     if (stage === "cancelled" && !note.trim()) return setError(t("staff.cancelReasonRequired"));
+    if (!reverting && !receivedDay && asksReceivedDate(order, stage)) return setConfirming(stage);
     setBusy(stage);
     setError(null);
     try {
+      if (receivedDay && receivedDay !== (order.received_at && isoDay(order.received_at))) {
+        const { error: err } = await supabase.from("orders").update({ received_at: dayToTimestamp(receivedDay) }).eq("id", order.id);
+        if (err) throw err;
+      }
       await setStage(order.id, stage, reverting ? "stage_reverted" : note.trim());
       setNote("");
+      setConfirming(null);
       onChanged();
     } catch (err) {
       setError(err.message);
@@ -48,6 +91,21 @@ export function StageActions({ order, onChanged }) {
       setBusy(null);
     }
   };
+
+  if (confirming) {
+    return (
+      <div className="space-y-3">
+        <ReceivedDateConfirm
+          order={order}
+          stage={confirming}
+          busy={busy}
+          onConfirm={(day) => move(confirming, false, day)}
+          onCancel={() => setConfirming(null)}
+        />
+        {error && <ErrorBanner message={error} />}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-3">
@@ -141,6 +199,7 @@ export function Checklist({ items, onChanged }) {
 }
 
 const pick = (order) => ({
+  received_day: order.received_at ? isoDay(order.received_at) : "",
   prep_day: order.prep_day ?? "",
   quote_url: order.quote_url ?? "",
   invoice_number: order.invoice_number ?? "",
@@ -165,7 +224,10 @@ export function OrderAdminFields({ order, onChanged }) {
     e.preventDefault();
     setBusy(true);
     setError(null);
-    const patch = Object.fromEntries(Object.entries(form).map(([k, v]) => [k, v.trim() === "" ? null : v.trim()]));
+    const { received_day: receivedDay, ...fields } = form;
+    const patch = Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, v.trim() === "" ? null : v.trim()]));
+    // Only rewrite the timestamp when the day itself was corrected.
+    if (receivedDay && receivedDay !== pick(order).received_day) patch.received_at = dayToTimestamp(receivedDay);
     const { error: err } = await supabase.from("orders").update(patch).eq("id", order.id);
     if (err) {
       setBusy(false);
@@ -188,6 +250,11 @@ export function OrderAdminFields({ order, onChanged }) {
 
   return (
     <form onSubmit={save} className="space-y-4">
+      {order.received_at && (
+        <Field label={t("order.receivedAt")}>
+          <input type="date" className={inputCls} value={form.received_day} max={isoDay(new Date())} onChange={(e) => set("received_day", e.target.value)} />
+        </Field>
+      )}
       {order.type !== "3pl" && (
         <Field label={t("order.prepDay")}>
           <input type="date" className={inputCls} value={form.prep_day} onChange={(e) => set("prep_day", e.target.value)} />
@@ -259,7 +326,9 @@ export function StripeInvoice({ order, onChanged }) {
         </>
       ) : lines.length ? (
         <>
-          <p className="text-xs text-gray-500">{t("staff.invoiceDraftHint", { total: fmtMoney(total) })}</p>
+          <p className="text-xs text-gray-500">
+            {t(order.quote_status === "accepted" ? "staff.invoiceDraftHintQuote" : "staff.invoiceDraftHint", { total: fmtMoney(total) })}
+          </p>
           <button type="button" onClick={createDraft} disabled={busy} className={btnPrimary}>
             {busy ? t("common.saving") : t("staff.invoiceDraft")}
           </button>
