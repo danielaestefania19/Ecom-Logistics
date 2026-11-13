@@ -616,6 +616,9 @@ export const STRINGS = {
     },
     threePl: { allClients: "All 3PL clients" },
     packing: {
+      draftRestored: "We restored the packing list you were editing ({date}). It isn't saved yet: press Save when it's done.",
+      draftHint: "Your changes are kept in this browser until you save, even if the page reloads.",
+      discardConfirm: "Discard the changes you haven't saved?",
       title: "Packing list",
       empty: "No boxes or pallets yet.",
       create: "Create packing list",
@@ -1395,6 +1398,9 @@ export const STRINGS = {
     },
     threePl: { allClients: "Todos los clientes 3PL" },
     packing: {
+      draftRestored: "Recuperamos el packing list que estabas editando ({date}). Todavía no está guardado: pulsa Guardar cuando termines.",
+      draftHint: "Tus cambios se guardan en este navegador hasta que pulses Guardar, aunque se recargue la página.",
+      discardConfirm: "¿Descartar los cambios que no has guardado?",
       title: "Packing list",
       empty: "Todavía no hay cajas ni pallets.",
       create: "Crear packing list",

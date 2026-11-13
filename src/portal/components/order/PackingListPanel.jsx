@@ -22,6 +22,31 @@ const toForm = (boxes) =>
 
 const blankBox = (kind) => ({ kind, qty: 1, length_in: "", width_in: "", height_in: "", weight_lb: "", contents: {} });
 
+// Unsaved edits are kept in this browser, so a reload or a closed tab doesn't lose a long list.
+const draftKey = (orderId) => `packing-draft:${orderId}`;
+const readDraft = (orderId) => {
+  try {
+    const d = JSON.parse(localStorage.getItem(draftKey(orderId)) ?? "null");
+    return Array.isArray(d?.boxes) ? d : null;
+  } catch {
+    return null;
+  }
+};
+const writeDraft = (orderId, boxes) => {
+  try {
+    localStorage.setItem(draftKey(orderId), JSON.stringify({ boxes, at: new Date().toISOString() }));
+  } catch {
+    // Storage full or blocked: editing still works, it just isn't kept across reloads.
+  }
+};
+const clearDraft = (orderId) => {
+  try {
+    localStorage.removeItem(draftKey(orderId));
+  } catch {
+    // Nothing to clear.
+  }
+};
+
 // Labels uploaded after the packing list went out are the client's Amazon labels for this shipment.
 export const labelsAfterPacking = (order) =>
   order.packing_sent_at
@@ -34,8 +59,9 @@ const PackingListPanel = ({ order, isStaff, onChanged }) => {
   const { t, fmtDateTime } = useT();
   const items = order.order_items;
   const saved = toForm(order.packing_boxes ?? []);
-  const [editing, setEditing] = useState(false);
-  const [boxes, setBoxes] = useState(saved);
+  const [draft] = useState(() => (isStaff ? readDraft(order.id) : null));
+  const [editing, setEditing] = useState(!!draft);
+  const [boxes, setBoxes] = useState(draft?.boxes ?? saved);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -43,6 +69,23 @@ const PackingListPanel = ({ order, isStaff, onChanged }) => {
   useEffect(() => {
     if (!editing) setBoxes(toForm(order.packing_boxes ?? []));
   }, [order.packing_boxes, editing]);
+
+  // Every change while editing is written to the browser draft, and leaving the page asks first.
+  useEffect(() => {
+    if (!editing) return;
+    writeDraft(order.id, boxes);
+    const warn = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [editing, boxes, order.id]);
+
+  const stopEditing = () => {
+    clearDraft(order.id);
+    setEditing(false);
+  };
 
   const list = editing ? boxes : saved;
   const skuOf = (id) => items.find((i) => i.id === id)?.sku ?? "?";
@@ -76,7 +119,7 @@ const PackingListPanel = ({ order, isStaff, onChanged }) => {
     });
     setBusy(false);
     if (err) return setError(err.message);
-    setEditing(false);
+    stopEditing();
     onChanged();
   };
 
@@ -121,6 +164,13 @@ const PackingListPanel = ({ order, isStaff, onChanged }) => {
       {order.packing_sent_at && (
         <p className="text-sm text-gray-600">{t("packing.sentAt", { date: fmtDateTime(order.packing_sent_at) })}</p>
       )}
+
+      {editing && draft && (
+        <p className="text-sm bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 rounded-xl">
+          {t("packing.draftRestored", { date: fmtDateTime(draft.at) })}
+        </p>
+      )}
+      {editing && <p className="text-xs text-gray-500">{t("packing.draftHint")}</p>}
 
       {editing ? (
         <div className="space-y-3">
@@ -187,7 +237,13 @@ const PackingListPanel = ({ order, isStaff, onChanged }) => {
         {isStaff && editing && (
           <>
             <button type="button" onClick={save} disabled={busy} className={btnPrimary}>{busy ? t("common.saving") : t("common.save")}</button>
-            <button type="button" onClick={() => setEditing(false)} className={btnSecondary}>{t("common.cancel")}</button>
+            <button
+              type="button"
+              onClick={() => window.confirm(t("packing.discardConfirm")) && stopEditing()}
+              className={btnSecondary}
+            >
+              {t("common.cancel")}
+            </button>
           </>
         )}
         {isStaff && !editing && (
