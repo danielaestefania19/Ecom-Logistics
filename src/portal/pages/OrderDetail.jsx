@@ -16,7 +16,7 @@ import { Checklist, NoteForm, OrderAdminFields, StageActions, StripeInvoice } fr
 import ScanPanel from "../components/order/ScanPanel";
 import StoragePanel from "../components/order/StoragePanel";
 import PackingListPanel from "../components/order/PackingListPanel";
-import UnitsPanel, { UNIT_STAGES } from "../components/order/UnitsPanel";
+import UnitsPanel, { ChangeRequests, UNIT_STAGES } from "../components/order/UnitsPanel";
 import QuotePanel, { QuoteStatus, quoteTotal } from "../components/order/QuotePanel";
 import SummaryEditor from "../components/order/SummaryEditor";
 import { scanModeFor } from "../lib/scan";
@@ -323,10 +323,16 @@ const OrderDetail = () => {
               editable={isStaff && RECEIVING_STAGES.has(order.stage)}
               onSaved={load}
               showPrep={order.type !== "3pl"}
-              showPrepped={order.type === "prep" && ["scheduled", "prepped", "shipped", "in_storage"].includes(order.stage)}
+              showPrepped={
+                order.type === "prep" &&
+                (["scheduled", "prepped", "shipped", "in_storage"].includes(order.stage) || order.order_items.some((i) => i.prepped_qty > 0))
+              }
               canEditItems={isStaff && order.type === "prep" && !CLOSED_STAGES.has(order.stage)}
+              canFixPrepped={isStaff && !CLOSED_STAGES.has(order.stage)}
+              isAdmin={isAdmin}
               clientId={order.client_id}
             />
+            {isStaff && <ChangeRequests order={order} isAdmin={isAdmin} names={names} onChanged={load} />}
             {isStaff && UNIT_STAGES.has(order.stage) && (
               <UnitsPanel order={order} isAdmin={isAdmin} names={names} onChanged={load} />
             )}

@@ -28,7 +28,7 @@ async function refreshEstimate(order) {
   await supabase.from("orders").update({ estimated_cost: total || null }).eq("id", order.id);
 }
 
-function ChangeRows({ items, changes }) {
+function ChangeRows({ items, changes, kind }) {
   const { t } = useT();
   const byId = Object.fromEntries(items.map((i) => [i.id, i]));
   return (
@@ -39,7 +39,9 @@ function ChangeRows({ items, changes }) {
           <li key={n} className="flex justify-between gap-3">
             <span className="font-semibold text-primary">{item?.sku ?? c.sku ?? "—"}</span>
             <span className="text-gray-600">
-              {item && c.remove
+              {item && kind === "prepped"
+                ? `${t("item.prepped")}: ${item.prepped_qty} → ${c.prepped_qty}`
+                : item && c.remove
                 ? t("units.removeLine")
                 : item
                   ? `${item.expected_qty} → ${c.expected_qty}`
@@ -62,7 +64,7 @@ function PendingRequest({ order, request, isAdmin, names, onChanged }) {
     setBusy(true);
     setError(null);
     const { error: err } = await supabase.rpc("decide_order_change", { p_request: request.id, p_approve: approve });
-    if (!err && approve) await refreshEstimate(order);
+    if (!err && approve && request.kind !== "prepped") await refreshEstimate(order);
     setBusy(false);
     if (err) return setError(err.message);
     onChanged();
@@ -71,12 +73,12 @@ function PendingRequest({ order, request, isAdmin, names, onChanged }) {
   return (
     <div className="border border-amber-200 bg-amber-50 rounded-xl p-4 space-y-3">
       <div>
-        <p className="text-sm font-bold text-amber-900">{t("units.pendingTitle")}</p>
+        <p className="text-sm font-bold text-amber-900">{t(request.kind === "prepped" ? "units.pendingPrepped" : "units.pendingTitle")}</p>
         <p className="text-xs text-amber-800">
           {t("units.requestedBy", { name: names?.[request.requested_by] || t("timeline.team"), date: fmtDateTime(request.created_at) })}
         </p>
       </div>
-      <ChangeRows items={order.order_items} changes={request.items} />
+      <ChangeRows items={order.order_items} changes={request.items} kind={request.kind} />
       {request.reason && <p className="text-sm text-gray-700 italic">“{request.reason}”</p>}
       {isAdmin ? (
         <div className="flex gap-2">
@@ -258,18 +260,26 @@ function AcceptReceived({ order, isAdmin, onChanged }) {
   );
 }
 
+// Unit changes and FNSKU check corrections waiting for an admin, at any stage of the order.
+export const ChangeRequests = ({ order, isAdmin, names, onChanged }) => {
+  const pending = (order.order_change_requests ?? []).filter((r) => r.status === "pending");
+  if (!pending.length) return null;
+  return (
+    <div className="mt-5 space-y-3">
+      {pending.map((r) => (
+        <PendingRequest key={r.id} order={order} request={r} isAdmin={isAdmin} names={names} onChanged={onChanged} />
+      ))}
+    </div>
+  );
+};
+
 const UnitsPanel = ({ order, isAdmin, names, onChanged }) => {
   const { t } = useT();
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
-  const pending = (order.order_change_requests ?? []).filter((r) => r.status === "pending");
-
   return (
     <div className="mt-5 pt-5 border-t border-gray-100 space-y-4">
       {order.stage === "discrepancy" && <AcceptReceived order={order} isAdmin={isAdmin} onChanged={onChanged} />}
-      {pending.map((r) => (
-        <PendingRequest key={r.id} order={order} request={r} isAdmin={isAdmin} names={names} onChanged={onChanged} />
-      ))}
       {open ? (
         <UnitsForm
           order={order}

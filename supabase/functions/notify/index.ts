@@ -386,19 +386,22 @@ async function buildLabelsUploaded(admin: SupabaseClient, id: string): Promise<B
 
 const money = (cents: number) => `$${(cents / 100).toFixed(2)}`;
 
-// Internal, in Spanish: a staff member asks an admin to change an order's units.
+// Internal, in Spanish: a staff member asks an admin to change an order's units or to correct its
+// FNSKU check count.
 async function buildChangeRequested(admin: SupabaseClient, id: string): Promise<Built | null> {
   const { data: req } = await admin
     .from("order_change_requests")
-    .select("items, reason, requested_by, orders(id, order_number, clients(company, full_name, email), order_items(id, sku, expected_qty))")
+    .select("items, reason, kind, requested_by, orders(id, order_number, clients(company, full_name, email), order_items(id, sku, expected_qty, prepped_qty))")
     .eq("id", id)
     .single();
   const r = req as any;
   if (!r) return null;
   const order = r.orders;
   const byId = Object.fromEntries((order.order_items ?? []).map((i: any) => [i.id, i]));
+  const prepped = r.kind === "prepped";
   const rows: [string, string][] = (r.items ?? []).map((l: any) => {
     const item = l.id ? byId[l.id] : null;
+    if (item && prepped) return [item.sku, `Chequeo FNSKU ${item.prepped_qty} → ${l.prepped_qty}`];
     if (item && l.remove) return [item.sku, "Quitar de la orden"];
     if (item) return [item.sku, `${item.expected_qty} → ${l.expected_qty}`];
     return [l.sku, `Nuevo · ${l.expected_qty} unidades`];
@@ -407,11 +410,17 @@ async function buildChangeRequested(admin: SupabaseClient, id: string): Promise<
   const client = order.clients;
   return {
     to: SALES_EMAIL,
-    subject: `Solicitud de cambio de unidades · Orden #${order.order_number}`,
+    subject: prepped
+      ? `Solicitud de corrección del chequeo FNSKU · Orden #${order.order_number}`
+      : `Solicitud de cambio de unidades · Orden #${order.order_number}`,
     content: {
-      heading: `Aprobar cambio de unidades en la orden #${order.order_number}`,
+      heading: prepped
+        ? `Aprobar corrección del chequeo FNSKU en la orden #${order.order_number}`
+        : `Aprobar cambio de unidades en la orden #${order.order_number}`,
       paragraphs: [
-        escapeHtml(`${who?.full_name || who?.email || "Alguien del staff"} pidió cambiar las unidades de la orden de ${client.company || client.full_name || client.email}. Un admin debe aprobarlo en el portal.`),
+        escapeHtml(
+          `${who?.full_name || who?.email || "Alguien del staff"} pidió ${prepped ? "corregir el chequeo FNSKU" : "cambiar las unidades"} de la orden de ${client.company || client.full_name || client.email}. Un admin debe aprobarlo en el portal.`,
+        ),
         `<em>“${escapeHtml(r.reason)}”</em>`,
       ],
       rows,

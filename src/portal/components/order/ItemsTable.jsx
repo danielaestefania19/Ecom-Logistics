@@ -96,11 +96,58 @@ function ItemEditor({ item, upc, clientId, showPrep, onDone }) {
   );
 }
 
+// Correcting the FNSKU check count after an over-scan: admins save it directly, other staff send it
+// to an admin with a reason.
+function PreppedFix({ item, isAdmin, onDone }) {
+  const { t } = useT();
+  const [qty, setQty] = useState(String(item.prepped_qty));
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
+  const save = async () => {
+    if (!/^\d+$/.test(qty.trim())) return setError(t("prepFix.badQty"));
+    if (Number(qty) === item.prepped_qty) return onDone(false);
+    if (!isAdmin && !reason.trim()) return setError(t("prepFix.reasonMissing"));
+    setBusy(true);
+    setError(null);
+    const { error: err } = isAdmin
+      ? await supabase.rpc("set_prepped_qty", { p_item: item.id, p_qty: Number(qty), p_reason: reason.trim() || null })
+      : await supabase.rpc("request_prepped_fix", { p_item: item.id, p_qty: Number(qty), p_reason: reason.trim() });
+    setBusy(false);
+    if (err) return setError(err.message);
+    onDone(true);
+  };
+
+  return (
+    <div className="space-y-3 p-3 bg-amber-50 rounded-xl">
+      <p className="text-xs text-amber-900">{isAdmin ? t("prepFix.adminHelp", { sku: item.sku }) : t("prepFix.staffHelp", { sku: item.sku })}</p>
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="text-[11px] font-semibold text-gray-500">{t("item.prepped")}
+          <input type="number" min="0" inputMode="numeric" value={qty} onChange={(e) => setQty(e.target.value)} className={`${cellInput} w-28 text-right`} />
+        </label>
+        <label className="flex-1 min-w-[12rem] text-[11px] font-semibold text-gray-500">{isAdmin ? t("prepFix.reasonOptional") : t("prepFix.reason")}
+          <input value={reason} onChange={(e) => setReason(e.target.value)} className={cellInput} />
+        </label>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" onClick={save} disabled={busy} className={btnPrimary}>
+          {busy ? t("common.saving") : isAdmin ? t("common.save") : t("prepFix.send")}
+        </button>
+        <button type="button" onClick={() => onDone(false)} className={btnSecondary}>{t("common.cancel")}</button>
+        {error && <span className="text-xs text-red-600">{error}</span>}
+      </div>
+    </div>
+  );
+}
+
 const toState = (items) =>
   Object.fromEntries(items.map((i) => [i.id, { received: i.received_qty ?? "", damaged: i.damaged_qty ?? 0 }]));
 
-const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false, canEditItems = false, clientId }) => {
+const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = false, canEditItems = false, canFixPrepped = false, isAdmin = false, clientId }) => {
   const { t } = useT();
+  const [fixingId, setFixingId] = useState(null);
+  const [fixSent, setFixSent] = useState(false);
   const [upcs, setUpcs] = useState({});
   const [editingId, setEditingId] = useState(null);
 
@@ -199,7 +246,40 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
     }
     return <span className={i.damaged_qty ? "text-red-600 font-semibold" : ""}>{i.damaged_qty || "—"}</span>;
   };
-  const preppedCls = (i) => `font-semibold ${i.prepped_qty >= i.expected_qty ? "text-green-700" : "text-amber-700"}`;
+  const preppedCls = (i) =>
+    `font-semibold ${i.prepped_qty > i.expected_qty ? "text-red-600" : i.prepped_qty === i.expected_qty ? "text-green-700" : "text-amber-700"}`;
+  const preppedValue = (i) => (
+    <span className="inline-flex items-center gap-1">
+      <span className={preppedCls(i)}>{i.prepped_qty}/{i.expected_qty}</span>
+      {canFixPrepped && fixingId !== i.id && (
+        <button
+          type="button"
+          onClick={() => {
+            setFixSent(false);
+            setFixingId(i.id);
+          }}
+          className="px-1.5 py-1 text-xs font-semibold text-third hover:underline"
+          aria-label={t("prepFix.open", { sku: i.sku })}
+          title={t("prepFix.open", { sku: i.sku })}
+        >
+          ✎
+        </button>
+      )}
+    </span>
+  );
+  const fixer = (i) => (
+    <PreppedFix
+      item={i}
+      isAdmin={isAdmin}
+      onDone={(changed) => {
+        setFixingId(null);
+        if (changed) {
+          setFixSent(!isAdmin);
+          onSaved?.();
+        }
+      }}
+    />
+  );
   const editor = (i) => (
     <ItemEditor
       item={i}
@@ -233,9 +313,10 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
               {stat(t("item.expected"), <span className="font-medium">{i.expected_qty}</span>)}
               {stat(t("item.received"), countField(i, "received", "w-full"))}
               {stat(t("item.damaged"), countField(i, "damaged", "w-full"))}
-              {showPrepped && stat(t("item.prepped"), <span className={preppedCls(i)}>{i.prepped_qty}/{i.expected_qty}</span>)}
+              {showPrepped && stat(t("item.prepped"), preppedValue(i))}
             </div>
             {editingId === i.id && editor(i)}
+            {fixingId === i.id && fixer(i)}
           </li>
         ))}
         <li className="pt-3 flex justify-between text-sm font-bold text-primary">
@@ -267,12 +348,19 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
                   <td className="py-3 pr-3 text-right font-medium">{i.expected_qty}</td>
                   <td className="py-3 pr-3 text-right">{countField(i, "received", "w-24")}</td>
                   <td className="py-3 text-right">{countField(i, "damaged", "w-20")}</td>
-                  {showPrepped && <td className={`py-3 pl-3 text-right ${preppedCls(i)}`}>{i.prepped_qty}/{i.expected_qty}</td>}
+                  {showPrepped && <td className="py-3 pl-3 text-right whitespace-nowrap">{preppedValue(i)}</td>}
                 </tr>
                 {editingId === i.id && (
                   <tr>
                     <td colSpan={4 + (showPrep ? 1 : 0) + (showPrepped ? 1 : 0)} className="pb-3">
                       {editor(i)}
+                    </td>
+                  </tr>
+                )}
+                {fixingId === i.id && (
+                  <tr>
+                    <td colSpan={4 + (showPrep ? 1 : 0) + (showPrepped ? 1 : 0)} className="pb-3">
+                      {fixer(i)}
                     </td>
                   </tr>
                 )}
@@ -293,6 +381,7 @@ const ItemsTable = ({ items, editable, onSaved, showPrep = true, showPrepped = f
         </table>
       </div>
 
+      {fixSent && <p className="mt-3 text-sm text-green-600">{t("prepFix.sent")}</p>}
       {editable && (
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <button type="button" onClick={save} disabled={saving || changed.length === 0} className={btnPrimary}>
